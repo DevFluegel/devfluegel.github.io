@@ -5,20 +5,61 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DevFlügel – Smarte Web-Lösungen</title>
-  <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Tailwind-Plugin für Blurry Hintergrund (Custom Style) */
-    @layer utilities {
-      .backdrop-blur-custom {
-        backdrop-filter: blur(10px);
+    /* Glow-Effekt für CTA-Buttons */
+    .cta-button:hover {
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+    }
+
+    /* Glow-Effekt für Service-Cards */
+    .service-card:hover {
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+      transform: scale(1.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Header fixieren */
+    header {
+      z-index: 10;
+    }
+
+    .logo-container {
+      position: relative;
+      z-index: 20;
+    }
+
+    /* Dropdown-Menü */
+    .dropdown-menu {
+      animation: slideIn 0.3s ease-out forwards;
+      z-index: 5;
+    }
+
+    /* Animation für Dropdown */
+    @keyframes slideIn {
+      0% {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1;
       }
     }
 
-    @layer utilities {
-      .bg-transparent-important {
-        background-color: transparent !important;
-      }
+    /* Scroll Snap für Abschnitte */
+    html,
+    body {
+      scroll-behavior: smooth;
+      height: 100%;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+
+    section {
+      scroll-snap-align: start;
+      min-height: 100vh;
     }
   </style>
 </head>
@@ -27,17 +68,20 @@
 
   <!-- Header mit Dropdown-Menü -->
   <header
-    class="fixed top-0 left-0 w-full flex justify-between items-center px-5 py-4 bg-white/20 backdrop-blur-lg rounded-b-lg z-50 transition-all">
-    <div class="text-2xl font-bold text-lime-400">DevFlügel</div>
+    class="fixed top-0 left-0 w-full flex justify-between items-center px-5 py-4 bg-[#454a56] rounded-b-2xl z-10 transition-all">
+    <div class="logo-container flex items-center">
+      <!-- Logo -->
+      <img src="logo.png" alt="Logo" class="h-8 mr-2">
+      <div class="text-2xl font-bold text-lime-400">DevFlügel</div>
+    </div>
 
     <!-- Menu toggle button (visible only on mobile) -->
     <button class="block md:hidden text-white text-3xl" onclick="toggleMenu()">☰</button>
 
     <!-- Navigation -->
     <nav id="mobile-menu"
-      class="absolute top-16 left-0 w-full hidden md:flex md:static md:flex-row md:gap-8 md:text-lg md:justify-center bg-transparent-important backdrop-blur-md">
-      <ul
-        class="flex flex-col md:flex-row gap-5 p-4 md:p-0 md:bg-none text-center bg-black/70 backdrop-blur-md rounded-b-lg z-50 transition-all">
+      class="absolute top-16 left-0 w-full hidden md:flex md:static md:flex-row md:gap-8 md:text-lg md:justify-center bg-[#454a56] rounded-b-2xl">
+      <ul class="flex flex-col md:flex-row gap-5 p-4 md:p-0 text-center">
         <li><a href="#" class="hover:text-lime-400">Home</a></li>
         <li><a href="#" class="hover:text-lime-400">Leistungen</a></li>
         <li><a href="#" class="hover:text-lime-400">Über uns</a></li>
@@ -51,65 +95,65 @@
       let menu = document.getElementById("mobile-menu");
       let header = document.querySelector("header");
       menu.classList.toggle("hidden");
-      header.style.borderRadius = menu.classList.contains("hidden") ? "0 0 15px 15px" : "0";
+      menu.classList.toggle("dropdown-menu");
+      header.style.borderRadius = menu.classList.contains("hidden") ? "0 0 16px 16px" : "0";
     }
   </script>
 
   <!-- Hero Section -->
-  <section
-    class="hero flex items-center justify-center text-center min-h-screen bg-white/15 backdrop-blur-custom rounded-lg p-10 mx-5 mb-8">
+  <section class="hero flex items-center justify-center text-center p-10">
     <div>
-      <h1 class="text-4xl font-semibold text-lime-400">Smarte Web-Lösungen für dein Business</h1>
-      <p class="text-xl mt-4">Optimierte Prozesse für mehr Effizienz – datenbasiert und modern</p>
+      <h1 class="text-4xl font-semibold text-lime-400">Smarte<br>Web-Lösungen<br>für dein Business</h1>
+      <p class="text-xl mt-4">Optimierte Prozesse für mehr Effizienz<br>–<br>datenbasiert und modern</p>
       <a href="#"
-        class="inline-block mt-6 px-6 py-3 bg-gradient-to-br from-lime-400 to-lime-500 text-black rounded-md text-lg transition-all hover:from-lime-500 hover:to-lime-400">Lösung
+        class="cta-button inline-block mt-6 px-6 py-3 rounded-lg bg-gradient-to-r from-lime-400 to-lime-300 text-black text-lg font-medium">Lösung
         entdecken</a>
     </div>
   </section>
 
   <!-- Leistungen -->
-  <section class="services flex flex-wrap justify-center gap-10 py-10 min-h-[80vh] items-center">
-    <div class="service-card bg-white/15 backdrop-blur-custom rounded-lg p-6 w-80 text-center">
+  <section class="services flex flex-wrap justify-center gap-10 py-10 items-center">
+    <div class="service-card bg-white/15 rounded-lg p-6 w-80 text-center">
       <h3 class="text-2xl font-semibold text-lime-400">Prozessoptimierung</h3>
       <p class="mt-4 text-lg">Individuelle Web-Apps für effizientere Abläufe</p>
     </div>
-    <div class="service-card bg-white/15 backdrop-blur-custom rounded-lg p-6 w-80 text-center">
+    <div class="service-card bg-white/15 rounded-lg p-6 w-80 text-center">
       <h3 class="text-2xl font-semibold text-lime-400">Moderne Lösungen</h3>
       <p class="mt-4 text-lg">Technologiegetrieben & performancestark</p>
     </div>
-    <div class="service-card bg-white/15 backdrop-blur-custom rounded-lg p-6 w-80 text-center">
+    <div class="service-card bg-white/15 rounded-lg p-6 w-80 text-center">
       <h3 class="text-2xl font-semibold text-lime-400">Datenanalyse</h3>
       <p class="mt-4 text-lg">Genaue Analysen für fundierte Entscheidungen</p>
     </div>
   </section>
 
   <!-- Über DevFlügel -->
-  <section
-    class="about flex items-center justify-center text-center min-h-screen bg-white/15 backdrop-blur-custom rounded-lg p-10 mx-5 mb-8">
+  <section class="about flex items-center justify-center text-center p-10">
     <div>
       <h2 class="text-3xl font-semibold text-lime-400">Über DevFlügel</h2>
-      <p class="mt-4 text-lg">Innovation trifft auf Verlässlichkeit – wir entwickeln smarte Web-Apps für effizientere
+      <p class="mt-4 text-lg">Innovation trifft auf <b>Verlässlichkeit</b><br>–<br>wir entwickeln smarte Web-Apps<br>für
+        <b>effizientere</b>
         Geschäftsprozesse.</p>
     </div>
   </section>
 
   <!-- Call-to-Action -->
-  <section class="cta min-h-[80vh]  flex justify-center items-center py-10">
-    <div class="service-card backdrop-blur-custom rounded-lg p-6 w-80 text-center">
+  <section class="cta flex justify-center items-center py-10">
+    <div class="cta-card rounded-lg p-6 w-80 text-center">
       <h2 class="text-4xl font-semibold text-lime-400">Starte jetzt mit DevFlügel</h2>
       <a href="#"
-        class="cta-button inline-block mt-6 px-6 py-3 rounded-lg bg-gradient-to-r from-lime-400 to-lime-300 text-black text-lg font-medium hover:from-lime-300 hover:to-lime-400 transition duration-300">Jetzt
+        class="cta-button inline-block mt-6 px-6 py-3 rounded-lg bg-gradient-to-r from-lime-400 to-lime-300 text-black text-lg font-medium">Jetzt
         anfragen</a>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="py-6 px-4 bg-white/15 backdrop-blur-custom rounded-lg mx-5 mb-8">
+  <footer class="py-6 px-4 bg-white/15 rounded-lg mx-5 mb-8">
     <p class="text-center text-sm">&copy; 2025 DevFlügel – Alle Rechte vorbehalten</p>
     <nav class="text-center mt-2">
-      <a href="#" class="text-sm text-white hover:text-lime-400">Impressum</a> | <a href="#"
-        class="text-sm text-white hover:text-lime-400">Datenschutz</a> | <a href="#"
-        class="text-sm text-white hover:text-lime-400">AGB</a>
+      <a href="#" class="text-sm text-white hover:text-lime-400">Impressum</a> |
+      <a href="#" class="text-sm text-white hover:text-lime-400">Datenschutz</a> |
+      <a href="#" class="text-sm text-white hover:text-lime-400">AGB</a>
     </nav>
   </footer>
 
