@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevFlügel – Smarte Web-Lösungen</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Tailwind-Plugin für Blurry Hintergrund (Custom Style) */
+    @layer utilities {
+      .backdrop-blur-custom {
+        backdrop-filter: blur(10px);
+      }
+    }
+
+    @layer utilities {
+      .bg-transparent-important {
+        background-color: transparent !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-900 text-white pt-16">
+
+  <!-- Header mit Dropdown-Menü -->
+  <header
+    class="fixed top-0 left-0 w-full flex justify-between items-center px-5 py-4 bg-white/20 backdrop-blur-lg rounded-b-lg z-50 transition-all">
+    <div class="text-2xl font-bold text-lime-400">DevFlügel</div>
+
+    <!-- Menu toggle button (visible only on mobile) -->
+    <button class="block md:hidden text-white text-3xl" onclick="toggleMenu()">☰</button>
+
+    <!-- Navigation -->
+    <nav id="mobile-menu"
+      class="absolute top-16 left-0 w-full hidden md:flex md:static md:flex-row md:gap-8 md:text-lg md:justify-center bg-transparent-important backdrop-blur-md">
+      <ul
+        class="flex flex-col md:flex-row gap-5 p-4 md:p-0 md:bg-none text-center bg-black/70 backdrop-blur-md rounded-b-lg z-50 transition-all">
+        <li><a href="#" class="hover:text-lime-400">Home</a></li>
+        <li><a href="#" class="hover:text-lime-400">Leistungen</a></li>
+        <li><a href="#" class="hover:text-lime-400">Über uns</a></li>
+        <li><a href="#" class="hover:text-lime-400">Kontakt</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <script>
+    function toggleMenu() {
+      let menu = document.getElementById("mobile-menu");
+      let header = document.querySelector("header");
+      menu.classList.toggle("hidden");
+      header.style.borderRadius = menu.classList.contains("hidden") ? "0 0 15px 15px" : "0";
+    }
+  </script>
+
+  <!-- Hero Section -->
+  <section
+    class="hero flex items-center justify-center text-center min-h-screen bg-white/15 backdrop-blur-custom rounded-lg p-10 mx-5 mb-8">
+    <div>
+      <h1 class="text-4xl font-semibold text-lime-400">Smarte Web-Lösungen für dein Business</h1>
+      <p class="text-xl mt-4">Optimierte Prozesse für mehr Effizienz – datenbasiert und modern</p>
+      <a href="#"
+        class="inline-block mt-6 px-6 py-3 bg-gradient-to-br from-lime-400 to-lime-500 text-black rounded-md text-lg transition-all hover:from-lime-500 hover:to-lime-400">Lösung
+        entdecken</a>
+    </div>
+  </section>
+
+  <!-- Leistungen -->
+  <section class="services flex flex-wrap justify-center gap-10 py-10 min-h-[80vh] items-center">
+    <div class="service-card bg-white/15 backdrop-blur-custom rounded-lg p-6 w-80 text-center">
+      <h3 class="text-2xl font-semibold text-lime-400">Prozessoptimierung</h3>
+      <p class="mt-4 text-lg">Individuelle Web-Apps für effizientere Abläufe</p>
+    </div>
+    <div class="service-card bg-white/15 backdrop-blur-custom rounded-lg p-6 w-80 text-center">
+      <h3 class="text-2xl font-semibold text-lime-400">Moderne Lösungen</h3>
+      <p class="mt-4 text-lg">Technologiegetrieben & performancestark</p>
+    </div>
+    <div class="service-card bg-white/15 backdrop-blur-custom rounded-lg p-6 w-80 text-center">
+      <h3 class="text-2xl font-semibold text-lime-400">Datenanalyse</h3>
+      <p class="mt-4 text-lg">Genaue Analysen für fundierte Entscheidungen</p>
+    </div>
+  </section>
+
+  <!-- Über DevFlügel -->
+  <section
+    class="about flex items-center justify-center text-center min-h-screen bg-white/15 backdrop-blur-custom rounded-lg p-10 mx-5 mb-8">
+    <div>
+      <h2 class="text-3xl font-semibold text-lime-400">Über DevFlügel</h2>
+      <p class="mt-4 text-lg">Innovation trifft auf Verlässlichkeit – wir entwickeln smarte Web-Apps für effizientere
+        Geschäftsprozesse.</p>
+    </div>
+  </section>
+
+  <!-- Call-to-Action -->
+  <section class="cta min-h-[80vh]  flex justify-center items-center py-10">
+    <div class="service-card backdrop-blur-custom rounded-lg p-6 w-80 text-center">
+      <h2 class="text-4xl font-semibold text-lime-400">Starte jetzt mit DevFlügel</h2>
+      <a href="#"
+        class="cta-button inline-block mt-6 px-6 py-3 rounded-lg bg-gradient-to-r from-lime-400 to-lime-300 text-black text-lg font-medium hover:from-lime-300 hover:to-lime-400 transition duration-300">Jetzt
+        anfragen</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-6 px-4 bg-white/15 backdrop-blur-custom rounded-lg mx-5 mb-8">
+    <p class="text-center text-sm">&copy; 2025 DevFlügel – Alle Rechte vorbehalten</p>
+    <nav class="text-center mt-2">
+      <a href="#" class="text-sm text-white hover:text-lime-400">Impressum</a> | <a href="#"
+        class="text-sm text-white hover:text-lime-400">Datenschutz</a> | <a href="#"
+        class="text-sm text-white hover:text-lime-400">AGB</a>
+    </nav>
+  </footer>
+
+</body>
+
+</html>
