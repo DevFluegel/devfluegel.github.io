@@ -27,8 +27,7 @@
       <h2 class="text-xl font-bold mb-4">Neuen Task hinzufügen</h2>
       <input type="text" id="taskTitle" placeholder="Titel"
         class="w-full p-2 mb-2 bg-gray-700 rounded text-white">
-      <input type="text" id="taskDeadline" placeholder="Deadline (z. B. noch 3 Tage)"
-        class="w-full p-2 mb-4 bg-gray-700 rounded text-white">
+      <input type="date" id="taskDeadline" class="w-full p-2 mb-4 bg-gray-700 rounded text-white">
       <div class="flex justify-between">
         <button onclick="closeModal()" class="bg-red-500 px-4 py-2 rounded">Abbrechen</button>
         <button onclick="addTask()" class="bg-green-500 px-4 py-2 rounded">Hinzufügen</button>
@@ -79,6 +78,7 @@ class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-16 h-
         const group = document.createElement("div");
         group.className = "group bg-[#454a56]/30 p-8 rounded-lg max-w-2xl";
         
+        
         group.innerHTML = `
           <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-[#86B953] transition" onclick="toggleGroup(this)">
             <span>${status}</span>
@@ -114,11 +114,28 @@ class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-16 h-
       document.getElementById("taskModal").classList.add("hidden");
     }
 
+    function calculateDeadline(dateString) {
+      const today = new Date();
+      const deadlineDate = new Date(dateString);
+      const diffTime = deadlineDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays < 0) {
+        return "überfällig";
+      } else if (diffDays === 0) {
+        return "noch heute";
+      } else if (diffDays === 1) {
+        return "noch 1 Tag";
+      } else {
+        return `noch ${diffDays} Tage`;
+      }
+    }
+    
     function addTask() {
       const title = document.getElementById("taskTitle").value;
-      const deadline = document.getElementById("taskDeadline").value;
+      const deadlineInput = document.getElementById("taskDeadline").value;
 
-      if (title.trim() === "" || deadline.trim() === "") {
+      if (title.trim() === "" || deadlineInput.trim() === "") {
         alert("Bitte alle Felder ausfüllen!");
         return;
       }
@@ -126,7 +143,7 @@ class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-16 h-
       const newTask = {
         id: tasks.length + 1,
         title: title,
-        deadline: deadline,
+        deadline: calculateDeadline(deadlineInput),
         status: "Geplant"
       };
 
