@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskHub – DevFlügel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body class="bg-[#222222] text-white pt-16">
+
+  <header class="fixed top-0 left-0 w-full flex justify-between items-center px-5 py-4 bg-[#454a56] rounded-b-2xl z-10">
+    <div class="logo-container flex items-center">
+      <img src="icon.png" alt="Logo" class="h-8 mr-2">
+      <div class="text-2xl font-bold text-lime-400">TaskHub</div>
+    </div>
+    <nav class="flex items-center">
+      <span class="material-icons text-white mr-2">account_circle</span>
+      <a href="#" class="hover:text-lime-400" title="Profil und Einstellungen anzeigen">Max Mustermann</a>
+    </nav>
+  </header>
+
+  <section class="min-h-screen flex flex-col p-10 gap-5" id="task-container"></section>
+
+  <div id="task-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-[#454a56] p-6 rounded-lg shadow-lg max-w-md w-full">
+      <h2 class="text-xl font-bold mb-4">Neue Aufgabe erstellen</h2>
+      <input type="text" id="task-title" placeholder="Aufgabentitel" class="w-full p-2 mb-2 rounded bg-[#222222] text-white">
+      <input type="date" id="task-deadline" class="w-full p-2 mb-4 rounded bg-[#222222] text-white">
+      <div class="flex justify-end gap-2">
+        <button onclick="closeModal()" class="px-4 py-2 bg-gray-500 rounded hover:bg-gray-600">Abbrechen</button>
+        <button onclick="saveTask()" class="px-4 py-2 bg-lime-500 rounded hover:bg-lime-600">Hinzufügen</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tasks = [];
+    let taskIdCounter = 0;
+    const statuses = ["Geplant", "In Arbeit", "Erledigt", "Gelöscht"];
+    const collapsedStatuses = ["Gelöscht"];
+
+    function calculateDateStatus(deadline) {
+      if (!deadline) return { text: "", color: "text-white" };
+      const today = new Date();
+      const dueDate = new Date(deadline);
+      const diffTime = dueDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays > 0) {
+        return { text: `(${diffDays} Tage übrig)`, color: "text-green-400" };
+      } else if (diffDays === 0) {
+        return { text: "(Heute)", color: "text-blue-400" };
+      } else {
+        return { text: `(${Math.abs(diffDays)} Tage überfällig)`, color: "text-red-400" };
+      }
+    }
+
+    function renderTasks() {
+      const container = document.getElementById("task-container");
+      container.innerHTML = "";
+      
+      statuses.forEach(status => {
+        const filteredTasks = tasks.filter(task => task.status === status);
+        const isCollapsed = collapsedStatuses.includes(status);
+        
+        const group = document.createElement("div");
+        group.className = "group bg-[#454a56]/30 p-8 rounded-lg max-w-2xl";
+        
+        let content = `<button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-[#86B953] transition" onclick="toggleGroup(this, '${status}')">
+                        <span>${status}</span>
+                        <span class="chevron transition-transform ${isCollapsed ? 'rotate-180' : ''}">▼</span>
+                      </button>
+                      <div class="group-content mt-4 space-y-4 ${isCollapsed ? 'hidden' : ''}">`;
+        
+        if (status === "Geplant") {
+          content += `<div class="task-card bg-[#454a56]/20 p-4 rounded-lg text-left flex justify-between items-center hover:bg-[#86B953]/30 transition cursor-pointer" onclick="openModal()">
+                        <div class="font-semibold text-[#86B953]">Task erstellen</div>
+                      </div>`;
+        }
+        
+        filteredTasks.forEach(task => {
+          const { text, color } = calculateDateStatus(task.deadline);
+          content += `<div class="task-card bg-[#454a56]/20 p-4 rounded-lg text-left flex justify-between items-center">
+                        <div>
+                          <div class="font-semibold">${task.title}</div>
+                          ${task.status !== "Erledigt" && task.status !== "Gelöscht" ? `<div class="text-sm ${color}">${task.deadline} ${text}</div>` : ""}
+                        </div>
+                        <div class="flex gap-2">
+                          ${task.status !== "Geplant" ? `<button onclick="changeStatus(${task.id}, -1)" class="material-icons text-yellow-400 cursor-pointer">arrow_back</button>` : ""}
+                          ${task.status !== "Gelöscht" ? `<button onclick="changeStatus(${task.id}, 1)" class="material-icons text-green-400 cursor-pointer">arrow_forward</button>` : ""}
+                          ${task.status === "Gelöscht" ? `<button onclick="deleteTask(${task.id})" class="material-icons text-red-500 cursor-pointer">delete_forever</button>` : ""}
+                        </div>
+                      </div>`;
+        });
+        
+        content += "</div>";
+        group.innerHTML = content;
+        container.appendChild(group);
+      });
+    }
+
+    function addTask(title, deadline) {
+      tasks.push({ id: taskIdCounter++, title, deadline, status: "Geplant" });
+      renderTasks();
+    }
+
+    function changeStatus(id, direction) {
+      const task = tasks.find(task => task.id === id);
+      const currentIndex = statuses.indexOf(task.status);
+      const newIndex = currentIndex + direction;
+      if (newIndex >= 0 && newIndex < statuses.length) {
+        task.status = statuses[newIndex];
+        renderTasks();
+      }
+    }
+
+    function deleteTask(id) {
+  const index = tasks.findIndex(task => task.id === id);
+  if (index !== -1) {
+    tasks.splice(index, 1); // Entfernt die Aufgabe aus dem Array
+    renderTasks();
+  }
+}
+
+
+    function deleteAllTasks() {
+      tasks.splice(0, tasks.length);
+      renderTasks();
+    }
+
+    function restoreAllTasks() {
+      tasks.forEach(task => task.status = "Geplant");
+      renderTasks();
+    }
+
+    function deleteAllTasksByStatus(status) {
+      tasks.forEach(task => {
+        if (task.status === status) {
+          task.status = "Gelöscht";
+        }
+      });
+      renderTasks();
+    }
+
+    function restoreTasksByStatus(status) {
+      tasks.forEach(task => {
+        if (task.status === status) {
+          task.status = "Geplant";
+        }
+      });
+      renderTasks();
+    }
+
+    function calculateDateStatus(deadline) {
+      if (!deadline) return { text: "", color: "text-white" };
+      const today = new Date();
+      const dueDate = new Date(deadline);
+      const diffTime = dueDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays > 0) {
+        return { text: `(${diffDays} Tage übrig)`, color: "text-green-400" };
+      } else if (diffDays === 0) {
+        return { text: "(Heute)", color: "text-blue-400" };
+      } else {
+        return { text: `(${Math.abs(diffDays)} Tage überfällig)`, color: "text-red-400" };
+      }
+    }
+
+    function filterTasks(status) {
+      return tasks.filter(task => task.status === status);
+    }
+
+    function handleTaskChange(id, direction) {
+      const task = tasks.find(task => task.id === id);
+      const currentIndex = statuses.indexOf(task.status);
+      const newIndex = currentIndex + direction;
+      if (newIndex >= 0 && newIndex < statuses.length) {
+        task.status = statuses[newIndex];
+        renderTasks();
+      }
+    }
+
+    function jumpToTask(id) {
+      const task = tasks.find(task => task.id === id);
+      const status = task.status;
+      const index = statuses.indexOf(status);
+      if (index > -1) {
+        collapsedStatuses.splice(collapsedStatuses.indexOf(status), 1);
+        renderTasks();
+      }
+    }
+
+    function keyPressHandler(event) {
+      if (event.key === "Enter") {
+        saveTask();
+      }
+    }
+
+    function openModal() {
+      document.getElementById("task-modal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("task-modal").classList.add("hidden");
+    }
+
+    function saveTask() {
+      const title = document.getElementById("task-title").value;
+      const deadline = document.getElementById("task-deadline").value;
+      if (title.trim()) {
+        addTask(title, deadline);
+        closeModal();
+      }
+    }
+
+    function toggleGroup(button, status) {
+      const content = button.nextElementSibling;
+      content.classList.toggle("hidden");
+      button.querySelector(".chevron").classList.toggle("rotate-180");
+      
+      if (content.classList.contains("hidden")) {
+        collapsedStatuses.push(status);
+      } else {
+        collapsedStatuses.splice(collapsedStatuses.indexOf(status), 1);
+      }
+    }
+
+    function querySelector(selector) {
+      return document.querySelector(selector);
+    }
+
+    function querySelectorAll(selector) {
+      return document.querySelectorAll(selector);
+    }
+
+    function saveTask() {
+      const title = querySelector("#task-title").value;
+      const deadline = querySelector("#task-deadline").value;
+      if (title.trim()) {
+        addTask(title, deadline);
+        closeModal();
+      }
+    }
+
+    function addTask(title, deadline) {
+      tasks.push({ id: taskIdCounter++, title, deadline, status: "Geplant" });
+      renderTasks();
+    }
+
+  
+
+    function deleteTasksByStatus(status) {
+      tasks.forEach(task => {
+        if (task.status === status) {
+          task.status = "Gelöscht";
+        }
+      });
+      renderTasks();
+    }
+
+    function toggleGroup(button, status) {
+      const content = button.nextElementSibling;
+      content.classList.toggle("hidden");
+      button.querySelector(".chevron").classList.toggle("rotate-180");
+      
+      if (content.classList.contains("hidden")) {
+        collapsedStatuses.push(status);
+      } else {
+        collapsedStatuses.splice(collapsedStatuses.indexOf(status), 1);
+      }
+    }
+
+    function openModal() {
+      document.getElementById("task-modal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("task-modal").classList.add("hidden");
+    }
+
+    function saveTask() {
+      const title = document.getElementById("task-title").value;
+      const deadline = document.getElementById("task-deadline").value;
+      if (title.trim()) {
+        addTask(title, deadline);
+        closeModal();
+      }
+    }
+    
+    renderTasks();
+  </script>
+</body>
+</html>
