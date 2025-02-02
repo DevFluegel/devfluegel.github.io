@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskHub – DevFlügel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-900 text-white pt-16">
+  <header class="fixed top-0 left-0 w-full flex justify-between items-center px-5 py-4 bg-[#454a56] rounded-b-2xl z-10">
+    <div class="logo-container flex items-center">
+      <img src="icon.png" alt="Logo" class="h-8 mr-2">
+      <div class="text-2xl font-bold text-lime-400">TaskHub</div>
+    </div>
+    <nav>
+      <a href="#" class="hover:text-lime-400">Max Mustermann</a>
+    </nav>
+  </header>
+
+  <section class="min-h-screen flex flex-col p-10 gap-5">
+    <section class="min-h-screen flex flex-col gap-5">
+
+      <!-- Gruppe 1 -->
+      <div class="group bg-white/15 p-8 rounded-lg max-w-2xl">
+          <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-lime-400 transition" onclick="toggleGroup(this)">
+              <span>Geplant</span>
+              <span class="chevron transition-transform">▼</span>
+          </button>
+          <div class="group-content  mt-4 space-y-4">
+              <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 1</div>
+              <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 2</div>
+          </div>
+      </div>
+
+      <!-- Gruppe 2 -->
+      <div class="group bg-white/15 p-8 rounded-lg max-w-2xl">
+        <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-lime-400 transition" onclick="toggleGroup(this)">
+            <span>in Arbeit</span>
+            <span class="chevron transition-transform">▼</span>
+        </button>
+        <div class="group-content mt-4 space-y-4">
+            <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 1</div>
+            <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 2</div>
+        </div>
+    </div>
+
+    <!-- Gruppe 3 -->
+    <div class="group bg-white/15 p-8 rounded-lg max-w-2xl">
+      <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-lime-400 transition" onclick="toggleGroup(this)">
+          <span>Erledigt</span>
+          <span class="chevron transition-transform">▼</span>
+      </button>
+      <div class="group-content mt-4 space-y-4">
+          <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 1</div>
+          <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 2</div>
+      </div>
+  </div>
+
+  <!-- Gruppe 4 -->
+  <div class="group bg-white/15 p-8 rounded-lg max-w-2xl">
+    <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-lime-400 transition" onclick="toggleGroup(this)">
+        <span>Gelöscht</span>
+        <span class="chevron transition-transform">▼</span>
+    </button>
+    <div class="group-content mt-4 space-y-4">
+        <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 1</div>
+        <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 2</div>
+    </div>
+</div>
+    </section>
+  </section>
+  
+      
+  
+  <script>
+      function toggleGroup(button) {
+          const content = button.nextElementSibling;
+          content.classList.toggle("hidden");
+          button.querySelector(".chevron").classList.toggle("rotate-180");
+      }
+  </script>
+  
+   
+
+  <!-- FAB Button -->
+  <button class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-lime-400 text-gray-900 rounded-full w-16 h-16 flex items-center justify-center text-3xl shadow-lg hover:bg-lime-300 active:bg-lime-500 transition duration-300">
+    +
+  </button>
+
+  <footer class="left-0 w-full py-6  text-center bg-white/10 rounded-2xl z-10">
+    <p class="text-sm">&copy; 2025 DevFlügel – Alle Rechte vorbehalten</p>
+  </footer>
+
+</body>
+
+</html>
