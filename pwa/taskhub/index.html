@@ -6,9 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TaskHub – DevFlügel</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 
-<body class="bg-gray-900 text-white pt-16">
+<body class="bg-[#222222] text-white pt-16">
   <header class="fixed top-0 left-0 w-full flex justify-between items-center px-5 py-4 bg-[#454a56] rounded-b-2xl z-10">
     <div class="logo-container flex items-center">
       <img src="icon.png" alt="Logo" class="h-8 mr-2">
@@ -27,13 +28,18 @@
 
   <script>
     const tasks = [
-      { id: 1, title: "Task 1", deadline: "noch 2 Tage", status: "Geplant" },
-      { id: 2, title: "Task 2", deadline: "noch 1 Tag", status: "In Arbeit" },
-      { id: 3, title: "Task 3", deadline: "überfällig", status: "Geplant" },
-      { id: 4, title: "Task 4", deadline: "noch 3 Tage", status: "Gelöscht" },
-      { id: 5, title: "Task 5", deadline: "noch 5 Tage", status: "Geplant" },
-      { id: 6, title: "Task 6", deadline: "noch 4 Tage", status: "In Arbeit" }
-    ];
+  { id: 1, title: "Rechnung an Kunden versenden", deadline: "überfällig", status: "Geplant" },
+  { id: 2, title: "Team-Meeting vorbereiten", deadline: "noch 1 Tag", status: "In Arbeit" },
+  { id: 3, title: "Angebot für Kunde Müller erstellen", deadline: "überfällig", status: "Erledigt" },
+  { id: 4, title: "Server-Backup durchführen", deadline: "noch 3 Tage", status: "Gelöscht" },
+  { id: 5, title: "Social-Media-Posts planen", deadline: "noch 5 Tage", status: "Geplant" },
+  { id: 6, title: "Quartalsbericht finalisieren", deadline: "noch 4 Tage", status: "In Arbeit" },
+  { id: 7, title: "Kundensupport-Anfragen beantworten", deadline: "noch 2 Tage", status: "Geplant" },
+  { id: 8, title: "Vertrag mit Lieferanten prüfen", deadline: "überfällig", status: "In Arbeit" },
+  { id: 9, title: "Neue Mitarbeiter einarbeiten", deadline: "noch 7 Tage", status: "Geplant" },
+  { id: 10, title: "Marketingstrategie überarbeiten", deadline: "noch 6 Tage", status: "In Arbeit" }
+];
+
 
     const statuses = ["Geplant", "In Arbeit", "Erledigt", "Gelöscht"];
 
@@ -46,23 +52,25 @@
         if (filteredTasks.length === 0) return;
 
         const group = document.createElement("div");
-        group.className = "group bg-white/15 p-8 rounded-lg max-w-2xl";
+        group.className = "group bg-[#454a56]/30 p-8 rounded-lg max-w-2xl";
         
         group.innerHTML = `
-          <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-lime-400 transition" onclick="toggleGroup(this)">
+          <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-[#86B953] transition" onclick="toggleGroup(this)">
             <span>${status}</span>
             <span class="chevron transition-transform">▼</span>
           </button>
           <div class="group-content mt-4 space-y-4">
             ${filteredTasks.map(task => `
-              <div class="task-card bg-white/10 p-4 rounded-lg text-left flex justify-between items-center">
+              <div class="task-card bg-[#454a56]/20 p-4 rounded-lg text-left flex justify-between items-center">
                 <div>
                   <div class="font-semibold">${task.title}</div>
-                  ${task.status !== "Erledigt" && task.status !== "Gelöscht" ? `<div class="text-sm text-gray-400">${task.deadline}</div>` : ""}
+                  ${task.status !== "Erledigt" && task.status !== "Gelöscht" ? `<div class="text-sm text-[#86B953] ${task.deadline === 'überfällig' ? 'animate-pulse text-[#ff0000]' : ''}">${task.deadline}</div>` : ""}
                 </div>
                 <div class="flex gap-2">
-                  <button onclick="undoTask(${task.id})" class="text-yellow-400">⟲</button>
-                  ${getNextActionButton(task)}
+                  <div class="flex gap-2">
+                    ${getUndoButton(task)}
+                    ${getNextActionButton(task)}
+                  </div>
                 </div>
               </div>
             `).join("")}
@@ -74,19 +82,36 @@
     }
 
     function getNextActionButton(task) {
-      switch (task.status) {
-        case "Geplant":
-          return `<button onclick="updateTaskStatus(${task.id}, 'In Arbeit')" class="text-green-400">▶</button>`;
-        case "In Arbeit":
-          return `<button onclick="updateTaskStatus(${task.id}, 'Erledigt')" class="text-blue-400">✔</button>`;
-        case "Erledigt":
-          return `<button onclick="updateTaskStatus(${task.id}, 'Gelöscht')" class="text-red-400">✖</button>`;
-        case "Gelöscht":
-          return `<button onclick="deleteTask(${task.id})" class="text-gray-500">🗑</button>`;
-        default:
-          return "";
-      }
-    }
+  switch (task.status) {
+    case "Geplant":
+      return `<button onclick="updateTaskStatus(${task.id}, 'In Arbeit')" class="text-green-500">
+                <span class="material-icons">play_arrow</span>
+              </button>`;
+    case "In Arbeit":
+      return `<button onclick="updateTaskStatus(${task.id}, 'Erledigt')" class="text-blue-500">
+                <span class="material-icons">check_circle</span>
+              </button>`;
+    case "Erledigt":
+      return `<button onclick="updateTaskStatus(${task.id}, 'Gelöscht')" class="text-red-500">
+                <span class="material-icons">delete</span>
+              </button>`;
+    case "Gelöscht":
+      return `<button onclick="deleteTask(${task.id})" class="text-gray-500">
+                <span class="material-icons">delete_forever</span>
+              </button>`;
+    default:
+      return "";
+  }
+}
+
+function getUndoButton(task) {
+  return `<button onclick="undoTask(${task.id})" class="text-yellow-500">
+            <span class="material-icons">undo</span>
+          </button>`;
+}
+
+
+
 
     function updateTaskStatus(id, newStatus) {
       const task = tasks.find(t => t.id === id);
@@ -105,7 +130,17 @@
     }
 
     function undoTask(id) {
-      console.log("Undo action for task", id);
+      const task = tasks.find(t => t.id === id);
+      if (task) {
+        if (task.status === "Gelöscht") {
+          task.status = "Erledigt";
+        } else if (task.status === "Erledigt") {
+          task.status = "In Arbeit";
+        } else if (task.status === "In Arbeit") {
+          task.status = "Geplant";
+        }
+        renderTasks();
+      }
     }
 
     function toggleGroup(button) {
