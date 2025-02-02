@@ -20,79 +20,102 @@
   </header>
 
   <section class="min-h-screen flex flex-col p-10 gap-5">
-    <section class="min-h-screen flex flex-col gap-5">
-
-      <!-- Gruppe 1 -->
-      <div class="group bg-white/15 p-8 rounded-lg max-w-2xl">
-          <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-lime-400 transition" onclick="toggleGroup(this)">
-              <span>Geplant</span>
-              <span class="chevron transition-transform">▼</span>
-          </button>
-          <div class="group-content  mt-4 space-y-4">
-              <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 1</div>
-              <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 2</div>
-          </div>
-      </div>
-
-      <!-- Gruppe 2 -->
-      <div class="group bg-white/15 p-8 rounded-lg max-w-2xl">
-        <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-lime-400 transition" onclick="toggleGroup(this)">
-            <span>in Arbeit</span>
-            <span class="chevron transition-transform">▼</span>
-        </button>
-        <div class="group-content mt-4 space-y-4">
-            <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 1</div>
-            <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 2</div>
-        </div>
-    </div>
-
-    <!-- Gruppe 3 -->
-    <div class="group bg-white/15 p-8 rounded-lg max-w-2xl">
-      <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-lime-400 transition" onclick="toggleGroup(this)">
-          <span>Erledigt</span>
-          <span class="chevron transition-transform">▼</span>
-      </button>
-      <div class="group-content mt-4 space-y-4">
-          <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 1</div>
-          <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 2</div>
-      </div>
-  </div>
-
-  <!-- Gruppe 4 -->
-  <div class="group bg-white/15 p-8 rounded-lg max-w-2xl">
-    <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-lime-400 transition" onclick="toggleGroup(this)">
-        <span>Gelöscht</span>
-        <span class="chevron transition-transform">▼</span>
-    </button>
-    <div class="group-content mt-4 space-y-4">
-        <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 1</div>
-        <div class="task-card bg-white/10 p-4 rounded-lg text-left">Task 2</div>
-    </div>
-</div>
+    <section class="min-h-screen flex flex-col gap-5" id="task-container">
+      
     </section>
   </section>
-  
-      
-  
+
   <script>
-      function toggleGroup(button) {
-          const content = button.nextElementSibling;
-          content.classList.toggle("hidden");
-          button.querySelector(".chevron").classList.toggle("rotate-180");
+    const tasks = [
+      { id: 1, title: "Task 1", deadline: "noch 2 Tage", status: "Geplant" },
+      { id: 2, title: "Task 2", deadline: "noch 1 Tag", status: "In Arbeit" },
+      { id: 3, title: "Task 3", deadline: "überfällig", status: "Geplant" },
+      { id: 4, title: "Task 4", deadline: "noch 3 Tage", status: "Gelöscht" },
+      { id: 5, title: "Task 5", deadline: "noch 5 Tage", status: "Geplant" },
+      { id: 6, title: "Task 6", deadline: "noch 4 Tage", status: "In Arbeit" }
+    ];
+
+    const statuses = ["Geplant", "In Arbeit", "Erledigt", "Gelöscht"];
+
+    function renderTasks() {
+      const container = document.getElementById("task-container");
+      container.innerHTML = "";
+      
+      statuses.forEach(status => {
+        const filteredTasks = tasks.filter(task => task.status === status);
+        if (filteredTasks.length === 0) return;
+
+        const group = document.createElement("div");
+        group.className = "group bg-white/15 p-8 rounded-lg max-w-2xl";
+        
+        group.innerHTML = `
+          <button class="group-header flex justify-between items-center w-full text-left text-lg font-semibold hover:text-lime-400 transition" onclick="toggleGroup(this)">
+            <span>${status}</span>
+            <span class="chevron transition-transform">▼</span>
+          </button>
+          <div class="group-content mt-4 space-y-4">
+            ${filteredTasks.map(task => `
+              <div class="task-card bg-white/10 p-4 rounded-lg text-left flex justify-between items-center">
+                <div>
+                  <div class="font-semibold">${task.title}</div>
+                  ${task.status !== "Erledigt" && task.status !== "Gelöscht" ? `<div class="text-sm text-gray-400">${task.deadline}</div>` : ""}
+                </div>
+                <div class="flex gap-2">
+                  <button onclick="undoTask(${task.id})" class="text-yellow-400">⟲</button>
+                  ${getNextActionButton(task)}
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+        
+        container.appendChild(group);
+      });
+    }
+
+    function getNextActionButton(task) {
+      switch (task.status) {
+        case "Geplant":
+          return `<button onclick="updateTaskStatus(${task.id}, 'In Arbeit')" class="text-green-400">▶</button>`;
+        case "In Arbeit":
+          return `<button onclick="updateTaskStatus(${task.id}, 'Erledigt')" class="text-blue-400">✔</button>`;
+        case "Erledigt":
+          return `<button onclick="updateTaskStatus(${task.id}, 'Gelöscht')" class="text-red-400">✖</button>`;
+        case "Gelöscht":
+          return `<button onclick="deleteTask(${task.id})" class="text-gray-500">🗑</button>`;
+        default:
+          return "";
       }
+    }
+
+    function updateTaskStatus(id, newStatus) {
+      const task = tasks.find(t => t.id === id);
+      if (task) {
+        task.status = newStatus;
+        renderTasks();
+      }
+    }
+
+    function deleteTask(id) {
+      const index = tasks.findIndex(t => t.id === id);
+      if (index !== -1) {
+        tasks.splice(index, 1);
+        renderTasks();
+      }
+    }
+
+    function undoTask(id) {
+      console.log("Undo action for task", id);
+    }
+
+    function toggleGroup(button) {
+      const content = button.nextElementSibling;
+      content.classList.toggle("hidden");
+      button.querySelector(".chevron").classList.toggle("rotate-180");
+    }
+
+    renderTasks();
   </script>
-  
-   
-
-  <!-- FAB Button -->
-  <button class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-lime-400 text-gray-900 rounded-full w-16 h-16 flex items-center justify-center text-3xl shadow-lg hover:bg-lime-300 active:bg-lime-500 transition duration-300">
-    +
-  </button>
-
-  <footer class="left-0 w-full py-6  text-center bg-white/10 rounded-2xl z-10">
-    <p class="text-sm">&copy; 2025 DevFlügel – Alle Rechte vorbehalten</p>
-  </footer>
-
 </body>
 
 </html>
