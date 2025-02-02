@@ -10,6 +10,7 @@
 </head>
 
 <body class="bg-[#222222] text-white pt-16">
+
   <header class="fixed top-0 left-0 w-full flex justify-between items-center px-5 py-4 bg-[#454a56] rounded-b-2xl z-10">
     <div class="logo-container flex items-center">
       <img src="icon.png" alt="Logo" class="h-8 mr-2">
@@ -19,6 +20,30 @@
       <a href="#" class="hover:text-lime-400">Max Mustermann</a>
     </nav>
   </header>
+
+  <!-- NewTask-Modal -->
+  <div id="taskModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-80">
+      <h2 class="text-xl font-bold mb-4">Neuen Task hinzufügen</h2>
+      <input type="text" id="taskTitle" placeholder="Titel"
+        class="w-full p-2 mb-2 bg-gray-700 rounded text-white">
+      <input type="text" id="taskDeadline" placeholder="Deadline (z. B. noch 3 Tage)"
+        class="w-full p-2 mb-4 bg-gray-700 rounded text-white">
+      <div class="flex justify-between">
+        <button onclick="closeModal()" class="bg-red-500 px-4 py-2 rounded">Abbrechen</button>
+        <button onclick="addTask()" class="bg-green-500 px-4 py-2 rounded">Hinzufügen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Action Button (FAB) -->
+<button onclick="openModal()"
+class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-16 h-16 flex items-center justify-center rounded-full shadow-2xl transition transform hover:scale-110">
+<span class="material-icons text-3xl">add</span>
+</button>
+
+
+  
 
   <section class="min-h-screen flex flex-col p-10 gap-5">
     <section class="min-h-screen flex flex-col gap-5" id="task-container">
@@ -80,6 +105,36 @@
         container.appendChild(group);
       });
     }
+
+    function openModal() {
+      document.getElementById("taskModal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("taskModal").classList.add("hidden");
+    }
+
+    function addTask() {
+      const title = document.getElementById("taskTitle").value;
+      const deadline = document.getElementById("taskDeadline").value;
+
+      if (title.trim() === "" || deadline.trim() === "") {
+        alert("Bitte alle Felder ausfüllen!");
+        return;
+      }
+
+      const newTask = {
+        id: tasks.length + 1,
+        title: title,
+        deadline: deadline,
+        status: "Geplant"
+      };
+
+      tasks.push(newTask);
+      renderTasks();
+      closeModal();
+    }
+
 
     function getNextActionButton(task) {
   switch (task.status) {
