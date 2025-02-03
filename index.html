@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluvento – IT mit Seele</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+
+    <style>
+        /* Farbpalette */
+        :root {
+            --primary: #FF6B00; /* Feuer-Orange */
+            --secondary: #D94326; /* Energie-Rot */
+            --bg-dark: #121212; /* Hintergrund dunkel */
+            --glass-bg: rgba(255, 255, 255, 0.1); /* Glasmorph-Hintergrund */
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #EEE;
+        }
+
+        /* Basis-Styling */
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .logo-text {
+            font-family: 'Allura', cursive;
+            font-size: 5rem; /* oder anpassen nach Wunsch */
+            font-weight: 400;
+            border: #EEE 2px solid;
+            padding: 0px
+}
+
+
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: var(--primary);
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+        }
+
+        
+
+        /* Sections */
+        section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            scroll-snap-align: start;
+            position: relative;
+        }
+
+        /* Scroll-Snap */
+        html {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+        }
+
+         /* Glasmorphism */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            width: 80%;
+            max-width: 600px;
+            height: 400px; /* Festgelegte Höhe für perfekte Drittel-Aufteilung */
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .glass a {
+            color: var(--primary);
+        }
+
+        .glass a:hover {
+            color: var(--secondary);
+        }
+
+        /* Bild-Anpassung */
+        .glass img {
+            width: 80%;
+            height: 33%;
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            margin-top: 20px;
+        }
+
+        /* Text-Container */
+        .text-content {
+            flex: 1; /* Nimmt den verbleibenden Platz ein */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border-bottom-left-radius: 50% 20px;
+            border-bottom-right-radius: 50% 20px;
+            padding: 80px 20px;
+        }
+
+        /* Button */
+        .btn {
+            background: var(--primary);
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        /* Scroll-Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#vision">Vision</a>
+        <a href="#services">Lösungen</a>
+        <a href="#portfolio">Demos</a>
+        <a href="#blog">Aktuelles</a>
+        <a href="#contact">Kontakt</a>
+    </nav>
+
+    <!-- Hero -->
+    <section id="home" class="hero">
+        <div class="fade-in">
+            <h1 class="logo-text">Fluvento</h1>
+            <p class="text-xl mt-4">Smarte IT mit Energie & Seele.</p>
+            <a href="#vision" class="btn mt-6 inline-block">Mehr erfahren</a>
+        </div>
+    </section>
+
+
+    <!-- Vision -->
+    <section id="vision" class="flex justify-center items-center min-h-screen">
+        <div class="glass fade-in">
+            <!-- Bild -->
+            <img src="https://cdn.pixabay.com/photo/2024/12/06/09/09/ai-generated-9248267_1280.jpg" alt="Fluvento Logo">
+
+            <!-- Textbereich -->
+            <div class="text-content">
+                <h2 class="text-4xl font-bold">Unsere Vision</h2>
+                <br><p>Fluvento steht für IT mit Persönlichkeit.<br><br>Wir glauben an maßgeschneiderte, effiziente Prozesse, die nicht nur funktionieren, sondern sich auch gut anfühlen.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lösungen -->
+    <section id="services" class="hero flex justify-center items-center min-h-screen">
+        <div class="glass fade-in">
+            <!-- Bild -->
+            <img src="https://cdn.pixabay.com/photo/2015/01/03/21/10/puzzle-587821_1280.jpg" alt="Fluvento Logo">
+
+            <!-- Textbereich -->
+            <div class="text-content">
+                <h2 class="text-4xl font-bold">Effizienz neu gedacht</h2>
+                <br><p>Weniger Chaos, mehr Flow.<br><br>Wir entwickeln smarte digitale Werkzeuge, die nicht nur Prozesse beschleunigen, sondern sich anfühlen, als wären sie für dich gemacht.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo -->
+<section id="services" class=" flex justify-center items-center min-h-screen">
+    <div class="glass fade-in p-8 flex flex-col items-center text-center">
+        <!-- Bild mit abgerundeten oberen Ecken -->
+        <img src="https://cdn.pixabay.com/photo/2016/11/19/21/01/analysis-1841158_1280.jpg" 
+            alt="Prozessoptimierung" 
+            class="w-full h-48 object-cover rounded-t-xl mb-6">
+
+        <!-- Textbereich -->
+        <div class="text-content">
+            <h2 class="text-4xl font-bold text-white"> Effizienz erleben</h2>
+            <p class="mt-4 text-lg text-gray-300">Kennst du versteckte Zeitfresser?<br>Wir zeigen dir, wie du sie loswirst – mit smarter IT, die mitdenkt und dabei auch noch gut aussieht.</p>
+            <br><a href="#">Beispiele ansehen</a>
+
+            
+        </div>
+    </div>
+</section>
+
+
+    <!-- Blog -->
+    <section id="blog"  class="hero">
+        <div class="glass fade-in">
+            <h2 class="text-4xl font-bold">Aktuelles & Gedanken</h2>
+            <p>Unser Blog ist anders. Hier gibt es:</p>
+            <ul class="mt-4">
+                <li>🤔 "Was wäre wenn" – Szenarien zu Tech & Zukunft</li>
+                <li>🔍 "Über die Schulter" – Einblicke in unser Denken</li>
+                <li>📚 "Studieren" – Fundierte Analysen & Learnings</li>
+                <li>📊 "Fakten" – Klare, datenbasierte Einblicke</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Kontakt -->
+    <section id="contact">
+        <div class="glass fade-in">
+            <h2 class="text-4xl font-bold">Kontakt</h2>
+            <p>E-Mail: <a href="mailto:hello@fluvento.com" class="text-orange-500 underline">hello@fluvento.com</a></p>
+            <p>Telefon: <a href="tel:+491234567890" class="text-orange-500 underline">+49 123 456 7890</a></p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Fluvento | <a href="#" class="text-orange-500 underline">Datenschutz</a> | <a href="#" class="text-orange-500 underline">Impressum</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".fade-in").forEach(el => {
+                new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) entry.target.classList.add("visible");
+                    });
+                }).observe(el);
+            });
+        });
+    </script>
+
+</body>
+</html>
