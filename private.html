@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datenschutz | Fluvento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #EEE;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        nav a {
+            color: #FF6B00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+       nav  a:hover {
+            color: #D94326;
+        }
+    </style>
+</head>
+<body class="text-white flex flex-col items-center min-h-screen p-6 col-[#121212]">
+    
+    <!-- Navigation -->
+    <nav class="w-full max-w-6xl flex justify-between items-center py-4">
+        <a href="/" class="text-lg font-bold">Zur Hauptseite</a>
+    </nav>
+    
+    <!-- Datenschutzrichtlinie -->
+    <section class="glass mt-6">
+        <h1 class="text-3xl font-bold text-red-400">Datenschutzrichtlinie von Fluvento</h1>
+        <p class="mt-2 text-gray-300">Stand: 03. Februar 2025</p>
+        <p class="mt-4">Der Schutz deiner Daten ist für uns essenziell. Fluvento verarbeitet Daten ausschließlich im notwendigen Rahmen, transparent und sicher...</p>
+        
+        <h2 class="mt-6 text-2xl font-semibold text-red-400">1. Welche Daten erheben wir?</h2>
+        <p class="mt-2">Fluvento erfasst nur die Daten, die für die Funktionalität und Verbesserung unserer Services erforderlich sind.</p>
+        <ul class="list-disc list-inside mt-2 text-gray-300">
+            <li><strong>Technische Daten:</strong> Anonymisierte IP-Adresse, Browser-Typ und Version, Betriebssystem, Zugriffszeit und -datum.</li>
+            <li><strong>Nutzungsdaten:</strong> Interaktionen mit der App/Webseite, Verweildauer, Klickverhalten.</li>
+            <li><strong>Personenbezogene Daten:</strong> Name, E-Mail-Adresse, Benutzername, Passwort (verschlüsselt).</li>
+            <li><strong>Nutzergenerierte Inhalte:</strong> Vom Nutzer erstellte Daten.</li>
+        </ul>
+        
+        <h2 class="mt-6 text-2xl font-semibold text-red-400">2. Wie werden die Daten gespeichert?</h2>
+        <p class="mt-2">- Alle gespeicherten Daten sind verschlüsselt.<br>- Passwörter werden mit modernen Hashing-Algorithmen gesichert.<br>- Regelmäßige Backups schützen vor Datenverlust.</p>
+        
+        <h2 class="mt-6 text-2xl font-semibold text-red-400">3. Wo werden die Daten gespeichert?</h2>
+        <p class="mt-2">Unsere Daten liegen auf <strong>Google Firebase-Servern</strong> in der EU oder den USA (DSGVO-konform).</p>
+        
+        <h2 class="mt-6 text-2xl font-semibold text-red-400">4. Wie lange speichern wir deine Daten?</h2>
+        <p class="mt-2">- Technische Daten: 30 Tage<br>- Nutzungsdaten: 12 Monate<br>- Personenbezogene Daten: Solange das Benutzerkonto aktiv ist</p>
+        
+        <h2 class="mt-6 text-2xl font-semibold text-red-400">5. Deine Rechte</h2>
+        <p class="mt-2">Du hast das Recht auf Auskunft, Berichtigung, Löschung und Widerspruch gegen die Verarbeitung deiner Daten.</p>
+        <p class="mt-2">📧 <strong>Kontakt:</strong> <a href="mailto:datenschutz@fluvento.de" class="text-red-300 hover:text-red-200">datenschutz@fluvento.eu</a></p>
+    </section>
+    
+</body>
+</html>
