@@ -403,10 +403,11 @@
         const buttonsContainer = document.getElementById("quiz-buttons");
 
         if (index === "cta") {
-            questionElement.innerHTML = "Perfekt! Lass uns den ersten Schritt machen.";
-            buttonsContainer.innerHTML = `<button onclick="scrollToContact()" class="quiz-btn">Kostenlose Analyse starten</button>`;
-            return;
-        }
+    questionElement.innerHTML = "Perfekt! Lass uns den ersten Schritt machen.";
+    buttonsContainer.innerHTML = `<a href="#contact" class="quiz-btn">Kostenlose Analyse starten</a>`;
+    return;
+}
+
 
         const questionData = quizData[index];
         questionElement.innerHTML = questionData.question;
@@ -421,11 +422,7 @@
         });
     }
 
-    function scrollToContact() {
-        // Scrollt zur 'contact'-Section
-        const contactSection = document.getElementById('contact');
-        contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    
 </script>
 
 </body>
