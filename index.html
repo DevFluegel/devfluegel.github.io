@@ -180,6 +180,36 @@
             transform: translateY(0);
         }
     </style>
+
+<style>
+    #quiz-section {
+        background-color: #222;
+        color: white;
+    }
+
+    .quiz-btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #222;
+        background: rgba(255, 136, 0, 0.8);
+        border-radius: 8px;
+        transition: all 0.3s ease-in-out;
+    }
+    .quiz-btn:hover {
+        background: rgba(255, 136, 0, 1);
+        transform: scale(1.05);
+    }
+
+    /* Anpassung der Schriftart und des Layouts */
+    #quiz-container {
+        font-family: 'Inter', sans-serif;
+    }
+</style>
+
+
 </head>
 <body>
 
@@ -198,9 +228,22 @@
         <div class="fade-in">
             <h1 class="logo-text"><u>Fluvento</u></h1>
             <p class="text-xl mt-4">Smarte IT mit Energie & Seele.</p>
-            <a href="#vision" class="btn mt-6 inline-block">Mehr erfahren</a>
+            <a href="#quiz" class="btn mt-6 inline-block">meine Effizient testen</a>
         </div>
     </section>
+
+    <!-- Quiz -->
+    <section id="quiz" class="bg-[#222] text-white py-12 px-4">
+        <div id="quiz-container" class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl w-full max-w-lg mx-auto text-center shadow-lg">
+            <h2 id="quiz-question" class="text-2xl font-bold text-orange-500">Sei ehrlich: Wie oft raubt dir unnötiger Kram den letzten Nerv?</h2>
+    
+            <div id="quiz-buttons" class="mt-6 space-y-4">
+                <button onclick="nextQuestion(1)" class="quiz-btn">Jeden Tag.</button>
+                <button onclick="nextQuestion(2)" class="quiz-btn">Hin und wieder.</button>
+            </div>
+        </div>
+    </section>
+
 
 
     <!-- Vision -->
@@ -232,7 +275,7 @@
     </section>
 
     <!-- Demo -->
-<section id="services" class=" flex justify-center items-center min-h-screen">
+<section id="demo" class=" flex justify-center items-center min-h-screen">
     <div class="glass fade-in p-8 flex flex-col items-center text-center">
         <!-- Bild mit abgerundeten oberen Ecken -->
         <img src="https://cdn.pixabay.com/photo/2016/11/19/21/01/analysis-1841158_1280.jpg" 
@@ -266,11 +309,15 @@
     </section>
 
     <!-- Kontakt -->
-    <section id="contact">
+    <section id="contact" c class="flex justify-center items-center min-h-screen">
         <div class="glass fade-in">
-            <h2 class="text-4xl font-bold">Kontakt</h2>
-            <p>E-Mail: <a href="mailto:hello@fluvento.com" class="text-orange-500 underline">hello@fluvento.com</a></p>
-            <p>Telefon: <a href="tel:+491234567890" class="text-orange-500 underline">+49 123 456 7890</a></p>
+           
+            <!-- Textbereich -->
+            <div class="text-content">
+                <h2 class="text-4xl font-bold">Kontakt</h2>
+                <p>E-Mail: <a href="mailto:hello@fluvento.com" class="text-orange-500 underline">contact@fluvento-solutions.eu</a></p>
+                <p>Telefon: <a href="tel:+491234567890" class="text-orange-500 underline">+49 (0) 123 - 456 78 942</a></p>
+            </div>
         </div>
     </section>
 
@@ -290,6 +337,96 @@
             });
         });
     </script>
+
+
+<script>
+    const quizData = [
+        { 
+            question: "Sei ehrlich: Wie oft raubt dir unnötiger Kram den letzten Nerv?", 
+            answers: [
+                { text: "Jeden Tag.", next: 1 },
+                { text: "Hin und wieder.", next: 2 }
+            ]
+        },
+        { 
+            question: "Mal angenommen, du musst diesen Bullshit nie wieder tun – wäre das ein Gewinn?", 
+            answers: [
+                { text: "Ja, her damit!", next: 3 },
+                { text: "Ich bin mir nicht sicher.", next: 3 }
+            ]
+        },
+        { 
+            question: "Was wäre, wenn ein smarter Prozess deine Arbeit übernimmt?", 
+            answers: [
+                { text: "Das will ich sehen.", next: 4 },
+                { text: "Hört sich utopisch an.", next: 4 }
+            ]
+        },
+        { 
+            question: "Unternehmen, die automatisieren, steigern ihre Effizienz um bis zu 70 %. Überrascht dich das?", 
+            answers: [
+                { text: "Nein, das ist logisch.", next: 5 },
+                { text: "Ja, das ist beeindruckend.", next: 5 }
+            ]
+        },
+        { 
+            question: "Jeden Tag ohne Optimierung verlierst du Zeit, Energie und Umsatz. Willst du das ändern?", 
+            answers: [
+                { text: "Ja, absolut.", next: 6 },
+                { text: "Ich weiß nicht genau.", next: 6 }
+            ]
+        },
+        { 
+            question: "Ich biete dir eine kostenlose Analyse an. Kein Risiko, nur Vorteile. Interessiert?", 
+            answers: [
+                { text: "Ja, das klingt sinnvoll.", next: 7 },
+                { text: "Erzähl mir mehr.", next: 7 }
+            ]
+        },
+        { 
+            question: "Bist du bereit, dein Business zu optimieren und effizienter zu arbeiten?", 
+            answers: [
+                { text: "Ja, ich will starten.", next: "cta" },
+                { text: "Ich brauche noch Infos.", next: "cta" }
+            ]
+        },
+        { 
+            question: "Perfekt! Lass uns den ersten Schritt machen.", 
+            answers: [
+                { text: "Kostenlose Analyse starten", next: "end" }
+            ]
+        }
+    ];
+
+    function nextQuestion(index) {
+        const questionElement = document.getElementById("quiz-question");
+        const buttonsContainer = document.getElementById("quiz-buttons");
+
+        if (index === "cta") {
+            questionElement.innerHTML = "Perfekt! Lass uns den ersten Schritt machen.";
+            buttonsContainer.innerHTML = `<button onclick="scrollToContact()" class="quiz-btn">Kostenlose Analyse starten</button>`;
+            return;
+        }
+
+        const questionData = quizData[index];
+        questionElement.innerHTML = questionData.question;
+        buttonsContainer.innerHTML = "";
+
+        questionData.answers.forEach(answer => {
+            const button = document.createElement("button");
+            button.className = "quiz-btn";
+            button.innerHTML = answer.text;
+            button.onclick = () => nextQuestion(answer.next);
+            buttonsContainer.appendChild(button);
+        });
+    }
+
+    function scrollToContact() {
+        // Scrollt zur 'contact'-Section
+        const contactSection = document.getElementById('contact');
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
 
 </body>
 </html>
