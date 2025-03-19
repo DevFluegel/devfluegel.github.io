@@ -117,7 +117,15 @@
             transform: translateY(-2px);
         }
 
-        
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+            display: grid;
+            gap: 0.5rem;
+        }
 
         .nav button {
             width: 12px;
@@ -152,7 +160,12 @@
     </style>
 </head>
 <body>
-    
+    <nav class="nav" id="nav-dots">
+        <button aria-label="Section 1" data-index="0"></button>
+        <button aria-label="Section 2" data-index="1"></button>
+        <button aria-label="Section 3" data-index="2"></button>
+        <button aria-label="Section 4" data-index="3"></button>
+    </nav>
 
     <section class="section active" data-index="0">
         <div class="content-box">
@@ -164,7 +177,7 @@
 
     <section class="section" data-index="1">
         <div class="content-box">
-            <h1>meine Leistungen</h1>
+            <h1>Unsere Leistungen</h1>
             <div class="scroll-content">
                 <p>🚀 Individuelle, schnelle und SEO-optimierte Websites</p>
                 <p>📱 Progressive Web Apps für ein App-Feeling</p>
@@ -176,7 +189,7 @@
 
     <section class="section" data-index="2">
         <div class="content-box">
-            <h1>Meine Arbeiten</h1>
+            <h1>Unsere Arbeiten</h1>
             <div class="scroll-content">
                 <img src="projekt1.jpg" alt="Projekt 1" loading="lazy">
                 <img src="projekt2.jpg" alt="Projekt 2" loading="lazy">
@@ -195,7 +208,6 @@
             <button class="cta-button" data-navigate="0">Zurück</button>
         </div>
     </section>
-    
 
     <script>
         class SectionNavigator {
