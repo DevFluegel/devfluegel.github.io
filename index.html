@@ -1,440 +1,232 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta http-equiv="refresh" content="0; url=https://www.fluvento-solutions.eu/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluvento – IT mit Energie </title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
-
+    <title>Fluvento Solutions | Websites & PWAs</title>
     <style>
         /* Farbpalette */
         :root {
-            --primary: #FF6B00; /* Feuer-Orange */
-            --secondary: #D94326; /* Energie-Rot */
-            --bg-dark: #121212; /* Hintergrund dunkel */
-            --glass-bg: rgba(255, 255, 255, 0.1); /* Glasmorph-Hintergrund */
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --text-light: #EEE;
+            --primary-color: #004A99;
+            --secondary-color: #F5A623;
+            --text-color: #1A1A1A;
+            --background-color: #FFFFFF;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --transition-time: 0.3s;
         }
 
-        /* Basis-Styling */
+        /* Basis-Styles */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
         }
 
-        .logo-text {
-            font-family: 'Allura', cursive;
-            font-size: 5rem; /* oder anpassen nach Wunsch */
-            font-weight: 400;
-            border: #EEE 2px solid;
-            padding: 0px
-}
-
-
-
-        /* Navigation */
-        nav {
-            position: fixed;
+        /* Animierter Hintergrund */
+        body::before {
+            content: "";
+            position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: center;
-            padding: 15px;
-            z-index: 1000;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(-45deg, #D9822B, #004A99, #F5A623, #FFFFFF);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            z-index: -1;
         }
 
-        nav a {
-            color: var(--primary);
-            margin: 0 15px;
-            font-weight: bold;
-            transition: color 0.3s;
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        nav a:hover {
-            color: var(--secondary);
+        /* Section-Styles */
+        .section {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            transition: opacity var(--transition-time) ease-in-out, transform var(--transition-time) ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
+            visibility: hidden;
+        }
+
+        .section.active {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .content-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+            padding: clamp(1rem, 3vw, 2rem);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: min(90%, 700px);
+            max-height: 80vh;
+            overflow-y: auto;
+            margin: 1rem;
+        }
+
+        /* Typografie */
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.625rem);
+            margin-bottom: 1.25rem;
+            color: var(--primary-color);
+        }
+
+        p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            margin-bottom: 1rem;
+        }
+
+        /* Button-Styles */
+        .cta-button {
+            padding: 0.75rem 1.5rem;
+            background: var(--secondary-color);
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: background var(--transition-time) ease, transform var(--transition-time) ease;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: #D9822B;
+            transform: translateY(-2px);
         }
 
         
 
-        /* Sections */
-        section {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px;
-            scroll-snap-align: start;
-            position: relative;
+        .nav button {
+            width: 12px;
+            height: 12px;
+            background: none;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all var(--transition-time) ease;
         }
 
-        /* Scroll-Snap */
-        html {
-            scroll-snap-type: y mandatory;
-            overflow-y: scroll;
+        .nav button:hover,
+        .nav button.active {
+            background: var(--primary-color);
+            transform: scale(1.2);
         }
 
-         /* Glasmorphism */
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.3);
+        /* Scroll-Content */
+        .scroll-content {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 0.5rem;
         }
 
-        .glass {
-            background: var(--glass-bg);
-            width: 80%;
-            max-width: 600px;
-            height: 400px; /* Festgelegte Höhe für perfekte Drittel-Aufteilung */
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .glass a {
-            color: var(--primary);
-        }
-
-        .glass a:hover {
-            color: var(--secondary);
-        }
-
-        /* Bild-Anpassung */
-        .glass img {
-            width: 80%;
-            height: 33%;
-            object-fit: cover;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-            margin-top: 20px;
-        }
-
-        /* Text-Container */
-        .text-content {
-            flex: 1; /* Nimmt den verbleibenden Platz ein */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        /* Hero */
-        .hero {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-            border-bottom-left-radius: 50% 20px;
-            border-bottom-right-radius: 50% 20px;
-            padding: 80px 20px;
-        }
-
-        /* Button */
-        .btn {
-            background: var(--primary);
-            padding: 10px 20px;
+        .scroll-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 0.5rem 0;
             border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            transition: 0.3s;
         }
 
-        .btn:hover {
-            background: var(--secondary);
-            transform: scale(1.05);
-        }
-
-        /* Footer */
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px;
-            text-align: center;
-            color: var(--text-light);
-        }
-
-        /* Scroll-Animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
     </style>
-
-<style>
-    #quiz-section {
-        background-color: #222;
-        color: white;
-    }
-
-    .quiz-btn {
-        display: block;
-        width: 100%;
-        padding: 12px;
-        font-size: 18px;
-        font-weight: bold;
-        color: #222;
-        background: rgba(255, 136, 0, 0.8);
-        border-radius: 8px;
-        transition: all 0.3s ease-in-out;
-    }
-    .quiz-btn:hover {
-        background: rgba(255, 136, 0, 1);
-        transform: scale(1.05);
-    }
-
-    /* Anpassung der Schriftart und des Layouts */
-    #quiz-container {
-        font-family: 'Inter', sans-serif;
-    }
-</style>
-
-
 </head>
 <body>
-
-    <!-- Navigation -->
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#vision">Vision</a>
-        <a href="#services">Lösungen</a>
-        <a href="#portfolio">Demos</a>
-        <a href="#blog">Aktuelles</a>
-        <a href="#contact">Kontakt</a>
-    </nav>
-
-    <!-- Hero -->
-    <section id="home" class="hero">
-        <div class="fade-in">
-            <h1 class="logo-text"><u>Fluvento</u></h1>
-            <p class="text-xl mt-4">Smarte IT mit Energie!</p>
-            <a href="#quiz" class="btn mt-6 inline-block">meine Effizient testen</a>
-        </div>
-    </section>
-
-    <!-- Quiz -->
-    <section id="quiz" class="bg-[#222] text-white py-12 px-4">
-        <div id="quiz-container" class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl w-full max-w-lg mx-auto text-center shadow-lg">
-            <h2 id="quiz-question" class="text-2xl font-bold text-orange-500">Sei ehrlich: Wie oft raubt dir unnötiger Kram den letzten Nerv?</h2>
     
-            <div id="quiz-buttons" class="mt-6 space-y-4">
-                <button onclick="nextQuestion(1)" class="quiz-btn">Jeden Tag.</button>
-                <button onclick="nextQuestion(2)" class="quiz-btn">Hin und wieder.</button>
+
+    <section class="section active" data-index="0">
+        <div class="content-box">
+            <h1>Mehr Kunden durch eine professionelle Website</h1>
+            <p>Moderne Websites & PWAs – schnell, individuell & benutzerfreundlich.</p>
+            <button class="cta-button" data-navigate="1">Jetzt starten</button>
+        </div>
+    </section>
+
+    <section class="section" data-index="1">
+        <div class="content-box">
+            <h1>meine Leistungen</h1>
+            <div class="scroll-content">
+                <p>🚀 Individuelle, schnelle und SEO-optimierte Websites</p>
+                <p>📱 Progressive Web Apps für ein App-Feeling</p>
+                <p>💡 Perfekte Lösungen für kleine Unternehmen</p>
             </div>
+            <button class="cta-button" data-navigate="2">Mehr erfahren</button>
         </div>
     </section>
 
-
-
-    <!-- Vision -->
-    <section id="vision" class="flex justify-center items-center min-h-screen">
-        <div class="glass fade-in">
-            <!-- Bild -->
-            <img src="https://cdn.pixabay.com/photo/2024/12/06/09/09/ai-generated-9248267_1280.jpg" alt="Fluvento Logo">
-
-            <!-- Textbereich -->
-            <div class="text-content">
-                <h2 class="text-4xl font-bold">Unsere Vision</h2>
-                <br><p>Fluvento steht für IT mit Persönlichkeit.<br><br>Wir glauben an maßgeschneiderte, effiziente Prozesse, die nicht nur funktionieren, sondern sich auch gut anfühlen.</p>
+    <section class="section" data-index="2">
+        <div class="content-box">
+            <h1>Meine Arbeiten</h1>
+            <div class="scroll-content">
+                <img src="projekt1.jpg" alt="Projekt 1" loading="lazy">
+                <img src="projekt2.jpg" alt="Projekt 2" loading="lazy">
             </div>
+            <button class="cta-button" data-navigate="3">Kontakt</button>
         </div>
     </section>
 
-    <!-- Lösungen -->
-    <section id="services" class="hero flex justify-center items-center min-h-screen">
-        <div class="glass fade-in">
-            <!-- Bild -->
-            <img src="https://cdn.pixabay.com/photo/2015/01/03/21/10/puzzle-587821_1280.jpg" alt="Fluvento Logo">
-
-            <!-- Textbereich -->
-            <div class="text-content">
-                <h2 class="text-4xl font-bold">Effizienz neu gedacht</h2>
-                <br><p>Weniger Chaos, mehr Flow.<br><br>Wir entwickeln smarte digitale Werkzeuge, die nicht nur Prozesse beschleunigen, sondern sich anfühlen, als wären sie für dich gemacht.</p>
+    <section class="section" data-index="3">
+        <div class="content-box">
+            <h1>Kontakt</h1>
+            <div class="scroll-content">
+                <p>📞 Telefon: <a href="tel:+491234567890">+49 123 456 7890</a></p>
+                <p>📩 E-Mail: <a href="mailto:info@fluvento-solutions.eu">info@fluvento-solutions.eu</a></p>
             </div>
+            <button class="cta-button" data-navigate="0">Zurück</button>
         </div>
     </section>
-
-    <!-- Demo -->
-<section id="demo" class=" flex justify-center items-center min-h-screen">
-    <div class="glass fade-in p-8 flex flex-col items-center text-center">
-        <!-- Bild mit abgerundeten oberen Ecken -->
-        <img src="https://cdn.pixabay.com/photo/2016/11/19/21/01/analysis-1841158_1280.jpg" 
-            alt="Prozessoptimierung" 
-            class="w-full h-48 object-cover rounded-t-xl mb-6">
-
-        <!-- Textbereich -->
-        <div class="text-content">
-            <h2 class="text-4xl font-bold text-white"> Effizienz erleben</h2>
-            <p class="mt-4 text-lg text-gray-300">Kennst du versteckte Zeitfresser?<br>Wir zeigen dir, wie du sie loswirst – mit smarter IT, die mitdenkt und dabei auch noch gut aussieht.</p>
-            <br><a href="#">Beispiele ansehen</a>
-
-            
-        </div>
-    </div>
-</section>
-
-
-    <!-- Blog -->
-    <section id="blog"  class="hero">
-        <div class="glass fade-in">
-            <h2 class="text-4xl font-bold">Aktuelles & Gedanken</h2>
-            <p>Unser Blog ist anders. Hier gibt es:</p>
-            <ul class="mt-4">
-                <li>🤔 "Was wäre wenn" – Szenarien zu Tech & Zukunft</li>
-                <li>🔍 "Über die Schulter" – Einblicke in unser Denken</li>
-                <li>📚 "Studieren" – Fundierte Analysen & Learnings</li>
-                <li>📊 "Fakten" – Klare, datenbasierte Einblicke</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- Kontakt -->
-    <section id="contact" class="flex justify-center items-center min-h-screen">
-        <div class="glass fade-in">
-           
-            <!-- Textbereich -->
-            <div class="text-content">
-                <h2 class="text-4xl font-bold">Kontakt</h2>
-                <p>E-Mail: <a href="mailto:hello@fluvento.com" class="text-orange-500 underline">contact@fluvento-solutions.eu</a></p>
-                <p>Telefon: <a href="tel:+491234567890" class="text-orange-500 underline">+49 (0) 123 - 456 78 942</a></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>© 2025 Fluvento | <a href="private.html" class="text-orange-500 underline">Datenschutz</a> | <a href="impressum.html" class="text-orange-500 underline">Impressum</a></p>
-    </footer>
+    
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll(".fade-in").forEach(el => {
-                new IntersectionObserver(entries => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) entry.target.classList.add("visible");
-                    });
-                }).observe(el);
-            });
-        });
+        class SectionNavigator {
+            constructor() {
+                this.sections = document.querySelectorAll('.section');
+                this.navDots = document.querySelectorAll('.nav button');
+                this.currentIndex = 0;
+                this.initEvents();
+            }
+
+            initEvents() {
+                document.querySelectorAll('[data-navigate]').forEach(btn => {
+                    btn.addEventListener('click', () => this.navigateTo(parseInt(btn.dataset.navigate)));
+                });
+
+                this.navDots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => this.navigateTo(index));
+                });
+            }
+
+            navigateTo(index) {
+                if (index < 0 || index >= this.sections.length || index === this.currentIndex) return;
+                this.sections[this.currentIndex].classList.remove('active');
+                this.navDots[this.currentIndex].classList.remove('active');
+                this.currentIndex = index;
+                this.sections[index].classList.add('active');
+                this.navDots[index].classList.add('active');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => new SectionNavigator());
     </script>
-
-
-<script>
-    const quizData = [
-        { 
-            question: "Sei ehrlich: Wie oft raubt dir unnötiger Kram den letzten Nerv?", 
-            answers: [
-                { text: "Jeden Tag.", next: 1 },
-                { text: "Hin und wieder.", next: 2 }
-            ]
-        },
-        { 
-            question: "Mal angenommen, du musst diesen Bullshit nie wieder tun – wäre das ein Gewinn?", 
-            answers: [
-                { text: "Ja, her damit!", next: 3 },
-                { text: "Ich bin mir nicht sicher.", next: 3 }
-            ]
-        },
-        { 
-            question: "Was wäre, wenn ein smarter Prozess deine Arbeit übernimmt?", 
-            answers: [
-                { text: "Das will ich sehen.", next: 4 },
-                { text: "Hört sich utopisch an.", next: 4 }
-            ]
-        },
-        { 
-            question: "Unternehmen, die automatisieren, steigern ihre Effizienz um bis zu 70 %. Überrascht dich das?", 
-            answers: [
-                { text: "Nein, das ist logisch.", next: 5 },
-                { text: "Ja, das ist beeindruckend.", next: 5 }
-            ]
-        },
-        { 
-            question: "Jeden Tag ohne Optimierung verlierst du Zeit, Energie und Umsatz. Willst du das ändern?", 
-            answers: [
-                { text: "Ja, absolut.", next: 6 },
-                { text: "Ich weiß nicht genau.", next: 6 }
-            ]
-        },
-        { 
-            question: "Ich biete dir eine kostenlose Analyse an. Kein Risiko, nur Vorteile. Interessiert?", 
-            answers: [
-                { text: "Ja, das klingt sinnvoll.", next: 7 },
-                { text: "Erzähl mir mehr.", next: 7 }
-            ]
-        },
-        { 
-            question: "Bist du bereit, dein Business zu optimieren und effizienter zu arbeiten?", 
-            answers: [
-                { text: "Ja, ich will starten.", next: "cta" },
-                { text: "Ich brauche noch Infos.", next: "cta" }
-            ]
-        },
-        { 
-            question: "Perfekt! Lass uns den ersten Schritt machen.", 
-            answers: [
-                { text: "Kostenlose Analyse starten", next: "end" }
-            ]
-        }
-    ];
-
-    function nextQuestion(index) {
-        const questionElement = document.getElementById("quiz-question");
-        const buttonsContainer = document.getElementById("quiz-buttons");
-
-        if (index === "cta") {
-            questionElement.innerHTML = "Perfekt! Lass uns den ersten Schritt machen.";
-            buttonsContainer.innerHTML = `<a href="#contact" class="quiz-btn">Kostenlose Analyse starten</a>`;
-            return;
-        }
-
-
-
-        const questionData = quizData[index];
-        questionElement.innerHTML = questionData.question;
-        buttonsContainer.innerHTML = "";
-
-        questionData.answers.forEach(answer => {
-            const button = document.createElement("button");
-            button.className = "quiz-btn";
-            button.innerHTML = answer.text;
-            button.onclick = () => nextQuestion(answer.next);
-            buttonsContainer.appendChild(button);
-        });
-    }
-
-    function scrollToContact(event) {
-    event.preventDefault();  // Verhindert das Standardverhalten des Links (z. B. Neuladen der Seite)
-    
-    // Scrollt zur 'contact'-Section
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-}
-    
-</script>
-
 </body>
 </html>
