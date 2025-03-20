@@ -3,34 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OP-Standards</title>
+    <title>Urologie OP PWA</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
             padding: 10px;
-            background: #f0f0f0;
-            font-size: 16px;
+            background: #fff;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        li:hover {
+            background: #e0e0e0;
         }
         .container {
-            max-width: 100%;
+            max-width: 800px;
             margin: 0 auto;
         }
-        .login, .main-menu, .category-select, .subcategory-select, .operation-view {
-            display: none;
-        }
-        .active {
-            display: block;
+        .section {
+            margin-bottom: 20px;
         }
         input, button {
-            width: 100%;
-            padding: 10px;
+            padding: 8px;
             margin: 5px 0;
-            box-sizing: border-box;
         }
         button {
-            background: #007bff;
-            color: white;
+            background: #007BFF;
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -38,332 +49,297 @@
         button:hover {
             background: #0056b3;
         }
-        .section {
-            background: white;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .detail-item {
-            margin: 5px 0;
-        }
-        .editable {
-            border: 1px solid #ccc;
-            padding: 5px;
-        }
-        .notes {
-            margin-top: 10px;
-        }
-        .note {
-            background: #f8f9fa;
-            padding: 5px;
-            margin: 5px 0;
-            border-radius: 3px;
-        }
-        .completed {
+        .note.completed {
             text-decoration: line-through;
             color: #888;
         }
-        @media (max-width: 600px) {
-            body {
-                font-size: 14px;
-            }
-            .section {
-                padding: 8px;
-            }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Login-Bereich -->
-        <div class="login active" id="login">
-            <h2>Login</h2>
-            <input type="password" id="password" placeholder="Passwort eingeben">
-            <button onclick="handleLogin()">Einloggen</button>
-        </div>
-
-        <!-- Hauptmenü -->
-        <div class="main-menu" id="main-menu">
-            <h2>Willkommen</h2>
-            <button onclick="showCategory('operations')">Operationen</button>
-            <button onclick="showCategory('devices')">Geräte</button>
-            <button onclick="promptModeSwitch()">Modus wechseln (aktuell: <span id="mode-display">user</span>)</button>
-        </div>
-
-        <!-- Kategorieauswahl (Operationen/Geräte) -->
-        <div class="category-select" id="category-select">
-            <h2 id="category-title"></h2>
-            <div id="category-list"></div>
-            <button onclick="backToMenu()">Zurück</button>
-        </div>
-
-        <!-- Unterkategorieauswahl (laparoskopisch/schnitt) -->
-        <div class="subcategory-select" id="subcategory-select">
-            <h2 id="subcategory-title"></h2>
-            <div id="subcategory-list"></div>
-            <button onclick="backToCategory()">Zurück</button>
-        </div>
-
-        <!-- Operationen-Ansicht -->
-        <div class="operation-view" id="operation-view">
-            <h2 id="op-name"></h2>
-            <div id="op-details"></div>
-            <div class="notes">
-                <h3>Notizen</h3>
-                <div id="notes-list"></div>
-                <input type="text" id="new-note" placeholder="Neue Notiz">
-                <button onclick="addNote()">Hinzufügen</button>
-            </div>
-            <button onclick="backToSubcategory()">Zurück</button>
-        </div>
-    </div>
+    <div class="container" id="app"></div>
 
     <script>
-        // Exemplarische Daten
-        const data = {
-            operations: {
-                Urologie: {
-                    laparoskopisch: [
-                        {
-                            _id: "op_001",
-                            name: "Laparoskopische Prostatektomie",
-                            details: {
-                                Lagerung: ["Rückenlage"],
-                                Geräte: ["Laparoskop"],
-                                Besonderheiten: ["Minimalinvasiv"]
-                            }
-                        }
-                    ],
-                    schnitt: [
-                        {
-                            _id: "op_002",
-                            name: "Offene Nephrektomie",
-                            details: {
-                                Lagerung: ["Seitenlage"],
-                                Siebe: ["--"],
-                                Abdeckung: ["Standard-OP-Set"],
-                                Nahtmaterial: ["Vicryl 2-0", "PDS 3-0"],
-                                Sonstiges: ["Wundhaken", "Bauchdeckenhalter"],
-                                Geräte: ["Bipolares Koagulationsgerät"],
-                                Flüssigkeiten: ["5.000 ml Ringer-Lösung"],
-                                Verband: ["Steriler Verband"],
-                                Besonderheiten: ["Blutstillung beachten"]
-                            }
-                        }
-                    ]
-                }
-            },
-            devices: {
-                Urologie: [
-                    {
-                        _id: "dev_001",
-                        name: "Bipolares Koagulationsgerät",
-                        description: "Gerät zur Blutstillung"
-                    }
-                ]
-            },
-            notes: {
-                "op_002": [
-                    { _id: "note_1", content: "Gerät überprüfen", isCompleted: false },
-                    { _id: "note_2", content: "Extra Nahtmaterial bereitstellen", isCompleted: true }
-                ]
-            }
-        };
-
-        // Zustandsvariablen
-        let mode = 'user';
-        let currentCategory = '';
-        let currentSubcategory = '';
         const USER_PW = '1234';
         const EDITOR_PW = 'test1234';
+        let mode = 'user';
+        let isAuthenticated = false;
 
-        // Login-Handler
+        // Exemplarische Daten
+        const specialties = ['Urologie'];
+        const categories = { Urologie: ['laparoskopisch', 'schnitt'] };
+        const operations = [
+            {
+                id: '1',
+                name: 'Flexible URS',
+                details: {
+                    Lagerung: ['Steinschnitt'],
+                    Siebe: ['ret. Pyelogramm-Sieb oder starres URS'],
+                    Abdeckung: ['TUR-Set'],
+                    Nahtmaterial: ['--'],
+                    Sonstiges: ['Ureterkatheter nach Ansage', 'hydrophiler Draht nach Ansage'],
+                    Geräte: ['1'],
+                    Flüssigkeiten: ['3.000 ml NaCl'],
+                    Verband: ['--'],
+                    Besonderheiten: ['--']
+                },
+                category: 'laparoskopisch',
+                specialty: 'Urologie',
+                notes: []
+            },
+            {
+                id: '2',
+                name: 'Offene Nephrektomie',
+                details: {
+                    Lagerung: ['Seitenlage'],
+                    Siebe: ['--'],
+                    Abdeckung: ['Standard-OP-Set'],
+                    Nahtmaterial: ['Vicryl 2-0', 'PDS 3-0'],
+                    Sonstiges: ['Wundhaken', 'Bauchdeckenhalter'],
+                    Geräte: ['2'],
+                    Flüssigkeiten: ['5.000 ml Ringer-Lösung'],
+                    Verband: ['Steriler Verband'],
+                    Besonderheiten: ['Blutstillung beachten']
+                },
+                category: 'schnitt',
+                specialty: 'Urologie',
+                notes: []
+            }
+        ];
+        const devices = [
+            { id: '1', name: 'Holmium-Laser', description: 'Hochpräzises Lasergerät zur Steinzertrümmerung.', image: '/images/holmium-laser.jpg', specialty: 'Urologie', notes: [] },
+            { id: '2', name: 'Bipolares Koagulationsgerät', description: 'Gerät zur Blutstillung und Gewebekoagulation.', image: '/images/bipolar-coag.jpg', specialty: 'Urologie', notes: [] }
+        ];
+
+        function render() {
+            const app = document.getElementById('app');
+            const path = window.location.pathname;
+
+            if (!isAuthenticated) {
+                app.innerHTML = `
+                    <h1>Login</h1>
+                    <input type="password" id="password" placeholder="Passwort eingeben">
+                    <button onclick="handleLogin()">Einloggen</button>
+                `;
+                return;
+            }
+
+            if (path === '/' || path === '') {
+                renderHome();
+            } else if (path.startsWith('/operations')) {
+                renderOperations(path);
+            } else if (path.startsWith('/devices')) {
+                renderDevices(path);
+            } else if (path.startsWith('/op/')) {
+                renderOperation(path.split('/')[2]);
+            } else if (path.startsWith('/device/')) {
+                renderDevice(path.split('/')[2]);
+            }
+        }
+
         function handleLogin() {
             const password = document.getElementById('password').value;
             if (password === USER_PW) {
                 mode = 'user';
-                showMainMenu();
+                isAuthenticated = true;
             } else if (password === EDITOR_PW) {
                 mode = 'editor';
-                showMainMenu();
+                isAuthenticated = true;
             } else {
                 alert('Falsches Passwort');
+                return;
+            }
+            window.history.pushState({}, '', '/');
+            render();
+        }
+
+        function renderHome() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <h1>Willkommen</h1>
+                <ul>
+                    <li onclick="navigate('/operations')">OP-Standards</li>
+                    <li onclick="navigate('/devices')">Geräte</li>
+                </ul>
+                <button onclick="setMode('user')">User-Modus</button>
+                <button onclick="setMode('editor')">Editor-Modus</button>
+            `;
+        }
+
+        function renderOperations(path) {
+            const app = document.getElementById('app');
+            const parts = path.split('/').filter(Boolean);
+
+            if (parts.length === 1) {
+                app.innerHTML = `
+                    <h1>Fachrichtung wählen (OP-Standards)</h1>
+                    <ul>${specialties.map(s => `<li onclick="navigate('/operations/${s}')">${s}</li>`).join('')}</ul>
+                `;
+            } else if (parts.length === 2) {
+                const specialty = parts[1];
+                app.innerHTML = `
+                    <h1>Unterkategorie wählen (${specialty})</h1>
+                    <ul>${categories[specialty].map(c => `<li onclick="navigate('/operations/${specialty}/${c}')">${c}</li>`).join('')}</ul>
+                `;
+            } else if (parts.length === 3) {
+                const specialty = parts[1];
+                const category = parts[2];
+                const filteredOps = operations.filter(o => o.specialty === specialty && o.category === category);
+                app.innerHTML = `
+                    <h1>Operation wählen (${specialty} - ${category})</h1>
+                    <ul>${filteredOps.map(o => `<li onclick="navigate('/op/${o.id}')">${o.name}</li>`).join('')}</ul>
+                `;
             }
         }
 
-        // Menü anzeigen
-        function showMainMenu() {
-            document.getElementById('login').classList.remove('active');
-            document.getElementById('main-menu').classList.add('active');
-            document.getElementById('category-select').classList.remove('active');
-            document.getElementById('subcategory-select').classList.remove('active');
-            document.getElementById('operation-view').classList.remove('active');
-            document.getElementById('mode-display').textContent = mode;
-        }
+        function renderDevices(path) {
+            const app = document.getElementById('app');
+            const parts = path.split('/').filter(Boolean);
 
-        // Kategorie anzeigen (Operationen/Geräte)
-        function showCategory(category) {
-            currentCategory = category;
-            document.getElementById('main-menu').classList.remove('active');
-            document.getElementById('category-select').classList.add('active');
-            const title = document.getElementById('category-title');
-            const list = document.getElementById('category-list');
-            title.textContent = category === 'operations' ? 'Operationen' : 'Geräte';
-            list.innerHTML = '';
-            const specialties = Object.keys(data[category]);
-            specialties.forEach(specialty => {
-                const btn = document.createElement('button');
-                btn.textContent = specialty;
-                btn.onclick = () => showSubcategory(specialty);
-                list.appendChild(btn);
-            });
-        }
-
-        // Unterkategorie anzeigen (laparoskopisch/schnitt)
-        function showSubcategory(specialty) {
-            document.getElementById('category-select').classList.remove('active');
-            document.getElementById('subcategory-select').classList.add('active');
-            const title = document.getElementById('subcategory-title');
-            const list = document.getElementById('subcategory-list');
-            title.textContent = `${specialty} - Auswahl`;
-            list.innerHTML = '';
-            if (currentCategory === 'operations') {
-                const subcategories = Object.keys(data.operations[specialty]);
-                subcategories.forEach(sub => {
-                    const btn = document.createElement('button');
-                    btn.textContent = sub;
-                    btn.onclick = () => showSubcategoryItems(specialty, sub);
-                    list.appendChild(btn);
-                });
-            } else {
-                showSubcategoryItems(specialty);
+            if (parts.length === 1) {
+                app.innerHTML = `
+                    <h1>Fachrichtung wählen (Geräte)</h1>
+                    <ul>${specialties.map(s => `<li onclick="navigate('/devices/${s}')">${s}</li>`).join('')}</ul>
+                `;
+            } else if (parts.length === 2) {
+                const specialty = parts[1];
+                const filteredDevices = devices.filter(d => d.specialty === specialty);
+                app.innerHTML = `
+                    <h1>Gerät wählen (${specialty})</h1>
+                    <ul>${filteredDevices.map(d => `<li onclick="navigate('/device/${d.id}')">${d.name}</li>`).join('')}</ul>
+                `;
             }
         }
 
-        // Einzelne OPs/Geräte anzeigen
-        function showSubcategoryItems(specialty, subcategory) {
-            currentSubcategory = subcategory;
-            document.getElementById('subcategory-select').classList.remove('active');
-            document.getElementById('operation-view').classList.add('active');
-            const opName = document.getElementById('op-name');
-            const opDetails = document.getElementById('op-details');
-            const notesList = document.getElementById('notes-list');
-            opDetails.innerHTML = '';
-            notesList.innerHTML = '';
+        function renderOperation(id) {
+            const app = document.getElementById('app');
+            const operation = operations.find(o => o.id === id);
+            const opDevices = devices.filter(d => operation.details.Geräte.includes(d.id));
 
-            if (currentCategory === 'operations') {
-                const operations = data.operations[specialty][subcategory];
-                const op = operations[0]; // Erste OP als Beispiel
-                opName.textContent = op.name;
-                renderDetails(op.details, op._id);
-            } else {
-                const device = data.devices[specialty][0]; // Erstes Gerät als Beispiel
-                opName.textContent = device.name;
-                renderDetails({ Beschreibung: [device.description] }, device._id);
-            }
+            app.innerHTML = `
+                <h1>${operation.name}</h1>
+                ${Object.entries(operation.details).map(([key, value]) => `
+                    <div class="section">
+                        <h2>${key}</h2>
+                        ${key === 'Geräte' ? `
+                            <ul>${opDevices.map(d => `<li onclick="navigate('/device/${d.id}')">${d.name}</li>`).join('')}</ul>
+                        ` : mode === 'editor' ? `
+                            ${value.map((v, i) => `
+                                <input id="${key}_${i}" value="${v}">
+                            `).join('')}
+                            <button onclick="saveOperation('${id}', '${key}')">Speichern</button>
+                        ` : `
+                            <ul>${value.map(v => `<li>${v}</li>`).join('')}</ul>
+                        `}
+                    </div>
+                `).join('')}
+                <div class="section">
+                    <h2>Notizen</h2>
+                    <ul>${operation.notes.map(n => `
+                        <li class="${n.is_completed ? 'completed' : ''}">
+                            ${n.content}
+                            ${mode === 'editor' ? `
+                                <button onclick="toggleNote('${id}', 'operation', '${n.id}')">Erledigt</button>
+                                <button onclick="deleteNote('${id}', 'operation', '${n.id}')">Löschen</button>
+                            ` : ''}
+                        </li>
+                    `).join('')}</ul>
+                    <input id="newNote" placeholder="Neue Notiz">
+                    <button onclick="addNote('${id}', 'operation')">Hinzufügen</button>
+                </div>
+            `;
         }
 
-        // Details rendern
-        function renderDetails(details, id) {
-            const opDetails = document.getElementById('op-details');
-            const notesList = document.getElementById('notes-list');
-            for (const [key, value] of Object.entries(details)) {
-                const section = document.createElement('div');
-                section.className = 'section';
-                section.innerHTML = `<h3>${key}</h3>`;
-                const itemsDiv = document.createElement('div');
-                value.forEach((item, index) => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'detail-item';
-                    if (mode === 'editor') {
-                        itemDiv.innerHTML = `<input class="editable" value="${item}" onchange="updateDetail('${id}', '${key}', this.value, ${index})">`;
-                    } else {
-                        itemDiv.textContent = item;
-                    }
-                    itemsDiv.appendChild(itemDiv);
-                });
-                section.appendChild(itemsDiv);
-                opDetails.appendChild(section);
-            }
+        function renderDevice(id) {
+            const app = document.getElementById('app');
+            const device = devices.find(d => d.id === id);
 
-            // Notizen rendern
-            const notes = data.notes[id] || [];
-            notes.forEach(note => {
-                const noteDiv = document.createElement('div');
-                noteDiv.className = `note ${note.isCompleted ? 'completed' : ''}`;
-                noteDiv.innerHTML = `${note.content}`;
-                if (mode === 'editor') {
-                    noteDiv.innerHTML += ` 
-                        <button onclick="toggleNote('${id}', '${note._id}')">${note.isCompleted ? 'Rückgängig' : 'Erledigt'}</button>
-                        <button onclick="deleteNote('${id}', '${note._id}')">Löschen</button>`;
+            app.innerHTML = `
+                <h1>${device.name}</h1>
+                <div class="section">
+                    ${mode === 'editor' ? `
+                        <input id="description" value="${device.description}">
+                        <button onclick="saveDevice('${id}')">Speichern</button>
+                    ` : `<p>${device.description}</p>`}
+                    ${device.image ? `<img src="${device.image}" alt="${device.name}" style="max-width: 300px;">` : ''}
+                </div>
+                <div class="section">
+                    <h2>Notizen</h2>
+                    <ul>${device.notes.map(n => `
+                        <li class="${n.is_completed ? 'completed' : ''}">
+                            ${n.content}
+                            ${mode === 'editor' ? `
+                                <button onclick="toggleNote('${id}', 'device', '${n.id}')">Erledigt</button>
+                                <button onclick="deleteNote('${id}', 'device', '${n.id}')">Löschen</button>
+                            ` : ''}
+                        </li>
+                    `).join('')}</ul>
+                    <input id="newNote" placeholder="Neue Notiz">
+                    <button onclick="addNote('${id}', 'device')">Hinzufügen</button>
+                </div>
+            `;
+        }
+
+        function navigate(path) {
+            window.history.pushState({}, '', path);
+            render();
+        }
+
+        function setMode(newMode) {
+            if (newMode === 'editor' && mode !== 'editor') {
+                const pw = prompt('Editor-Passwort eingeben:');
+                if (pw !== EDITOR_PW) {
+                    alert('Falsches Passwort');
+                    return;
                 }
-                notesList.appendChild(noteDiv);
-            });
-        }
-
-        // Moduswechsel mit Passwortabfrage
-        function promptModeSwitch() {
-            const newMode = mode === 'user' ? 'editor' : 'user';
-            const password = prompt(`Passwort für ${newMode}-Modus:`);
-            if ((newMode === 'user' && password === USER_PW) || (newMode === 'editor' && password === EDITOR_PW)) {
-                mode = newMode;
-                document.getElementById('mode-display').textContent = mode;
-                if (document.getElementById('operation-view').classList.contains('active')) {
-                    showSubcategoryItems(currentSubcategory ? currentSubcategory : Object.keys(data[currentCategory])[0], currentSubcategory);
-                }
-            } else {
-                alert('Falsches Passwort');
             }
+            mode = newMode;
+            render();
         }
 
-        // Zurück-Navigation
-        function backToMenu() { showMainMenu(); }
-        function backToCategory() {
-            document.getElementById('subcategory-select').classList.remove('active');
-            document.getElementById('category-select').classList.add('active');
-        }
-        function backToSubcategory() {
-            document.getElementById('operation-view').classList.remove('active');
-            document.getElementById('subcategory-select').classList.add('active');
+        function saveOperation(id, field) {
+            const values = Array.from(document.querySelectorAll(`input[id^="${field}_"]`)).map(input => input.value);
+            const op = operations.find(o => o.id === id);
+            op.details[field] = values;
+            // Hier würde normalerweise ein fetch zum Backend gehen
+            render();
         }
 
-        // Detail aktualisieren
-        function updateDetail(id, key, newValue, index) {
-            if (currentCategory === 'operations') {
-                const op = data.operations[currentSubcategory ? currentSubcategory : Object.keys(data.operations)[0]][currentSubcategory][0];
-                if (op._id === id) op.details[key][index] = newValue;
-            } else {
-                const device = data.devices[currentSubcategory ? currentSubcategory : Object.keys(data.devices)[0]][0];
-                if (device._id === id) device.description = newValue;
-            }
+        function saveDevice(id) {
+            const description = document.getElementById('description').value;
+            const dev = devices.find(d => d.id === id);
+            dev.description = description;
+            // Hier würde normalerweise ein fetch zum Backend gehen
+            render();
         }
 
-        // Notiz hinzufügen
-        function addNote() {
-            const content = document.getElementById('new-note').value;
-            if (content) {
-                const opId = data.operations[currentSubcategory ? currentSubcategory : Object.keys(data.operations)[0]][currentSubcategory][0]._id;
-                if (!data.notes[opId]) data.notes[opId] = [];
-                data.notes[opId].push({ _id: `note_${Date.now()}`, content, isCompleted: false });
-                document.getElementById('new-note').value = '';
-                showSubcategoryItems(currentSubcategory ? currentSubcategory : Object.keys(data[currentCategory])[0], currentSubcategory);
-            }
+        function addNote(entityId, entityType) {
+            const content = document.getElementById('newNote').value;
+            const entity = entityType === 'operation' ? operations.find(o => o.id === entityId) : devices.find(d => d.id === entityId);
+            entity.notes.push({ id: Date.now().toString(), content, is_completed: false });
+            // Hier würde normalerweise ein fetch zum Backend gehen
+            render();
         }
 
-        // Notiz umschalten (erledigt/nicht erledigt)
-        function toggleNote(opId, noteId) {
-            const note = data.notes[opId].find(n => n._id === noteId);
-            note.isCompleted = !note.isCompleted;
-            showSubcategoryItems(currentSubcategory ? currentSubcategory : Object.keys(data[currentCategory])[0], currentSubcategory);
+        function toggleNote(entityId, entityType, noteId) {
+            const entity = entityType === 'operation' ? operations.find(o => o.id === entityId) : devices.find(d => d.id === entityId);
+            const note = entity.notes.find(n => n.id === noteId);
+            note.is_completed = true;
+            // Hier würde normalerweise ein fetch zum Backend gehen
+            render();
         }
 
-        // Notiz löschen
-        function deleteNote(opId, noteId) {
-            data.notes[opId] = data.notes[opId].filter(n => n._id !== noteId);
-            showSubcategoryItems(currentSubcategory ? currentSubcategory : Object.keys(data[currentCategory])[0], currentSubcategory);
+        function deleteNote(entityId, entityType, noteId) {
+            const entity = entityType === 'operation' ? operations.find(o => o.id === entityId) : devices.find(d => d.id === entityId);
+            entity.notes = entity.notes.filter(n => n.id !== noteId);
+            // Hier würde normalerweise ein fetch zum Backend gehen
+            render();
         }
+
+        window.onpopstate = render;
+        render();
     </script>
 </body>
 </html>
