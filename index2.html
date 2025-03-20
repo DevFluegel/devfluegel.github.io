@@ -3,349 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OP-Standards & Geräte</title>
+    <title>OP-Standards</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 10px;
-            background-color: #f0f0f0;
+            background: #f0f0f0;
+            font-size: 16px;
         }
         .container {
             max-width: 100%;
             margin: 0 auto;
         }
-        .nav-step {
+        .login, .main-menu, .category-select, .subcategory-select, .operation-view {
             display: none;
         }
-        .nav-step.active {
+        .active {
             display: block;
         }
-        button {
-            display: block;
+        input, button {
             width: 100%;
-            padding: 15px;
+            padding: 10px;
             margin: 5px 0;
-            background-color: #007bff;
+            box-sizing: border-box;
+        }
+        button {
+            background: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
-            font-size: 16px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #0056b3;
+            background: #0056b3;
         }
-        .back-btn {
-            background-color: #6c757d;
-            margin-top: 10px;
-        }
-        .details, .editor {
-            background-color: white;
-            padding: 15px;
+        .section {
+            background: white;
+            padding: 10px;
+            margin: 10px 0;
             border-radius: 5px;
-            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        h1, h2 {
-            color: #333;
-            text-align: center;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-        li {
-            padding: 5px 0;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 5px;
+        .detail-item {
             margin: 5px 0;
         }
-        .edit-btn {
-            background-color: #28a745;
-            width: auto;
-            display: inline-block;
-            margin-left: 10px;
+        .editable {
+            border: 1px solid #ccc;
+            padding: 5px;
         }
-        .save-btn {
-            background-color: #28a745;
+        .notes {
+            margin-top: 10px;
+        }
+        .note {
+            background: #f8f9fa;
+            padding: 5px;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        @media (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+            .section {
+                padding: 8px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Schritt 1: Typ wählen -->
-        <div id="step1" class="nav-step active">
-            <h1>Willkommen</h1>
-            <button onclick="showStep('operations')">OP-Standards</button>
-            <button onclick="showStep('devices')">Geräte</button>
-            <button onclick="enterEditorMode()">Editor-Modus</button>
+        <!-- Login-Bereich -->
+        <div class="login active" id="login">
+            <h2>Login</h2>
+            <input type="password" id="password" placeholder="Passwort eingeben">
+            <button onclick="handleLogin()">Einloggen</button>
         </div>
 
-        <!-- Schritt 2: Fachrichtung wählen -->
-        <div id="step2-operations" class="nav-step">
-            <h2>Fachrichtung wählen (OP-Standards)</h2>
-            <button onclick="selectSpecialty('Urologie', 'operations')">Urologie</button>
-            <button class="back-btn" onclick="showStep('step1')">Zurück</button>
-        </div>
-        <div id="step2-devices" class="nav-step">
-            <h2>Fachrichtung wählen (Geräte)</h2>
-            <button onclick="selectSpecialty('Urologie', 'devices')">Urologie</button>
-            <button class="back-btn" onclick="showStep('step1')">Zurück</button>
+        <!-- Hauptmenü -->
+        <div class="main-menu" id="main-menu">
+            <h2>Willkommen</h2>
+            <button onclick="showCategory('operations')">Operationen</button>
+            <button onclick="showCategory('devices')">Geräte</button>
+            <button onclick="promptModeSwitch()">Modus wechseln (aktuell: <span id="mode-display">user</span>)</button>
         </div>
 
-        <!-- Schritt 3: Kategorie wählen (nur für OP-Standards) -->
-        <div id="step3-operations" class="nav-step">
-            <h2>Unterkategorie wählen</h2>
-            <button onclick="selectCategory('laparoskopisch')">Laparoskopisch</button>
-            <button onclick="selectCategory('schnitt')">Schnitt</button>
-            <button class="back-btn" onclick="showStep('step2-operations')">Zurück</button>
+        <!-- Kategorieauswahl (Operationen/Geräte) -->
+        <div class="category-select" id="category-select">
+            <h2 id="category-title"></h2>
+            <div id="category-list"></div>
+            <button onclick="backToMenu()">Zurück</button>
         </div>
 
-        <!-- Schritt 4: Operation oder Gerät wählen -->
-        <div id="step4-operations" class="nav-step">
-            <h2>Operation wählen</h2>
-            <div id="operation-list"></div>
-            <button class="back-btn" onclick="showStep('step3-operations')">Zurück</button>
-        </div>
-        <div id="step4-devices" class="nav-step">
-            <h2>Gerät wählen</h2>
-            <div id="device-list"></div>
-            <button class="back-btn" onclick="showStep('step2-devices')">Zurück</button>
+        <!-- Unterkategorieauswahl (laparoskopisch/schnitt) -->
+        <div class="subcategory-select" id="subcategory-select">
+            <h2 id="subcategory-title"></h2>
+            <div id="subcategory-list"></div>
+            <button onclick="backToCategory()">Zurück</button>
         </div>
 
-        <!-- Details anzeigen -->
-        <div id="details" class="nav-step">
-            <div id="details-content"></div>
-            <button class="back-btn" onclick="showPreviousStep()">Zurück</button>
-        </div>
-
-        <!-- Editor-Modus -->
-        <div id="editor" class="nav-step">
-            <h2>Editor-Modus</h2>
-            <div id="editor-content"></div>
-            <button class="back-btn" onclick="showStep('step1')">Zurück</button>
+        <!-- Operationen-Ansicht -->
+        <div class="operation-view" id="operation-view">
+            <h2 id="op-name"></h2>
+            <div id="op-details"></div>
+            <div class="notes">
+                <h3>Notizen</h3>
+                <div id="notes-list"></div>
+                <input type="text" id="new-note" placeholder="Neue Notiz">
+                <button onclick="addNote()">Hinzufügen</button>
+            </div>
+            <button onclick="backToSubcategory()">Zurück</button>
         </div>
     </div>
 
     <script>
-        // Beispiel-Daten
+        // Exemplarische Daten
         const data = {
-            operations: [
-                {
-                    "_id": "op_001",
-                    "name": "Flexible URS",
-                    "details": {
-                        "Lagerung": ["Steinschnitt"],
-                        "Siebe": ["ret. Pyelogramm-Sieb oder starres URS"],
-                        "Abdeckung": ["TUR-Set"],
-                        "Nahtmaterial": ["--"],
-                        "Sonstiges": ["Ureterkatheter nach Ansage"],
-                        "Geräte": ["device_001"],
-                        "Flüssigkeiten": ["3.000 ml NaCl"],
-                        "Verband": ["--"],
-                        "Besonderheiten": ["--"]
-                    },
-                    "category": "laparoskopisch",
-                    "specialty": "Urologie"
-                },
-                {
-                    "_id": "op_002",
-                    "name": "Offene Nephrektomie",
-                    "details": {
-                        "Lagerung": ["Seitenlage"],
-                        "Siebe": ["Standard-OP-Sieb"],
-                        "Abdeckung": ["Bauch-Set"],
-                        "Nahtmaterial": ["Vicryl 2-0", "PDS 3-0"],
-                        "Sonstiges": ["Drainage"],
-                        "Geräte": ["device_002"],
-                        "Flüssigkeiten": ["5.000 ml Ringer"],
-                        "Verband": ["Steriler Verband"],
-                        "Besonderheiten": ["Blutstillung beachten"]
-                    },
-                    "category": "schnitt",
-                    "specialty": "Urologie"
+            operations: {
+                Urologie: {
+                    laparoskopisch: [
+                        {
+                            _id: "op_001",
+                            name: "Laparoskopische Prostatektomie",
+                            details: {
+                                Lagerung: ["Rückenlage"],
+                                Geräte: ["Laparoskop"],
+                                Besonderheiten: ["Minimalinvasiv"]
+                            }
+                        }
+                    ],
+                    schnitt: [
+                        {
+                            _id: "op_002",
+                            name: "Offene Nephrektomie",
+                            details: {
+                                Lagerung: ["Seitenlage"],
+                                Siebe: ["--"],
+                                Abdeckung: ["Standard-OP-Set"],
+                                Nahtmaterial: ["Vicryl 2-0", "PDS 3-0"],
+                                Sonstiges: ["Wundhaken", "Bauchdeckenhalter"],
+                                Geräte: ["Bipolares Koagulationsgerät"],
+                                Flüssigkeiten: ["5.000 ml Ringer-Lösung"],
+                                Verband: ["Steriler Verband"],
+                                Besonderheiten: ["Blutstillung beachten"]
+                            }
+                        }
+                    ]
                 }
-            ],
-            devices: [
-                {
-                    "_id": "device_001",
-                    "name": "Holmium-Laser",
-                    "description": "Hochpräzises Lasergerät zur Steinzertrümmerung.",
-                    "image": "/images/holmium-laser.jpg",
-                    "specialty": "Urologie"
-                },
-                {
-                    "_id": "device_002",
-                    "name": "Bipolares Resektoskop",
-                    "description": "Gerät für bipolare Resektion bei offenen Operationen.",
-                    "image": "/images/resektoskop.jpg",
-                    "specialty": "Urologie"
-                }
-            ]
+            },
+            devices: {
+                Urologie: [
+                    {
+                        _id: "dev_001",
+                        name: "Bipolares Koagulationsgerät",
+                        description: "Gerät zur Blutstillung"
+                    }
+                ]
+            },
+            notes: {
+                "op_002": [
+                    { _id: "note_1", content: "Gerät überprüfen", isCompleted: false },
+                    { _id: "note_2", content: "Extra Nahtmaterial bereitstellen", isCompleted: true }
+                ]
+            }
         };
 
-        let currentType = '';
-        let currentSpecialty = '';
+        // Zustandsvariablen
+        let mode = 'user';
         let currentCategory = '';
-        let previousStep = '';
-        let isEditorMode = false;
+        let currentSubcategory = '';
+        const USER_PW = '1234';
+        const EDITOR_PW = 'test1234';
 
-        function showStep(step) {
-            document.querySelectorAll('.nav-step').forEach(el => el.classList.remove('active'));
-            document.getElementById(step === 'operations' ? 'step2-operations' : step === 'devices' ? 'step2-devices' : step).classList.add('active');
-            currentType = step === 'operations' || step === 'step2-operations' ? 'operations' : 'devices';
-            previousStep = step;
-        }
-
-        function selectSpecialty(specialty, type) {
-            currentSpecialty = specialty;
-            if (type === 'operations') {
-                showStep('step3-operations');
-                document.querySelector('#step3-operations h2').textContent = `Unterkategorie wählen (${specialty})`;
-            } else {
-                loadDevices(specialty);
-                showStep('step4-devices');
-                document.querySelector('#step4-devices h2').textContent = `Gerät wählen (${specialty})`;
-            }
-        }
-
-        function selectCategory(category) {
-            currentCategory = category;
-            loadOperations(currentSpecialty, category);
-            showStep('step4-operations');
-            document.querySelector('#step4-operations h2').textContent = `Operation wählen (${currentSpecialty} - ${category})`;
-        }
-
-        function loadOperations(specialty, category) {
-            const operations = data.operations.filter(op => op.specialty === specialty && op.category === category);
-            const list = document.getElementById('operation-list');
-            list.innerHTML = '';
-            operations.forEach(op => {
-                const btn = document.createElement('button');
-                btn.textContent = op.name;
-                btn.onclick = () => showDetails('operation', op);
-                list.appendChild(btn);
-            });
-        }
-
-        function loadDevices(specialty) {
-            const devices = data.devices.filter(dev => dev.specialty === specialty);
-            const list = document.getElementById('device-list');
-            list.innerHTML = '';
-            devices.forEach(dev => {
-                const btn = document.createElement('button');
-                btn.textContent = dev.name;
-                btn.onclick = () => showDetails('device', dev);
-                list.appendChild(btn);
-            });
-        }
-
-        function showDetails(type, item) {
-            const content = document.getElementById('details-content');
-            content.innerHTML = '';
-            if (type === 'operation') {
-                content.innerHTML = `<h2>${item.name}</h2>`;
-                const detailsDiv = document.createElement('div');
-                detailsDiv.className = 'details';
-                for (let [key, value] of Object.entries(item.details)) {
-                    if (key === 'Geräte') {
-                        const deviceNames = value.map(id => data.devices.find(d => d._id === id)?.name || id).join(', ');
-                        detailsDiv.innerHTML += `<strong>${key}:</strong><ul><li>${deviceNames}</li></ul>`;
-                    } else {
-                        detailsDiv.innerHTML += `<strong>${key}:</strong><ul>${value.map(v => `<li>${v}</li>`).join('')}</ul>`;
-                    }
-                }
-                content.appendChild(detailsDiv);
-                if (isEditorMode) {
-                    const editBtn = document.createElement('button');
-                    editBtn.textContent = 'Bearbeiten';
-                    editBtn.className = 'edit-btn';
-                    editBtn.onclick = () => showEditor(type, item);
-                    content.appendChild(editBtn);
-                }
-            } else {
-                content.innerHTML = `
-                    <h2>${item.name}</h2>
-                    <div class="details">
-                        <p>${item.description}</p>
-                        ${item.image ? `<img src="${item.image}" alt="${item.name}" style="max-width:100%;">` : ''}
-                    </div>
-                `;
-                if (isEditorMode) {
-                    const editBtn = document.createElement('button');
-                    editBtn.textContent = 'Bearbeiten';
-                    editBtn.className = 'edit-btn';
-                    editBtn.onclick = () => showEditor(type, item);
-                    content.appendChild(editBtn);
-                }
-            }
-            showStep('details');
-        }
-
-        function showPreviousStep() {
-            if (currentType === 'operations') {
-                if (previousStep === 'step4-operations') showStep('step3-operations');
-                else if (previousStep === 'step3-operations') showStep('step2-operations');
-                else showStep('step1');
-            } else {
-                if (previousStep === 'step4-devices') showStep('step2-devices');
-                else showStep('step1');
-            }
-        }
-
-        function enterEditorMode() {
-            const password = prompt('Passwort eingeben:');
-            if (password === 'test1234') {
-                isEditorMode = true;
-                alert('Editor-Modus aktiviert');
-                showStep('step1');
+        // Login-Handler
+        function handleLogin() {
+            const password = document.getElementById('password').value;
+            if (password === USER_PW) {
+                mode = 'user';
+                showMainMenu();
+            } else if (password === EDITOR_PW) {
+                mode = 'editor';
+                showMainMenu();
             } else {
                 alert('Falsches Passwort');
             }
         }
 
-        function showEditor(type, item) {
-            const content = document.getElementById('editor-content');
-            content.innerHTML = '';
-            if (type === 'operation') {
-                content.innerHTML = `<h2>${item.name} bearbeiten</h2><div class="editor">`;
-                content.innerHTML += `<label>Name:</label><input id="edit-name" value="${item.name}">`;
-                for (let [key, value] of Object.entries(item.details)) {
-                    content.innerHTML += `<label>${key}:</label><textarea id="edit-${key}">${value.join('\n')}</textarea>`;
-                }
-                content.innerHTML += `<button class="save-btn" onclick="saveChanges('operation', '${item._id}')">Speichern</button>`;
-                content.innerHTML += `</div>`;
-            } else {
-                content.innerHTML = `
-                    <h2>${item.name} bearbeiten</h2>
-                    <div class="editor">
-                        <label>Name:</label><input id="edit-name" value="${item.name}">
-                        <label>Beschreibung:</label><textarea id="edit-description">${item.description}</textarea>
-                        <label>Bild-URL:</label><input id="edit-image" value="${item.image || ''}">
-                        <button class="save-btn" onclick="saveChanges('device', '${item._id}')">Speichern</button>
-                    </div>
-                `;
-            }
-            showStep('editor');
+        // Menü anzeigen
+        function showMainMenu() {
+            document.getElementById('login').classList.remove('active');
+            document.getElementById('main-menu').classList.add('active');
+            document.getElementById('category-select').classList.remove('active');
+            document.getElementById('subcategory-select').classList.remove('active');
+            document.getElementById('operation-view').classList.remove('active');
+            document.getElementById('mode-display').textContent = mode;
         }
 
-        function saveChanges(type, id) {
-            if (type === 'operation') {
-                const op = data.operations.find(o => o._id === id);
-                op.name = document.getElementById('edit-name').value;
-                for (let [key] of Object.entries(op.details)) {
-                    op.details[key] = document.getElementById(`edit-${key}`).value.split('\n').filter(v => v.trim());
+        // Kategorie anzeigen (Operationen/Geräte)
+        function showCategory(category) {
+            currentCategory = category;
+            document.getElementById('main-menu').classList.remove('active');
+            document.getElementById('category-select').classList.add('active');
+            const title = document.getElementById('category-title');
+            const list = document.getElementById('category-list');
+            title.textContent = category === 'operations' ? 'Operationen' : 'Geräte';
+            list.innerHTML = '';
+            const specialties = Object.keys(data[category]);
+            specialties.forEach(specialty => {
+                const btn = document.createElement('button');
+                btn.textContent = specialty;
+                btn.onclick = () => showSubcategory(specialty);
+                list.appendChild(btn);
+            });
+        }
+
+        // Unterkategorie anzeigen (laparoskopisch/schnitt)
+        function showSubcategory(specialty) {
+            document.getElementById('category-select').classList.remove('active');
+            document.getElementById('subcategory-select').classList.add('active');
+            const title = document.getElementById('subcategory-title');
+            const list = document.getElementById('subcategory-list');
+            title.textContent = `${specialty} - Auswahl`;
+            list.innerHTML = '';
+            if (currentCategory === 'operations') {
+                const subcategories = Object.keys(data.operations[specialty]);
+                subcategories.forEach(sub => {
+                    const btn = document.createElement('button');
+                    btn.textContent = sub;
+                    btn.onclick = () => showSubcategoryItems(specialty, sub);
+                    list.appendChild(btn);
+                });
+            } else {
+                showSubcategoryItems(specialty);
+            }
+        }
+
+        // Einzelne OPs/Geräte anzeigen
+        function showSubcategoryItems(specialty, subcategory) {
+            currentSubcategory = subcategory;
+            document.getElementById('subcategory-select').classList.remove('active');
+            document.getElementById('operation-view').classList.add('active');
+            const opName = document.getElementById('op-name');
+            const opDetails = document.getElementById('op-details');
+            const notesList = document.getElementById('notes-list');
+            opDetails.innerHTML = '';
+            notesList.innerHTML = '';
+
+            if (currentCategory === 'operations') {
+                const operations = data.operations[specialty][subcategory];
+                const op = operations[0]; // Erste OP als Beispiel
+                opName.textContent = op.name;
+                renderDetails(op.details, op._id);
+            } else {
+                const device = data.devices[specialty][0]; // Erstes Gerät als Beispiel
+                opName.textContent = device.name;
+                renderDetails({ Beschreibung: [device.description] }, device._id);
+            }
+        }
+
+        // Details rendern
+        function renderDetails(details, id) {
+            const opDetails = document.getElementById('op-details');
+            const notesList = document.getElementById('notes-list');
+            for (const [key, value] of Object.entries(details)) {
+                const section = document.createElement('div');
+                section.className = 'section';
+                section.innerHTML = `<h3>${key}</h3>`;
+                const itemsDiv = document.createElement('div');
+                value.forEach((item, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'detail-item';
+                    if (mode === 'editor') {
+                        itemDiv.innerHTML = `<input class="editable" value="${item}" onchange="updateDetail('${id}', '${key}', this.value, ${index})">`;
+                    } else {
+                        itemDiv.textContent = item;
+                    }
+                    itemsDiv.appendChild(itemDiv);
+                });
+                section.appendChild(itemsDiv);
+                opDetails.appendChild(section);
+            }
+
+            // Notizen rendern
+            const notes = data.notes[id] || [];
+            notes.forEach(note => {
+                const noteDiv = document.createElement('div');
+                noteDiv.className = `note ${note.isCompleted ? 'completed' : ''}`;
+                noteDiv.innerHTML = `${note.content}`;
+                if (mode === 'editor') {
+                    noteDiv.innerHTML += ` 
+                        <button onclick="toggleNote('${id}', '${note._id}')">${note.isCompleted ? 'Rückgängig' : 'Erledigt'}</button>
+                        <button onclick="deleteNote('${id}', '${note._id}')">Löschen</button>`;
+                }
+                notesList.appendChild(noteDiv);
+            });
+        }
+
+        // Moduswechsel mit Passwortabfrage
+        function promptModeSwitch() {
+            const newMode = mode === 'user' ? 'editor' : 'user';
+            const password = prompt(`Passwort für ${newMode}-Modus:`);
+            if ((newMode === 'user' && password === USER_PW) || (newMode === 'editor' && password === EDITOR_PW)) {
+                mode = newMode;
+                document.getElementById('mode-display').textContent = mode;
+                if (document.getElementById('operation-view').classList.contains('active')) {
+                    showSubcategoryItems(currentSubcategory ? currentSubcategory : Object.keys(data[currentCategory])[0], currentSubcategory);
                 }
             } else {
-                const dev = data.devices.find(d => d._id === id);
-                dev.name = document.getElementById('edit-name').value;
-                dev.description = document.getElementById('edit-description').value;
-                dev.image = document.getElementById('edit-image').value || undefined;
+                alert('Falsches Passwort');
             }
-            alert('Änderungen gespeichert (lokal)');
-            showDetails(type, type === 'operation' ? data.operations.find(o => o._id === id) : data.devices.find(d => d._id === id));
+        }
+
+        // Zurück-Navigation
+        function backToMenu() { showMainMenu(); }
+        function backToCategory() {
+            document.getElementById('subcategory-select').classList.remove('active');
+            document.getElementById('category-select').classList.add('active');
+        }
+        function backToSubcategory() {
+            document.getElementById('operation-view').classList.remove('active');
+            document.getElementById('subcategory-select').classList.add('active');
+        }
+
+        // Detail aktualisieren
+        function updateDetail(id, key, newValue, index) {
+            if (currentCategory === 'operations') {
+                const op = data.operations[currentSubcategory ? currentSubcategory : Object.keys(data.operations)[0]][currentSubcategory][0];
+                if (op._id === id) op.details[key][index] = newValue;
+            } else {
+                const device = data.devices[currentSubcategory ? currentSubcategory : Object.keys(data.devices)[0]][0];
+                if (device._id === id) device.description = newValue;
+            }
+        }
+
+        // Notiz hinzufügen
+        function addNote() {
+            const content = document.getElementById('new-note').value;
+            if (content) {
+                const opId = data.operations[currentSubcategory ? currentSubcategory : Object.keys(data.operations)[0]][currentSubcategory][0]._id;
+                if (!data.notes[opId]) data.notes[opId] = [];
+                data.notes[opId].push({ _id: `note_${Date.now()}`, content, isCompleted: false });
+                document.getElementById('new-note').value = '';
+                showSubcategoryItems(currentSubcategory ? currentSubcategory : Object.keys(data[currentCategory])[0], currentSubcategory);
+            }
+        }
+
+        // Notiz umschalten (erledigt/nicht erledigt)
+        function toggleNote(opId, noteId) {
+            const note = data.notes[opId].find(n => n._id === noteId);
+            note.isCompleted = !note.isCompleted;
+            showSubcategoryItems(currentSubcategory ? currentSubcategory : Object.keys(data[currentCategory])[0], currentSubcategory);
+        }
+
+        // Notiz löschen
+        function deleteNote(opId, noteId) {
+            data.notes[opId] = data.notes[opId].filter(n => n._id !== noteId);
+            showSubcategoryItems(currentSubcategory ? currentSubcategory : Object.keys(data[currentCategory])[0], currentSubcategory);
         }
     </script>
 </body>
