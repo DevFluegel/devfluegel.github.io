@@ -1,168 +1,352 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DevFlügel – Smarte Web-Lösungen</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Glow-Effekt für CTA-Buttons */
-    .cta-button:hover {
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
-    }
-
-    /* Glow-Effekt für Service-Cards */
-    .service-card:hover {
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
-      transform: scale(1.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    /* Header fixieren */
-    header {
-      z-index: 10;
-    }
-
-    .logo-container {
-      position: relative;
-      z-index: 20;
-    }
-
-    /* Dropdown-Menü */
-    .dropdown-menu {
-      animation: slideIn 1s ease-out forwards;
-      z-index: 5;
-    }
-
-    /* Animation für Dropdown */
-    @keyframes slideIn {
-      0% {
-        transform: translateY(-20px);
-        opacity: 0;
-      }
-
-      100% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    /* Scroll Snap für Abschnitte */
-    html,
-    body {
-      scroll-behavior: smooth;
-      height: 100%;
-      overflow-y: scroll;
-      scroll-snap-type: y mandatory;
-    }
-
-    section {
-      scroll-snap-align: start;
-      min-height: 100vh;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OP-Standards & Geräte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .nav-step {
+            display: none;
+        }
+        .nav-step.active {
+            display: block;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .back-btn {
+            background-color: #6c757d;
+            margin-top: 10px;
+        }
+        .details, .editor {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 5px 0;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0;
+        }
+        .edit-btn {
+            background-color: #28a745;
+            width: auto;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .save-btn {
+            background-color: #28a745;
+        }
+    </style>
 </head>
+<body>
+    <div class="container">
+        <!-- Schritt 1: Typ wählen -->
+        <div id="step1" class="nav-step active">
+            <h1>Willkommen</h1>
+            <button onclick="showStep('operations')">OP-Standards</button>
+            <button onclick="showStep('devices')">Geräte</button>
+            <button onclick="enterEditorMode()">Editor-Modus</button>
+        </div>
 
-<body class="bg-gray-900 text-white pt-16">
+        <!-- Schritt 2: Fachrichtung wählen -->
+        <div id="step2-operations" class="nav-step">
+            <h2>Fachrichtung wählen (OP-Standards)</h2>
+            <button onclick="selectSpecialty('Urologie', 'operations')">Urologie</button>
+            <button class="back-btn" onclick="showStep('step1')">Zurück</button>
+        </div>
+        <div id="step2-devices" class="nav-step">
+            <h2>Fachrichtung wählen (Geräte)</h2>
+            <button onclick="selectSpecialty('Urologie', 'devices')">Urologie</button>
+            <button class="back-btn" onclick="showStep('step1')">Zurück</button>
+        </div>
 
-  <!-- Header mit Dropdown-Menü -->
-  <header
-    class="fixed top-0 left-0 w-full flex justify-between items-center px-5 py-4 bg-[#454a56] rounded-b-2xl z-10 transition-all">
-    <div class="logo-container flex items-center">
-      <!-- Logo -->
-      <img src="logo.png" alt="Logo" class="h-8 mr-2">
-      <div class="text-2xl font-bold text-lime-400">DevFlügel</div>
+        <!-- Schritt 3: Kategorie wählen (nur für OP-Standards) -->
+        <div id="step3-operations" class="nav-step">
+            <h2>Unterkategorie wählen</h2>
+            <button onclick="selectCategory('laparoskopisch')">Laparoskopisch</button>
+            <button onclick="selectCategory('schnitt')">Schnitt</button>
+            <button class="back-btn" onclick="showStep('step2-operations')">Zurück</button>
+        </div>
+
+        <!-- Schritt 4: Operation oder Gerät wählen -->
+        <div id="step4-operations" class="nav-step">
+            <h2>Operation wählen</h2>
+            <div id="operation-list"></div>
+            <button class="back-btn" onclick="showStep('step3-operations')">Zurück</button>
+        </div>
+        <div id="step4-devices" class="nav-step">
+            <h2>Gerät wählen</h2>
+            <div id="device-list"></div>
+            <button class="back-btn" onclick="showStep('step2-devices')">Zurück</button>
+        </div>
+
+        <!-- Details anzeigen -->
+        <div id="details" class="nav-step">
+            <div id="details-content"></div>
+            <button class="back-btn" onclick="showPreviousStep()">Zurück</button>
+        </div>
+
+        <!-- Editor-Modus -->
+        <div id="editor" class="nav-step">
+            <h2>Editor-Modus</h2>
+            <div id="editor-content"></div>
+            <button class="back-btn" onclick="showStep('step1')">Zurück</button>
+        </div>
     </div>
 
-    <!-- Menu toggle button (visible only on mobile) -->
-    <button class="block md:hidden text-white text-3xl" onclick="toggleMenu()">☰</button>
+    <script>
+        // Beispiel-Daten
+        const data = {
+            operations: [
+                {
+                    "_id": "op_001",
+                    "name": "Flexible URS",
+                    "details": {
+                        "Lagerung": ["Steinschnitt"],
+                        "Siebe": ["ret. Pyelogramm-Sieb oder starres URS"],
+                        "Abdeckung": ["TUR-Set"],
+                        "Nahtmaterial": ["--"],
+                        "Sonstiges": ["Ureterkatheter nach Ansage"],
+                        "Geräte": ["device_001"],
+                        "Flüssigkeiten": ["3.000 ml NaCl"],
+                        "Verband": ["--"],
+                        "Besonderheiten": ["--"]
+                    },
+                    "category": "laparoskopisch",
+                    "specialty": "Urologie"
+                },
+                {
+                    "_id": "op_002",
+                    "name": "Offene Nephrektomie",
+                    "details": {
+                        "Lagerung": ["Seitenlage"],
+                        "Siebe": ["Standard-OP-Sieb"],
+                        "Abdeckung": ["Bauch-Set"],
+                        "Nahtmaterial": ["Vicryl 2-0", "PDS 3-0"],
+                        "Sonstiges": ["Drainage"],
+                        "Geräte": ["device_002"],
+                        "Flüssigkeiten": ["5.000 ml Ringer"],
+                        "Verband": ["Steriler Verband"],
+                        "Besonderheiten": ["Blutstillung beachten"]
+                    },
+                    "category": "schnitt",
+                    "specialty": "Urologie"
+                }
+            ],
+            devices: [
+                {
+                    "_id": "device_001",
+                    "name": "Holmium-Laser",
+                    "description": "Hochpräzises Lasergerät zur Steinzertrümmerung.",
+                    "image": "/images/holmium-laser.jpg",
+                    "specialty": "Urologie"
+                },
+                {
+                    "_id": "device_002",
+                    "name": "Bipolares Resektoskop",
+                    "description": "Gerät für bipolare Resektion bei offenen Operationen.",
+                    "image": "/images/resektoskop.jpg",
+                    "specialty": "Urologie"
+                }
+            ]
+        };
 
-    <!-- Navigation -->
-    <nav id="mobile-menu"
-      class="absolute top-16 left-0 w-full hidden md:flex md:static md:flex-row md:gap-8 md:text-lg md:justify-center bg-[#454a56] rounded-b-2xl">
-      <ul class="flex flex-col md:flex-row gap-5 p-4 md:p-0 text-center">
-        <li><a href="#" class="hover:text-lime-400">Home</a></li>
-        <li><a href="#" class="hover:text-lime-400">Leistungen</a></li>
-        <li><a href="#" class="hover:text-lime-400">Über uns</a></li>
-        <li><a href="#" class="hover:text-lime-400">Kontakt</a></li>
-      </ul>
-    </nav>
-  </header>
+        let currentType = '';
+        let currentSpecialty = '';
+        let currentCategory = '';
+        let previousStep = '';
+        let isEditorMode = false;
 
-  <script>
-    function toggleMenu() {
-      let menu = document.getElementById("mobile-menu");
-      let header = document.querySelector("header");
-      menu.classList.toggle("hidden");
-      menu.classList.toggle("dropdown-menu");
-      header.style.borderRadius = menu.classList.contains("hidden") ? "0 0 16px 16px" : "0";
-    }
-  </script>
+        function showStep(step) {
+            document.querySelectorAll('.nav-step').forEach(el => el.classList.remove('active'));
+            document.getElementById(step === 'operations' ? 'step2-operations' : step === 'devices' ? 'step2-devices' : step).classList.add('active');
+            currentType = step === 'operations' || step === 'step2-operations' ? 'operations' : 'devices';
+            previousStep = step;
+        }
 
-  <!-- Hero Section -->
-  <section class="hero flex items-center justify-center text-center p-10">
-    <div>
-      <h1 class="text-4xl font-semibold text-lime-400">Smarte<br>Web-Lösungen<br>für dein Business</h1>
-      <p class="text-xl mt-4">Optimierte Prozesse für mehr Effizienz<br>–<br>datenbasiert und modern</p>
-      <a href="#"
-        class="cta-button inline-block mt-6 px-6 py-3 rounded-lg bg-gradient-to-r from-lime-400 to-lime-300 text-black text-lg font-medium">Lösung
-        entdecken</a>
-    </div>
-  </section>
+        function selectSpecialty(specialty, type) {
+            currentSpecialty = specialty;
+            if (type === 'operations') {
+                showStep('step3-operations');
+                document.querySelector('#step3-operations h2').textContent = `Unterkategorie wählen (${specialty})`;
+            } else {
+                loadDevices(specialty);
+                showStep('step4-devices');
+                document.querySelector('#step4-devices h2').textContent = `Gerät wählen (${specialty})`;
+            }
+        }
 
-  <!-- Leistungen -->
-  <section class="services flex flex-wrap justify-center gap-10 py-20 items-center h-auto">
-    <div class="service-card bg-white/15 rounded-lg p-6 w-80 text-center">
-      <h3 class="text-2xl font-semibold text-lime-400">Prozessoptimierung</h3>
-      <p class="mt-4 text-lg">Individuelle Web-Apps für effizientere Abläufe</p>
-    </div>
-    <div class="service-card bg-white/15 rounded-lg p-6 w-80 text-center">
-      <h3 class="text-2xl font-semibold text-lime-400">Moderne Lösungen</h3>
-      <p class="mt-4 text-lg">Technologiegetrieben & performancestark</p>
-    </div>
-    <div class="service-card bg-white/15 rounded-lg p-6 w-80 text-center">
-      <h3 class="text-2xl font-semibold text-lime-400">Datenanalyse</h3>
-      <p class="mt-4 text-lg">Genaue Analysen für fundierte Entscheidungen</p>
-    </div>
-  </section>
+        function selectCategory(category) {
+            currentCategory = category;
+            loadOperations(currentSpecialty, category);
+            showStep('step4-operations');
+            document.querySelector('#step4-operations h2').textContent = `Operation wählen (${currentSpecialty} - ${category})`;
+        }
 
+        function loadOperations(specialty, category) {
+            const operations = data.operations.filter(op => op.specialty === specialty && op.category === category);
+            const list = document.getElementById('operation-list');
+            list.innerHTML = '';
+            operations.forEach(op => {
+                const btn = document.createElement('button');
+                btn.textContent = op.name;
+                btn.onclick = () => showDetails('operation', op);
+                list.appendChild(btn);
+            });
+        }
 
-  <!-- Über DevFlügel -->
-  <section class="about flex items-center justify-center text-center p-10">
-    <div>
-      <h2 class="text-3xl font-semibold text-lime-400">Über DevFlügel</h2>
-      <p class="mt-4 text-lg">Innovation trifft auf <b>Verlässlichkeit</b><br>–<br>wir entwickeln smarte Web-Apps<br>für
-        <b>effizientere</b>
-        Geschäftsprozesse.
-      </p>
-    </div>
-  </section>
+        function loadDevices(specialty) {
+            const devices = data.devices.filter(dev => dev.specialty === specialty);
+            const list = document.getElementById('device-list');
+            list.innerHTML = '';
+            devices.forEach(dev => {
+                const btn = document.createElement('button');
+                btn.textContent = dev.name;
+                btn.onclick = () => showDetails('device', dev);
+                list.appendChild(btn);
+            });
+        }
 
-  <!-- Call-to-Action -->
-  <section class="cta flex justify-center items-center py-10">
-    <div class="cta-card rounded-lg p-6 w-80 text-center">
-      
-      <h2 class="text-4xl font-semibold text-lime-400">Beispiel-PWA</h2>
-<p class="mt-4 text-lg">in Arbeit<br><small>seit 2. Februar 2025</small></p>
+        function showDetails(type, item) {
+            const content = document.getElementById('details-content');
+            content.innerHTML = '';
+            if (type === 'operation') {
+                content.innerHTML = `<h2>${item.name}</h2>`;
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'details';
+                for (let [key, value] of Object.entries(item.details)) {
+                    if (key === 'Geräte') {
+                        const deviceNames = value.map(id => data.devices.find(d => d._id === id)?.name || id).join(', ');
+                        detailsDiv.innerHTML += `<strong>${key}:</strong><ul><li>${deviceNames}</li></ul>`;
+                    } else {
+                        detailsDiv.innerHTML += `<strong>${key}:</strong><ul>${value.map(v => `<li>${v}</li>`).join('')}</ul>`;
+                    }
+                }
+                content.appendChild(detailsDiv);
+                if (isEditorMode) {
+                    const editBtn = document.createElement('button');
+                    editBtn.textContent = 'Bearbeiten';
+                    editBtn.className = 'edit-btn';
+                    editBtn.onclick = () => showEditor(type, item);
+                    content.appendChild(editBtn);
+                }
+            } else {
+                content.innerHTML = `
+                    <h2>${item.name}</h2>
+                    <div class="details">
+                        <p>${item.description}</p>
+                        ${item.image ? `<img src="${item.image}" alt="${item.name}" style="max-width:100%;">` : ''}
+                    </div>
+                `;
+                if (isEditorMode) {
+                    const editBtn = document.createElement('button');
+                    editBtn.textContent = 'Bearbeiten';
+                    editBtn.className = 'edit-btn';
+                    editBtn.onclick = () => showEditor(type, item);
+                    content.appendChild(editBtn);
+                }
+            }
+            showStep('details');
+        }
 
-      <a href="pwa/taskhub2/index.html"
-        class="cta-button inline-block mt-6 px-6 py-3 rounded-lg bg-gradient-to-r from-lime-400 to-lime-300 text-black text-lg font-medium">TaskHub öffnen</a>
-    </div>
-  </section>
+        function showPreviousStep() {
+            if (currentType === 'operations') {
+                if (previousStep === 'step4-operations') showStep('step3-operations');
+                else if (previousStep === 'step3-operations') showStep('step2-operations');
+                else showStep('step1');
+            } else {
+                if (previousStep === 'step4-devices') showStep('step2-devices');
+                else showStep('step1');
+            }
+        }
 
-  <!-- Footer -->
-  <section class="flex flex-wrap justify-center gap-10 py-20 items-center h-auto">
-    <div class="footer bg-white/15 rounded-lg p-6 w-80 text-center">
-      <p class="text-center text-sm">&copy; 2025 DevFlügel – Alle Rechte vorbehalten</p>
-      <nav class="text-center mt-2">
-        <a href="impressum.html" class="text-sm text-white hover:text-lime-400">Impressum</a> |
-        <a href="datenschutz.html" class="text-sm text-white hover:text-lime-400">Datenschutz</a> |
-        <a href="agb.html" class="text-sm text-white hover:text-lime-400">AGB</a>
-      </nav>
-    </div>
-  </section>
+        function enterEditorMode() {
+            const password = prompt('Passwort eingeben:');
+            if (password === 'test1234') {
+                isEditorMode = true;
+                alert('Editor-Modus aktiviert');
+                showStep('step1');
+            } else {
+                alert('Falsches Passwort');
+            }
+        }
 
+        function showEditor(type, item) {
+            const content = document.getElementById('editor-content');
+            content.innerHTML = '';
+            if (type === 'operation') {
+                content.innerHTML = `<h2>${item.name} bearbeiten</h2><div class="editor">`;
+                content.innerHTML += `<label>Name:</label><input id="edit-name" value="${item.name}">`;
+                for (let [key, value] of Object.entries(item.details)) {
+                    content.innerHTML += `<label>${key}:</label><textarea id="edit-${key}">${value.join('\n')}</textarea>`;
+                }
+                content.innerHTML += `<button class="save-btn" onclick="saveChanges('operation', '${item._id}')">Speichern</button>`;
+                content.innerHTML += `</div>`;
+            } else {
+                content.innerHTML = `
+                    <h2>${item.name} bearbeiten</h2>
+                    <div class="editor">
+                        <label>Name:</label><input id="edit-name" value="${item.name}">
+                        <label>Beschreibung:</label><textarea id="edit-description">${item.description}</textarea>
+                        <label>Bild-URL:</label><input id="edit-image" value="${item.image || ''}">
+                        <button class="save-btn" onclick="saveChanges('device', '${item._id}')">Speichern</button>
+                    </div>
+                `;
+            }
+            showStep('editor');
+        }
+
+        function saveChanges(type, id) {
+            if (type === 'operation') {
+                const op = data.operations.find(o => o._id === id);
+                op.name = document.getElementById('edit-name').value;
+                for (let [key] of Object.entries(op.details)) {
+                    op.details[key] = document.getElementById(`edit-${key}`).value.split('\n').filter(v => v.trim());
+                }
+            } else {
+                const dev = data.devices.find(d => d._id === id);
+                dev.name = document.getElementById('edit-name').value;
+                dev.description = document.getElementById('edit-description').value;
+                dev.image = document.getElementById('edit-image').value || undefined;
+            }
+            alert('Änderungen gespeichert (lokal)');
+            showDetails(type, type === 'operation' ? data.operations.find(o => o._id === id) : data.devices.find(d => d._id === id));
+        }
+    </script>
 </body>
-
 </html>
