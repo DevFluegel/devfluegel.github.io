@@ -7,7 +7,191 @@
   <meta name="description" content="Fluvento Solutions entwickelt barrierefreie Websites und iOS-Apps für Unternehmen – DSGVO-konform, modern und nutzerzentriert." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://fluvento.de/" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+  :root {
+  --primary: #FF6B00;
+  --hover: #D94326;
+  --bg-dark: #121212;
+  --text-light: #F5F5F5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(45deg, #121212, #333);
+  background-size: 400% 400%;
+  animation: bgAnim 15s ease infinite;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+@keyframes bgAnim {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+a:hover,
+a:focus {
+  color: var(--hover);
+  outline: none;
+}
+
+/* Sichtbare Fokusführung für Barrierefreiheit */
+input:focus,
+textarea:focus,
+button:focus,
+a:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.5);
+  border: 1px solid var(--primary);
+}
+
+header, footer {
+  background: rgba(51, 51, 51, 0.9);
+  padding: 1em;
+  text-align: center;
+}
+
+main {
+  padding: 2em 1em;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 1em;
+}
+
+.hero {
+  text-align: center;
+  padding: 3em 1em;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  background: url('https://source.unsplash.com/random/1600x900?fluid,dynamic') center/cover no-repeat;
+  opacity: 0.4;
+  filter: blur(5px);
+  z-index: 0;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
+  padding: 2em 0;
+}
+
+.feature {
+  background: rgba(51, 51, 51, 0.9);
+  padding: 1em;
+  border-radius: 8px;
+  width: 280px;
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin: 0.5em 0 0.2em;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 4px;
+  border: 1px solid #999;
+  margin-bottom: 1em;
+  font-size: 1em;
+  background-color: #1c1c1c;
+  color: var(--text-light);
+}
+
+button {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.75em 1.5em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+button:hover {
+  background: var(--hover);
+}
+
+.cta-button {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.75em 1.5em;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 1em;
+  display: inline-block;
+}
+
+.cta-button:hover {
+  background: var(--hover);
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background: #222;
+  margin: 10% auto;
+  padding: 2em;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  color: var(--text-light);
+}
+
+.form-note a {
+  color: var(--primary);
+}
+  </style>
 </head>
 <body>
   <a href="#main" class="visually-hidden focusable">Zum Inhalt springen</a>
@@ -90,6 +274,41 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+  document.querySelectorAll('.open-modal').forEach(el => {
+  el.addEventListener('click', function(e) {
+    e.preventDefault();
+    const modalId = this.getAttribute('data-modal');
+    const modal = document.getElementById(modalId);
+    if (modal) modal.style.display = 'block';
+  });
+});
+
+document.querySelectorAll('.close-modal').forEach(el => {
+  el.addEventListener('click', function() {
+    const modalId = this.getAttribute('data-modal');
+    const modal = document.getElementById(modalId);
+    if (modal) modal.style.display = 'none';
+  });
+});
+
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal').forEach(modal => modal.style.display = 'none');
+  }
+});
+
+window.addEventListener('click', e => {
+  if (e.target.classList.contains('modal')) {
+    e.target.style.display = 'none';
+  }
+});
+
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  alert('Vielen Dank für Ihre Nachricht!');
+  this.reset();
+});
+</script>
 </body>
 </html>
