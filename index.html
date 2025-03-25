@@ -3,347 +3,290 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fluvento Solutions – Webentwicklung & iOS Apps für Unternehmen</title>
-  <meta name="description" content="Fluvento Solutions entwickelt barrierefreie Websites und iOS-Apps für Unternehmen – DSGVO-konform, modern und nutzerzentriert." />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://fluvento.de/" />
+  <title>Fluvento Solutions – Dynamisch. Smart. Fließend.</title>
   <style>
-  :root {
-  --primary: #FF6B00;
-  --hover: #D94326;
-  --bg-dark: #121212;
-  --text-light: #F5F5F5;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: 'Roboto', sans-serif;
-  background: linear-gradient(45deg, #121212, #333);
-  background-size: 400% 400%;
-  animation: bgAnim 15s ease infinite;
-  color: var(--text-light);
-  line-height: 1.6;
-}
-
-@keyframes bgAnim {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-a {
-  color: var(--primary);
-  text-decoration: underline;
-}
-
-a:hover,
-a:focus {
-  color: var(--hover);
-  outline: none;
-}
-
-/* Sichtbare Fokusführung für Barrierefreiheit */
-input:focus,
-textarea:focus,
-button:focus,
-a:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.5);
-  border: 1px solid var(--primary);
-}
-
-header, footer {
-  background: rgba(51, 51, 51, 0.9);
-  padding: 1em;
-  text-align: center;
-}
-
-main {
-  padding: 2em 1em;
-}
-
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 0 1em;
-}
-
-.hero {
-  text-align: center;
-  padding: 3em 1em;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: "";
-  position: absolute;
-  top: -20%;
-  left: -20%;
-  width: 140%;
-  height: 140%;
-  background: url('https://source.unsplash.com/random/1600x900?fluid,dynamic') center/cover no-repeat;
-  opacity: 0.4;
-  filter: blur(5px);
-  z-index: 0;
-}
-
-.hero > * {
-  position: relative;
-  z-index: 1;
-}
-
-.features {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1em;
-  padding: 2em 0;
-}
-
-.feature {
-  background: rgba(51, 51, 51, 0.9);
-  padding: 1em;
-  border-radius: 8px;
-  width: 280px;
-  text-align: center;
-}
-
-label {
-  display: block;
-  margin: 0.5em 0 0.2em;
-}
-
-input,
-textarea {
-  width: 100%;
-  padding: 0.5em;
-  border-radius: 4px;
-  border: 1px solid #999;
-  margin-bottom: 1em;
-  font-size: 1em;
-  background-color: #1c1c1c;
-  color: var(--text-light);
-}
-
-button {
-  background: var(--primary);
-  color: #fff;
-  padding: 0.75em 1.5em;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1em;
-}
-
-button:hover {
-  background: var(--hover);
-}
-
-.cta-button {
-  background: var(--primary);
-  color: #fff;
-  padding: 0.75em 1.5em;
-  border-radius: 4px;
-  text-decoration: none;
-  font-size: 1em;
-  display: inline-block;
-}
-
-.cta-button:hover {
-  background: var(--hover);
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  gap: 1em;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 10000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background: rgba(0,0,0,0.6);
-}
-
-.modal-content {
-  background: #222;
-  margin: 10% auto;
-  padding: 2em;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 600px;
-  color: var(--text-light);
-}
-
-.form-note a {
-  color: var(--primary);
-}
-  </style>
-  
-  <script>
-  document.getElementById('contactForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const formData = {
-      name: this.name.value.trim(),
-      email: this.email.value.trim(),
-      message: this.message.value.trim(),
-      website: this.website.value.trim() // Honeypot
-    };
-
-    try {
-      const response = await fetch('https://<DEIN-FIREBASE-PROJEKT>.cloudfunctions.net/sendContact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
-      if (response.ok) {
-        alert('Vielen Dank für Ihre Nachricht!');
-        this.reset();
-      } else {
-        alert('Fehler beim Senden. Bitte versuchen Sie es später erneut.');
-      }
-    } catch (error) {
-      alert('Netzwerkfehler. Bitte erneut versuchen.');
+    :root {
+      --primary: #FF6B00;
+      --hover: #D94326;
+      --bg-dark: #121212;
+      --text-light: #F5F5F5;
     }
-  });
-</script>
-  
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(45deg, #121212, #333);
+      background-size: 400% 400%;
+      animation: bgAnim 15s ease infinite;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    @keyframes bgAnim {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header, footer {
+      background: rgba(51, 51, 51, 0.9);
+      padding: 1em;
+      text-align: center;
+    }
+
+    main { padding: 2em 1em; }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 1em;
+    }
+
+    h1, h2, h3 { margin: 0 0 0.5em; }
+    p { margin: 0 0 1em; }
+
+    a {
+      color: var(--primary);
+      transition: color 0.2s;
+    }
+
+    a:hover,
+    a:focus {
+      color: var(--hover);
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      padding: 0.75em 1.5em;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 1em;
+    }
+
+    .cta-button:hover {
+      background: var(--hover);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 3em 1em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -20%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: url('https://source.unsplash.com/random/1600x900?fluid,dynamic') center/cover no-repeat;
+      opacity: 0.4;
+      filter: blur(5px);
+      z-index: 0;
+    }
+
+    .hero > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1em;
+      padding: 2em 0;
+    }
+
+    .feature {
+      background: rgba(51, 51, 51, 0.9);
+      padding: 1em;
+      border-radius: 8px;
+      width: 280px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin: 0.5em 0 0.2em;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.6em;
+      border-radius: 4px;
+      border: 1px solid #555;
+      background-color: #1a1a1a;
+      color: var(--text-light);
+      margin-bottom: 1em;
+    }
+
+    button {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.75em 1.5em;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--hover);
+    }
+
+    .form-note {
+      font-size: 0.9em;
+      margin-top: -0.5em;
+      margin-bottom: 1.5em;
+    }
+
+    .footer-links a {
+      margin: 0 0.5em;
+    }
+
+    /* Snackbar */
+    #snackbar {
+      visibility: hidden;
+      min-width: 250px;
+      max-width: 90%;
+      margin: 0 auto;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1em 2em;
+      position: fixed;
+      top: 1em;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 6px;
+      z-index: 9999;
+      font-size: 1em;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    #snackbar.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    #snackbar.success {
+      background-color: #28a745;
+    }
+
+    #snackbar.error {
+      background-color: #d94326;
+    }
+  </style>
 </head>
 <body>
-  <a href="#main" class="visually-hidden focusable">Zum Inhalt springen</a>
-
   <header>
     <h1>Fluvento Solutions</h1>
-    <p>Webentwicklung & iOS App-Entwicklung für Unternehmen</p>
   </header>
 
   <main id="main">
     <section class="hero">
       <h2>Dynamik in digitaler Bewegung</h2>
-      <p>Wir verbinden smarte Webentwicklung und iOS App-Entwicklung mit fließenden, dynamischen Lösungen – perfekt für moderne Unternehmen.</p>
-      <a href="#kontakt" class="cta-button">Jetzt Kontakt aufnehmen</a>
+      <p>Wir verbinden smarte Webentwicklung und iOS App-Entwicklung mit fließenden, dynamischen Lösungen – perfekt für ein modernes Lifestyle-Erlebnis.</p>
+      <a href="#kontakt" class="cta-button">Mehr erfahren</a>
     </section>
 
-    <section class="features" aria-label="Unsere Leistungen">
+    <section class="features">
       <div class="feature">
         <h3>Moderne Webentwicklung</h3>
-        <p>Responsiv, barrierefrei, DSGVO-konform. Wir entwickeln skalierbare Websites für digitale Markenpräsenz.</p>
+        <p>Responsiv, performance-orientiert und intuitiv – für einen starken digitalen Auftritt.</p>
       </div>
       <div class="feature">
         <h3>iOS App-Entwicklung</h3>
-        <p>Native Apps mit Swift & SwiftUI – optimiert für Performance, User Experience und den App Store.</p>
+        <p>Native Apps mit Swift & SwiftUI – schnell, elegant und auf den Punkt.</p>
       </div>
       <div class="feature">
-        <h3>UX/UI Design</h3>
-        <p>Wir gestalten intuitive Nutzererlebnisse, die konvertieren. Klar, funktional, nutzerzentriert.</p>
+        <h3>UX Design</h3>
+        <p>Ästhetik trifft Funktion – wir schaffen Nutzererlebnisse, die bleiben.</p>
       </div>
     </section>
 
-        <section id="kontakt">
-  <h2>Kontaktformular</h2>
-  <div class="container">
-  <form id="contactForm">
-    <label for="name">Ihr Name</label>
-    <input type="text" id="name" name="name" required>
+    <section id="kontakt">
+      <div class="container">
+        <h2>Kontakt</h2>
+        <form id="contactForm">
+          <label for="name">Ihr Name</label>
+          <input type="text" id="name" name="name" required>
 
-    <label for="email">Ihre E-Mail</label>
-    <input type="email" id="email" name="email" required>
+          <label for="email">Ihre E-Mail</label>
+          <input type="email" id="email" name="email" required>
 
-    <label for="message">Ihre Nachricht</label>
-    <textarea id="message" name="message" rows="5" required></textarea>
+          <label for="message">Ihre Nachricht</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
 
-    <!-- DSGVO-konformer Honeypot -->
-    <input type="text" name="website" autocomplete="off" tabindex="-1" style="display:none">
+          <!-- DSGVO-konformer Honeypot -->
+          <input type="text" name="website" style="display:none" autocomplete="off" tabindex="-1">
 
-    <p class="form-note">
-      Mit dem Absenden stimmen Sie der Verarbeitung gemäß unserer
-      <a href="#" class="open-modal" data-modal="modal-datenschutz">Datenschutzerklärung</a> zu.
-    </p>
+          <p class="form-note">
+            Mit dem Absenden stimmen Sie der Verarbeitung gemäß unserer
+            <a href="#" id="open-datenschutz-form">Datenschutzerklärung</a> zu.
+          </p>
 
-    <button type="submit">Nachricht senden</button>
-  </form>
-  </div>
-</section>
-
+          <button type="submit">Absenden</button>
+        </form>
+      </div>
+    </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 Fluvento Solutions – Alle Rechte vorbehalten.</p>
-    <nav aria-label="Rechtliches">
-      <ul class="footer-links">
-        <li><a href="#" class="open-modal" data-modal="modal-impressum">Impressum</a></li>
-        <li><a href="#" class="open-modal" data-modal="modal-datenschutz">Datenschutz</a></li>
-        <li><a href="/impressum.html" rel="nofollow">Fallback Impressum</a></li>
-      </ul>
-    </nav>
+    <p>&copy; 2025 Fluvento Solutions</p>
+    <div class="footer-links">
+      <a href="#" id="open-impressum">Impressum</a> |
+      <a href="#" id="open-datenschutz">Datenschutz</a>
+    </div>
   </footer>
 
-  <div id="modal-impressum" class="modal" role="dialog" aria-modal="true" aria-labelledby="impressumTitle">
-    <div class="modal-content">
-      <h2 id="impressumTitle">Impressum</h2>
-      <p>Fluvento Solutions<br>Max Mustermann<br>Musterstraße 1<br>12345 Musterstadt<br>E-Mail: kontakt@fluvento.de</p>
-      <button class="close-modal" data-modal="modal-impressum">Schließen</button>
-    </div>
-  </div>
-
-  <div id="modal-datenschutz" class="modal" role="dialog" aria-modal="true" aria-labelledby="datenschutzTitle">
-    <div class="modal-content">
-      <h2 id="datenschutzTitle">Datenschutzerklärung</h2>
-      <p>Wir verarbeiten Ihre Daten ausschließlich zur Bearbeitung Ihrer Kontaktanfrage gemäß Art. 6 Abs. 1 lit. b DSGVO. Keine Weitergabe an Dritte. Ihre Daten werden nach Bearbeitung gelöscht.</p>
-      <button class="close-modal" data-modal="modal-datenschutz">Schließen</button>
-    </div>
-  </div>
+  <!-- Snackbar -->
+  <div id="snackbar" role="status" aria-live="polite"></div>
 
   <script>
-  document.querySelectorAll('.open-modal').forEach(el => {
-  el.addEventListener('click', function(e) {
-    e.preventDefault();
-    const modalId = this.getAttribute('data-modal');
-    const modal = document.getElementById(modalId);
-    if (modal) modal.style.display = 'block';
-  });
-});
+    function showSnackbar(message, type = 'success') {
+      const snackbar = document.getElementById('snackbar');
+      snackbar.textContent = message;
+      snackbar.className = `show ${type}`;
+      setTimeout(() => {
+        snackbar.className = snackbar.className.replace(`show ${type}`, '');
+      }, 4000);
+    }
 
-document.querySelectorAll('.close-modal').forEach(el => {
-  el.addEventListener('click', function() {
-    const modalId = this.getAttribute('data-modal');
-    const modal = document.getElementById(modalId);
-    if (modal) modal.style.display = 'none';
-  });
-});
+    document.getElementById('contactForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-window.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.modal').forEach(modal => modal.style.display = 'none');
-  }
-});
+      const formData = {
+        name: this.name.value.trim(),
+        email: this.email.value.trim(),
+        message: this.message.value.trim(),
+        website: this.website.value.trim() // Honeypot
+      };
 
-window.addEventListener('click', e => {
-  if (e.target.classList.contains('modal')) {
-    e.target.style.display = 'none';
-  }
-});
+      try {
+        const response = await fetch('https://<DEIN-FIREBASE-PROJEKT>.cloudfunctions.net/sendContact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
 
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  alert('Vielen Dank für Ihre Nachricht!');
-  this.reset();
-});
-</script>
+        if (response.ok) {
+          showSnackbar('Vielen Dank für Ihre Nachricht!', 'success');
+          this.reset();
+        } else {
+          showSnackbar('Fehler beim Senden. Bitte erneut versuchen.', 'error');
+        }
+      } catch (error) {
+        showSnackbar('Verbindungsfehler. Bitte später erneut versuchen.', 'error');
+      }
+    });
+  </script>
 </body>
 </html>
