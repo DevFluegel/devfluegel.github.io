@@ -1,244 +1,95 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluvento Solutions | Websites & PWAs</title>
-    <style>
-        /* Farbpalette */
-        :root {
-            --primary-color: #004A99;
-            --secondary-color: #F5A623;
-            --text-color: #1A1A1A;
-            --background-color: #FFFFFF;
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --transition-time: 0.3s;
-        }
-
-        /* Basis-Styles */
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            min-height: 100vh;
-            font-family: 'Arial', sans-serif;
-            background: var(--background-color);
-            color: var(--text-color);
-            overflow-x: hidden;
-            line-height: 1.6;
-            position: relative;
-        }
-
-        /* Animierter Hintergrund */
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(-45deg, #D9822B, #004A99, #F5A623, #FFFFFF);
-            background-size: 400% 400%;
-            animation: gradientAnimation 10s ease infinite;
-            z-index: -1;
-        }
-
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Section-Styles */
-        .section {
-            position: absolute;
-            inset: 0;
-            display: grid;
-            place-items: center;
-            text-align: center;
-            transition: opacity var(--transition-time) ease-in-out, transform var(--transition-time) ease-in-out;
-            opacity: 0;
-            transform: translateY(20px);
-            visibility: hidden;
-        }
-
-        .section.active {
-            opacity: 1;
-            transform: translateY(0);
-            visibility: visible;
-        }
-
-        .content-box {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(12px);
-            padding: clamp(1rem, 3vw, 2rem);
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            width: min(90%, 700px);
-            max-height: 80vh;
-            overflow-y: auto;
-            margin: 1rem;
-        }
-
-        /* Typografie */
-        h1 {
-            font-size: clamp(1.8rem, 4vw, 2.625rem);
-            margin-bottom: 1.25rem;
-            color: var(--primary-color);
-        }
-
-        p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            margin-bottom: 1rem;
-        }
-
-        /* Button-Styles */
-        .cta-button {
-            padding: 0.75rem 1.5rem;
-            background: var(--secondary-color);
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.25rem;
-            font-weight: 600;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            transition: background var(--transition-time) ease, transform var(--transition-time) ease;
-            display: inline-block;
-        }
-
-        .cta-button:hover {
-            background: #D9822B;
-            transform: translateY(-2px);
-        }
-
-        /* Navigation */
-        .nav {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            z-index: 10;
-            display: grid;
-            gap: 0.5rem;
-        }
-
-        .nav button {
-            width: 12px;
-            height: 12px;
-            background: none;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all var(--transition-time) ease;
-        }
-
-        .nav button:hover,
-        .nav button.active {
-            background: none;
-            transform: scale(1.2);
-        }
-
-        /* Scroll-Content */
-        .scroll-content {
-            max-height: 60vh;
-            overflow-y: auto;
-            padding: 0.5rem;
-        }
-
-        .scroll-content img {
-            max-width: 100%;
-            height: auto;
-            margin: 0.5rem 0;
-            border-radius: 8px;
-        }
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fluvento Solutions – Webentwicklung & iOS Apps für Unternehmen</title>
+  <meta name="description" content="Fluvento Solutions entwickelt barrierefreie Websites und iOS-Apps für Unternehmen – DSGVO-konform, modern und nutzerzentriert." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://fluvento.de/" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <nav class="nav" id="nav-dots">
-        <button aria-label="Section 1" data-index="0"></button>
-        <button aria-label="Section 2" data-index="1"></button>
-        <button aria-label="Section 3" data-index="2"></button>
-        <button aria-label="Section 4" data-index="3"></button>
+  <a href="#main" class="visually-hidden focusable">Zum Inhalt springen</a>
+
+  <header>
+    <h1>Fluvento Solutions</h1>
+    <p>Webentwicklung & iOS App-Entwicklung für Unternehmen</p>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <h2>Dynamik in digitaler Bewegung</h2>
+      <p>Wir verbinden smarte Webentwicklung und iOS App-Entwicklung mit fließenden, dynamischen Lösungen – perfekt für moderne Unternehmen.</p>
+      <a href="#kontakt" class="cta-button">Jetzt Kontakt aufnehmen</a>
+    </section>
+
+    <section class="features" aria-label="Unsere Leistungen">
+      <div class="feature">
+        <h3>Moderne Webentwicklung</h3>
+        <p>Responsiv, barrierefrei, DSGVO-konform. Wir entwickeln skalierbare Websites für digitale Markenpräsenz.</p>
+      </div>
+      <div class="feature">
+        <h3>iOS App-Entwicklung</h3>
+        <p>Native Apps mit Swift & SwiftUI – optimiert für Performance, User Experience und den App Store.</p>
+      </div>
+      <div class="feature">
+        <h3>UX/UI Design</h3>
+        <p>Wir gestalten intuitive Nutzererlebnisse, die konvertieren. Klar, funktional, nutzerzentriert.</p>
+      </div>
+    </section>
+
+    <section id="kontakt">
+      <div class="container">
+        <h2>Kontakt aufnehmen</h2>
+        <form id="contactForm">
+          <label for="name">Ihr Name</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="email">Ihre E-Mail</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="message">Ihre Nachricht</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+
+          <p class="form-note">
+            Mit dem Absenden stimmen Sie der Verarbeitung gemäß unserer
+            <a href="#" class="open-modal" data-modal="modal-datenschutz">Datenschutzerklärung</a> zu.
+          </p>
+
+          <button type="submit">Nachricht senden</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Fluvento Solutions – Alle Rechte vorbehalten.</p>
+    <nav aria-label="Rechtliches">
+      <ul class="footer-links">
+        <li><a href="#" class="open-modal" data-modal="modal-impressum">Impressum</a></li>
+        <li><a href="#" class="open-modal" data-modal="modal-datenschutz">Datenschutz</a></li>
+        <li><a href="/impressum.html" rel="nofollow">Fallback Impressum</a></li>
+      </ul>
     </nav>
+  </footer>
 
-    <section class="section active" data-index="0">
-        <div class="content-box">
-            <h1>Mehr Kunden durch eine professionelle Website</h1>
-            <p>Moderne Websites & PWAs – schnell, individuell & benutzerfreundlich.</p>
-            <button class="cta-button" data-navigate="1">Jetzt starten</button>
-        </div>
-    </section>
+  <div id="modal-impressum" class="modal" role="dialog" aria-modal="true" aria-labelledby="impressumTitle">
+    <div class="modal-content">
+      <h2 id="impressumTitle">Impressum</h2>
+      <p>Fluvento Solutions<br>Max Mustermann<br>Musterstraße 1<br>12345 Musterstadt<br>E-Mail: kontakt@fluvento.de</p>
+      <button class="close-modal" data-modal="modal-impressum">Schließen</button>
+    </div>
+  </div>
 
-    <section class="section" data-index="1">
-        <div class="content-box">
-            <h1>meine Leistungen</h1>
-            <div class="scroll-content">
-                <p>🚀 Individuelle, schnelle und SEO-optimierte Websites</p>
-                <p>📱 Progressive Web Apps für ein App-Feeling</p>
-                <p>💡 Perfekte Lösungen für kleine Unternehmen</p>
-            </div>
-            <button class="cta-button" data-navigate="2">Mehr erfahren</button>
-        </div>
-    </section>
+  <div id="modal-datenschutz" class="modal" role="dialog" aria-modal="true" aria-labelledby="datenschutzTitle">
+    <div class="modal-content">
+      <h2 id="datenschutzTitle">Datenschutzerklärung</h2>
+      <p>Wir verarbeiten Ihre Daten ausschließlich zur Bearbeitung Ihrer Kontaktanfrage gemäß Art. 6 Abs. 1 lit. b DSGVO. Keine Weitergabe an Dritte. Ihre Daten werden nach Bearbeitung gelöscht.</p>
+      <button class="close-modal" data-modal="modal-datenschutz">Schließen</button>
+    </div>
+  </div>
 
-    <section class="section" data-index="2">
-        <div class="content-box">
-            <h1>meine Arbeiten</h1>
-            <div class="scroll-content">
-                <img src="projekt1.jpg" alt="Projekt 1" loading="lazy">
-                <img src="projekt2.jpg" alt="Projekt 2" loading="lazy">
-            </div>
-            <button class="cta-button" data-navigate="3">Kontakt</button>
-        </div>
-    </section>
-
-    <section class="section" data-index="3">
-        <div class="content-box">
-            <h1>Kontakt</h1>
-            <div class="scroll-content">
-                <p>📞 Telefon: <a href="tel:+491234567890">+49 123 456 7890</a></p>
-                <p>📩 E-Mail: <a href="mailto:info@fluvento-solutions.eu">info@fluvento-solutions.eu</a></p>
-            </div>
-            <button class="cta-button" data-navigate="0">Zurück</button>
-        </div>
-    </section>
-
-    <script>
-        class SectionNavigator {
-            constructor() {
-                this.sections = document.querySelectorAll('.section');
-                this.navDots = document.querySelectorAll('.nav button');
-                this.currentIndex = 0;
-                this.initEvents();
-            }
-
-            initEvents() {
-                document.querySelectorAll('[data-navigate]').forEach(btn => {
-                    btn.addEventListener('click', () => this.navigateTo(parseInt(btn.dataset.navigate)));
-                });
-
-                this.navDots.forEach((dot, index) => {
-                    dot.addEventListener('click', () => this.navigateTo(index));
-                });
-            }
-
-            navigateTo(index) {
-                if (index < 0 || index >= this.sections.length || index === this.currentIndex) return;
-                this.sections[this.currentIndex].classList.remove('active');
-                this.navDots[this.currentIndex].classList.remove('active');
-                this.currentIndex = index;
-                this.sections[index].classList.add('active');
-                this.navDots[index].classList.add('active');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => new SectionNavigator());
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>
