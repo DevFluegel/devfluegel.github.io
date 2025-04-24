@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NextURO – Framework Demo</title>
+  <title>NextURO – Demo mit Pseudo-Login</title>
   <style>
     :root {
       --orange: #e57228;
-      --light-orange: #f4a03f;
       --bg: #f5f5f5;
       --text: #333;
     }
@@ -99,14 +98,25 @@
       display: none;
     }
 
-    @media (min-width: 900px) {
-      .sidebar.collapsed {
-        transform: none;
-        position: relative;
-      }
-      .menu-toggle {
-        display: none;
-      }
+    .login-form input {
+      display: block;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .login-form button {
+      background: var(--orange);
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .login-form button:hover {
+      background: #d35a14;
     }
   </style>
 </head>
@@ -117,7 +127,7 @@
   </header>
 
   <div class="layout">
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar collapsed" id="sidebar">
       <nav>
         <a onclick="loadModule('dashboard')">1. Dashboard</a>
         <a onclick="loadModule('onboarding')">2.1 OnBoarding</a>
@@ -128,36 +138,30 @@
 
     <main>
       <div id="dashboard" class="module-box">
-        <h2>Dashboard</h2>
-        <p>Willkommen im NextURO-System. Hier findest du eine Übersicht über alle Module und aktuelle Hinweise.</p>
+        <h2>Login erforderlich</h2>
+        <form class="login-form" onsubmit="return login(event)">
+          <label>Benutzername:</label>
+          <input type="text" id="username" required />
+          <label>Passwort:</label>
+          <input type="password" id="password" required />
+          <button type="submit">Anmelden</button>
+        </form>
+        <p id="login-fail" style="color:red; display:none;">Zugangsdaten falsch</p>
       </div>
 
       <div id="onboarding" class="module-box hidden">
-  <h2>Willkommen im OP</h2>
-  <p>Schön, dass du da bist! Diese ersten Schritte helfen dir beim Einstieg:</p>
-
-  <ol>
-    <li><strong>Begrüßung & Führung</strong>: Melde dich beim Teamleiter oder der zuständigen Pflegekraft.</li>
-    <li><strong>Umkleide & Hygiene</strong>: Beachte die Hinweise zur Händedesinfektion und Schutzkleidung.</li>
-    <li><strong>Erste Einweisung</strong>: Du bekommst eine Einführung in Tagesabläufe, Geräte & OP-Regeln.</li>
-  </ol>
-
-  <h3>Checkliste:</h3>
-  <ul>
-    <li><label><input type="checkbox" /> Ich kenne meinen Ansprechpartner.</label></li>
-    <li><label><input type="checkbox" /> Ich habe mich umgezogen & eingelesen.</label></li>
-    <li><label><input type="checkbox" /> Ich kenne die wichtigsten Abläufe.</label></li>
-  </ul>
-</div>
+        <h2>Modul: OnBoarding</h2>
+        <p>Willkommen im OP! Hier findest du alle Infos für neue Teammitglieder, Checklisten und erste Schritte.</p>
+      </div>
 
       <div id="whoiswho" class="module-box hidden">
         <h2>Modul: Who is Who</h2>
-        <p>Übersicht aller Teammitglieder mit Rollen, Fotos und Kontaktmöglichkeiten.</p>
+        <p>Hier findest du eine Übersicht aller Teammitglieder, ihre Rollen, Fotos und Kontaktdaten.</p>
       </div>
 
       <div id="faq" class="module-box hidden">
         <h2>Modul: FAQ</h2>
-        <p>Antworten auf häufige Fragen, Tipps und Tricks für den Alltag im OP-Bereich.</p>
+        <p>Antworten auf häufige Fragen und nützliche Tipps für den OP-Alltag.</p>
       </div>
     </main>
   </div>
@@ -167,7 +171,24 @@
   </footer>
 
   <script>
+    let loggedIn = false;
+
+    function login(event) {
+      event.preventDefault();
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      if (user === 'test' && pass === 'test') {
+        loggedIn = true;
+        document.getElementById('sidebar').classList.remove('collapsed');
+        document.getElementById('login-fail').style.display = 'none';
+        loadModule('dashboard');
+      } else {
+        document.getElementById('login-fail').style.display = 'block';
+      }
+    }
+
     function loadModule(id) {
+      if (!loggedIn && id !== 'dashboard') return;
       document.querySelectorAll('.module-box').forEach(el => el.classList.add('hidden'));
       document.getElementById(id)?.classList.remove('hidden');
       document.getElementById('sidebar').classList.add('collapsed');
@@ -177,10 +198,8 @@
       document.getElementById('sidebar').classList.toggle('collapsed');
     }
 
-    // Initialstart: Dashboard anzeigen
     window.onload = () => {
       loadModule('dashboard');
-      document.getElementById('sidebar').classList.remove('collapsed');
     };
   </script>
 </body>
