@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NextURO – Demo mit Pseudo-Login</title>
+  <title>NextURO – Login-geschützte Demo</title>
   <style>
     :root {
       --orange: #e57228;
@@ -118,6 +118,19 @@
     .login-form button:hover {
       background: #d35a14;
     }
+
+    .feedback {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
   </style>
 </head>
 <body>
@@ -133,20 +146,24 @@
         <a onclick="loadModule('onboarding')">2.1 OnBoarding</a>
         <a onclick="loadModule('whoiswho')">2.2 Who is Who</a>
         <a onclick="loadModule('faq')">2.3 FAQ</a>
+        <a onclick="loadModule('osu')">7.1 OSU</a>
       </nav>
     </aside>
 
     <main>
       <div id="dashboard" class="module-box">
-        <h2>Login erforderlich</h2>
-        <form class="login-form" onsubmit="return login(event)">
+        <h2 id="dashboard-title">Login erforderlich</h2>
+        <form class="login-form" onsubmit="return login(event)" id="login-form">
           <label>Benutzername:</label>
           <input type="text" id="username" required />
           <label>Passwort:</label>
           <input type="password" id="password" required />
           <button type="submit">Anmelden</button>
         </form>
-        <p id="login-fail" style="color:red; display:none;">Zugangsdaten falsch</p>
+        <p id="feedback" class="feedback"></p>
+        <div id="welcome-msg" class="hidden">
+          <p class="success">Login erfolgreich. Du kannst NextURO jetzt nutzen.</p>
+        </div>
       </div>
 
       <div id="onboarding" class="module-box hidden">
@@ -163,6 +180,16 @@
         <h2>Modul: FAQ</h2>
         <p>Antworten auf häufige Fragen und nützliche Tipps für den OP-Alltag.</p>
       </div>
+
+      <div id="access-denied" class="module-box hidden">
+        <h2>Zugriff verweigert</h2>
+        <p class="error">Zugriff nicht möglich. Bitte zuerst anmelden.</p>
+      </div>
+
+      <div id="not-found" class="module-box hidden">
+        <h2>Modul nicht verfügbar</h2>
+        <p class="error">Dieses Modul ist noch nicht implementiert (404).</p>
+      </div>
     </main>
   </div>
 
@@ -172,25 +199,54 @@
 
   <script>
     let loggedIn = false;
+    const existingModules = ['dashboard', 'onboarding', 'whoiswho', 'faq'];
 
     function login(event) {
       event.preventDefault();
-      const user = document.getElementById('username').value;
-      const pass = document.getElementById('password').value;
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const feedback = document.getElementById('feedback');
+      const welcome = document.getElementById('welcome-msg');
+      const title = document.getElementById('dashboard-title');
+
+      if (!user || !pass) {
+        feedback.textContent = 'Allgemeiner Fehler: Bitte alle Felder ausfüllen.';
+        feedback.className = 'feedback error';
+        return;
+      }
+
       if (user === 'test' && pass === 'test') {
         loggedIn = true;
+        feedback.textContent = '';
         document.getElementById('sidebar').classList.remove('collapsed');
-        document.getElementById('login-fail').style.display = 'none';
-        loadModule('dashboard');
+        document.getElementById('login-form').classList.add('hidden');
+        welcome.classList.remove('hidden');
+        title.textContent = 'Dashboard';
+      } else if (user === 'test') {
+        feedback.textContent = 'Fehler: Das Passwort ist nicht korrekt.';
+        feedback.className = 'feedback error';
       } else {
-        document.getElementById('login-fail').style.display = 'block';
+        feedback.textContent = 'Allgemeiner Fehler: Zugangsdaten ungültig.';
+        feedback.className = 'feedback error';
       }
     }
 
     function loadModule(id) {
-      if (!loggedIn && id !== 'dashboard') return;
       document.querySelectorAll('.module-box').forEach(el => el.classList.add('hidden'));
-      document.getElementById(id)?.classList.remove('hidden');
+
+      if (!loggedIn && id !== 'dashboard') {
+        document.getElementById('access-denied')?.classList.remove('hidden');
+        return;
+      }
+
+      if (existingModules.includes(id)) {
+        document.getElementById(id)?.classList.remove('hidden');
+      } else if (id === 'osu') {
+        document.getElementById('not-found')?.classList.remove('hidden');
+      } else {
+        document.getElementById('dashboard')?.classList.remove('hidden');
+      }
+
       document.getElementById('sidebar').classList.add('collapsed');
     }
 
