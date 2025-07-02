@@ -1,262 +1,293 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NextURO – Login-geschützte Demo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Persönlichkeitsprofil – Bastian Flügel</title>
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,600,700|Montserrat:700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --orange: #e57228;
-      --bg: #f5f5f5;
-      --text: #333;
+      --brand: #2a4365;
+      --accent: #88ce51;
+      --soft: #f7fafc;
+      --muted: #657287;
+      --bg-card: #fff;
+      --shadow: 0 8px 32px 0 rgba(42,67,101,0.09);
+      --rad: 24px;
+      --transition: .23s cubic-bezier(.18,1,.2,1);
     }
-
-    body {
-      margin: 0;
-      font-family: system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
+    html,body {
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      background: var(--soft);
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--brand);
+      letter-spacing: -.01em;
     }
-
-    header {
-      background: var(--orange);
-      color: white;
-      padding: 1rem 2rem;
+    .container {
+      max-width: 460px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border-radius: var(--rad);
+      box-shadow: var(--shadow);
+      margin-top: 40px;
+      margin-bottom: 38px;
+      overflow: hidden;
+      border: 1.5px solid #ebf3e8;
+      padding: 0 0 32px 0;
+      animation: fadeIn .8s var(--transition);
+    }
+    @keyframes fadeIn {
+      from {opacity:0; transform: translateY(24px);}
+      to {opacity:1; transform: none;}
+    }
+    .nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: #f4f8f0;
+      padding: 0 16px;
+      border-bottom: 1.5px solid #e0efd4;
+      min-height: 56px;
+      font-size: 1.06em;
     }
-
-    .menu-toggle {
-      font-size: 1.5rem;
+    .nav-btn {
       background: none;
       border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    footer {
-      background: #222;
-      color: white;
-      text-align: center;
-      padding: 0.75rem;
-      font-size: 0.85rem;
-    }
-
-    .layout {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-    }
-
-    .sidebar {
-      width: 250px;
-      background: #fff;
-      border-right: 1px solid #ccc;
-      padding: 1rem;
-      transition: transform 0.3s ease;
-    }
-
-    .sidebar.collapsed {
-      transform: translateX(-100%);
-      position: absolute;
-      z-index: 1000;
-      background: white;
-      height: 100%;
-    }
-
-    nav a {
-      display: block;
-      color: var(--text);
-      text-decoration: none;
-      padding: 0.5rem 0;
+      padding: 0 15px;
+      height: 44px;
+      color: var(--muted);
       font-weight: 600;
+      font-size: 1em;
       cursor: pointer;
+      border-radius: 14px;
+      transition: background .15s, color .15s;
+      font-family: inherit;
     }
-
-    nav a:hover {
-      color: var(--orange);
+    .nav-btn.active, .nav-btn:focus-visible {
+      background: var(--accent);
+      color: #fff;
+      outline: 2px solid #b6efaa;
     }
-
-    main {
-      flex: 1;
-      padding: 2rem;
-      overflow-y: auto;
+    .nav-btn:hover { background: #e5f7da; color: var(--brand);}
+    .profile-card {
+      margin: 40px 24px 22px 24px;
+      border-radius: 20px;
+      background: #fcfefd;
+      box-shadow: 0 2px 18px 0 rgba(136,206,81,0.08);
+      padding: 30px 24px 22px 24px;
+      text-align: center;
+      position: relative;
+      border: 1.5px solid #e7f2e0;
+      animation: fadeInCard .7s .13s var(--transition);
     }
-
-    .module-box {
-      padding: 1.2rem;
-      background: #fff8f0;
-      border: 1px solid var(--orange);
-      border-radius: 8px;
+    @keyframes fadeInCard {
+      from {opacity:0; transform: translateY(18px) scale(.98);}
+      to {opacity:1; transform: none;}
     }
-
-    .hidden {
-      display: none;
-    }
-
-    .login-form input {
+    .icon-hero {
+      width: 80px;
+      height: 80px;
       display: block;
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      width: 100%;
-      max-width: 300px;
+      margin: 0 auto 15px auto;
+      border-radius: 22px;
+      background: #f6fbf0;
+      border: 2.5px solid #bae7a7;
+      box-shadow: 0 2px 14px 0 rgba(136,206,81,0.09);
+      object-fit: cover;
     }
-
-    .login-form button {
-      background: var(--orange);
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
+    .main-title {
+      font-size: 1.3em;
+      font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+      font-weight: 800;
+      color: var(--brand);
+      margin: 0 0 10px 0;
+      letter-spacing: .02em;
     }
-
-    .login-form button:hover {
-      background: #d35a14;
+    .subtitle {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.07em;
+      margin-bottom: 12px;
+      letter-spacing: .02em;
+      font-family: 'Montserrat', 'Inter', Arial, sans-serif;
     }
-
-    .feedback {
-      margin-top: 1rem;
-      font-weight: bold;
+    .desc {
+      font-size: 1.07em;
+      color: var(--brand);
+      margin: 22px 0 19px 0;
+      font-weight: 500;
+      line-height: 1.67;
+      text-align: center;
+      letter-spacing: -.01em;
     }
-
-    .success {
-      color: green;
+    .trait-list {
+      margin: 0 0 22px 0;
+      padding: 0;
+      list-style: none;
     }
-
-    .error {
-      color: red;
+    .trait-list li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 11px;
+      font-weight: 600;
+      color: #4b666d;
+      font-size: 1em;
+    }
+    .trait-list li span {
+      font-size: 1.2em;
+      margin-right: 12px;
+      min-width: 28px;
+      margin-top: 1.5px;
+    }
+    .bar-outer {
+      width: 95px;
+      height: 10px;
+      background: #e6f6d9;
+      border-radius: 6px;
+      margin-right: 10px;
+      margin-left: 6px;
+      flex: none;
+      overflow: hidden;
+      box-shadow: 0 1px 3px 0 rgba(136,206,81,0.06);
+    }
+    .bar-inner {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 1s var(--transition);
+    }
+    .bar-extravertiert { background: #50c2be;}
+    .bar-intuitiv { background: #ffbe3c;}
+    .bar-gefuehl { background: #6ecd5e;}
+    .bar-strukturiert { background: #8b70cf;}
+    .bar-selbstsicher { background: #ff838b;}
+    .trait-label {
+      min-width: 100px;
+      font-weight: 600;
+      font-size: 1em;
+      color: var(--muted);
+      margin-left: 5px;
+    }
+    .trait-value {
+      font-size: 1em;
+      font-weight: 700;
+      color: var(--brand);
+      margin-left: 7px;
+    }
+    .value-section {
+      background: #f6fbf0;
+      border-radius: 16px;
+      padding: 22px 13px 14px 13px;
+      margin: 25px 0 13px 0;
+      text-align: left;
+      box-shadow: 0 2px 14px 0 rgba(136,206,81,0.08);
+      font-size: 1.04em;
+      border: 1.5px solid #c3e7ae;
+    }
+    .value-section strong {
+      color: var(--brand);
+      font-size: 1.04em;
+    }
+    .highlight {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1em;
+    }
+    .fazit-section {
+      background: linear-gradient(120deg,#f7fff6 65%,#e0fbe4 100%);
+      border-radius: 16px;
+      padding: 25px 13px 19px 13px;
+      margin: 28px 0 2px 0;
+      text-align: left;
+      box-shadow: 0 4px 20px 0 rgba(136,206,81,0.09);
+      font-size: 1.11em;
+      border: 1.5px solid #b5f1c2;
+    }
+    .fazit-section strong {
+      color: #276200;
+      font-size: 1.09em;
+      font-weight: 800;
+    }
+    @media (max-width: 530px) {
+      .container { border-radius: 0; margin-top:0;}
+      .profile-card { margin: 16px 4px 13px 4px; padding: 15px 4px 11px 4px;}
+      .icon-hero { width: 55px; height: 55px;}
+      .main-title { font-size: 1em; }
+      .desc { font-size: 0.97em;}
+      .trait-list li .bar-outer { width: 54px;}
+      .value-section,.fazit-section { font-size: 0.98em;}
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>NextURO</h1>
-    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-  </header>
-
-  <div class="layout">
-    <aside class="sidebar collapsed" id="sidebar">
-      <nav>
-        <a onclick="loadModule('dashboard')">1. Dashboard</a>
-        <a onclick="loadModule('onboarding')">2.1 OnBoarding</a>
-        <a onclick="loadModule('whoiswho')">2.2 Who is Who</a>
-        <a onclick="loadModule('faq')">2.3 FAQ</a>
-        <a onclick="loadModule('osu')">7.1 OSU</a>
-      </nav>
-    </aside>
-
-    <main>
-      <div id="dashboard" class="module-box">
-        <h2 id="dashboard-title">Login erforderlich</h2>
-        <form class="login-form" onsubmit="return login(event)" id="login-form">
-          <label>Benutzername:</label>
-          <input type="text" id="username" required />
-          <label>Passwort:</label>
-          <input type="password" id="password" required />
-          <button type="submit">Anmelden</button>
-        </form>
-        <p id="feedback" class="feedback"></p>
-        <div id="welcome-msg" class="hidden">
-          <p class="success">Login erfolgreich. Du kannst NextURO jetzt nutzen.</p>
-        </div>
+  <div class="container">
+    <nav class="nav" role="navigation" aria-label="Hauptnavigation">
+      <button class="nav-btn">Start</button>
+      <button class="nav-btn">Projekte</button>
+      <button class="nav-btn">Skills</button>
+      <button class="nav-btn active" tabindex="0">Persönlichkeit</button>
+      <button class="nav-btn">Kontakt</button>
+    </nav>
+    <div class="profile-card">
+      <img src="https://www.16personalities.com/static/images/personality-types/avatars/enfj-protagonist.svg" alt="ENFJ - Protagonist" class="icon-hero" />
+      <div class="main-title">Persönlichkeitsprofil<br>ENFJ-A „Protagonist“</div>
+      <div class="subtitle">
+        Kreativer Stratege mit Herz & Struktur
       </div>
-
-      <div id="onboarding" class="module-box hidden">
-        <h2>Modul: OnBoarding</h2>
-        <p>Willkommen im OP! Hier findest du alle Infos für neue Teammitglieder, Checklisten und erste Schritte.</p>
+      <div class="desc">
+        Meine Persönlichkeit vereint Kreativität, Führungsstärke und Organisation.<br>
+        Ich begeistere Teams, denke visionär und bringe Ideen methodisch zum Ziel – <span class="highlight">ohne dass Struktur meine Kreativität bremst, oder umgekehrt</span>.
       </div>
-
-      <div id="whoiswho" class="module-box hidden">
-        <h2>Modul: Who is Who</h2>
-        <p>Hier findest du eine Übersicht aller Teammitglieder, ihre Rollen, Fotos und Kontaktdaten.</p>
+      <ul class="trait-list">
+        <li>
+          <span>🔵</span>
+          <div class="bar-outer"><div class="bar-inner bar-extravertiert" style="width:63%"></div></div>
+          <span class="trait-label">Extravertiert</span>
+          <span class="trait-value">63 %</span>
+        </li>
+        <li>
+          <span>🟡</span>
+          <div class="bar-outer"><div class="bar-inner bar-intuitiv" style="width:89%"></div></div>
+          <span class="trait-label">Intuitiv</span>
+          <span class="trait-value">89 %</span>
+        </li>
+        <li>
+          <span>🟢</span>
+          <div class="bar-outer"><div class="bar-inner bar-gefuehl" style="width:54%"></div></div>
+          <span class="trait-label">Gefühlsbetont</span>
+          <span class="trait-value">54 %</span>
+        </li>
+        <li>
+          <span>🟣</span>
+          <div class="bar-outer"><div class="bar-inner bar-strukturiert" style="width:82%"></div></div>
+          <span class="trait-label">Strukturiert</span>
+          <span class="trait-value">82 %</span>
+        </li>
+        <li>
+          <span>🔴</span>
+          <div class="bar-outer"><div class="bar-inner bar-selbstsicher" style="width:75%"></div></div>
+          <span class="trait-label">Selbstsicher</span>
+          <span class="trait-value">75 %</span>
+        </li>
+      </ul>
+      <div class="value-section">
+        <strong>Energie (Extravertiert, 63 %)</strong><br>
+        Offene Kommunikation und aktives Zugehen auf Menschen: <span class="highlight">Ideale Basis für Führung, Beratung und Innovation.</span><br><br>
+        <strong>Verstand (Intuitiv, 89 %)</strong><br>
+        Visionäres Denken, kreative Ideen und strategischer Weitblick: <span class="highlight">Du erkennst Chancen, entwickelst innovative Lösungen und bringst Projekte ins Ziel.</span><br><br>
+        <strong>Wesensart (Gefühlsbetont, 54 %)</strong><br>
+        Empathie und Sachverstand: <span class="highlight">Du findest tragfähige Lösungen für Menschen und Organisationen.</span><br><br>
+        <strong>Taktik (Strukturiert, 82 %)</strong><br>
+        Struktur, Organisation & Methodik – <span class="highlight">ohne dass Kreativität oder Flexibilität verloren gehen.</span><br><br>
+        <strong>Identität (Selbstsicher, 75 %)</strong><br>
+        Souveränität, Mut, und Standfestigkeit – <span class="highlight">du bist ein verlässlicher Anker, gerade bei Herausforderungen.</span>
       </div>
-
-      <div id="faq" class="module-box hidden">
-        <h2>Modul: FAQ</h2>
-        <p>Antworten auf häufige Fragen und nützliche Tipps für den OP-Alltag.</p>
+      <div class="fazit-section">
+        <strong>Gesamtanalyse:</strong><br>
+        Du bist ein <span class="highlight">echter Zukunftsgestalter</span>, der mit Kreativität und Struktur, Führungsstärke und Empathie Veränderung möglich macht.<br><br>
+        <span class="highlight">Du bist optimal geeignet für jede moderne Rolle in Digitalisierung, Beratung, Produktentwicklung, KI und Transformation</span> – überall, wo es auf zukunftsorientiertes Denken, Teamführung und Menschlichkeit ankommt.
       </div>
-
-      <div id="access-denied" class="module-box hidden">
-        <h2>Zugriff verweigert</h2>
-        <p class="error">Zugriff nicht möglich. Bitte zuerst anmelden.</p>
-      </div>
-
-      <div id="not-found" class="module-box hidden">
-        <h2>Modul nicht verfügbar</h2>
-        <p class="error">Dieses Modul ist noch nicht implementiert (404).</p>
-      </div>
-    </main>
+    </div>
   </div>
-
-  <footer>
-    &copy; 2025 NextURO – Alle Rechte vorbehalten | Version 0.1
-  </footer>
-
-  <script>
-    let loggedIn = false;
-    const existingModules = ['dashboard', 'onboarding', 'whoiswho', 'faq'];
-
-    function login(event) {
-      event.preventDefault();
-      const user = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value.trim();
-      const feedback = document.getElementById('feedback');
-      const welcome = document.getElementById('welcome-msg');
-      const title = document.getElementById('dashboard-title');
-
-      if (!user || !pass) {
-        feedback.textContent = 'Allgemeiner Fehler: Bitte alle Felder ausfüllen.';
-        feedback.className = 'feedback error';
-        return;
-      }
-
-      if (user === 'test' && pass === 'test') {
-        loggedIn = true;
-        feedback.textContent = '';
-        document.getElementById('sidebar').classList.remove('collapsed');
-        document.getElementById('login-form').classList.add('hidden');
-        welcome.classList.remove('hidden');
-        title.textContent = 'Dashboard';
-      } else if (user === 'test') {
-        feedback.textContent = 'Fehler: Das Passwort ist nicht korrekt.';
-        feedback.className = 'feedback error';
-      } else {
-        feedback.textContent = 'Allgemeiner Fehler: Zugangsdaten ungültig.';
-        feedback.className = 'feedback error';
-      }
-    }
-
-    function loadModule(id) {
-      document.querySelectorAll('.module-box').forEach(el => el.classList.add('hidden'));
-
-      if (!loggedIn && id !== 'dashboard') {
-        document.getElementById('access-denied')?.classList.remove('hidden');
-        return;
-      }
-
-      if (existingModules.includes(id)) {
-        document.getElementById(id)?.classList.remove('hidden');
-      } else if (id === 'osu') {
-        document.getElementById('not-found')?.classList.remove('hidden');
-      } else {
-        document.getElementById('dashboard')?.classList.remove('hidden');
-      }
-
-      document.getElementById('sidebar').classList.add('collapsed');
-    }
-
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('collapsed');
-    }
-
-    window.onload = () => {
-      loadModule('dashboard');
-    };
-  </script>
 </body>
 </html>
