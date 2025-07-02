@@ -7,56 +7,58 @@
   <link href="https://fonts.googleapis.com/css?family=Inter:400,600,700|Montserrat:700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --brand: #2a4365;
-      --accent: #88ce51;
-      --soft: #f7fafc;
-      --muted: #657287;
-      --bg-card: #fff;
-      --shadow: 0 8px 32px 0 rgba(42,67,101,0.09);
-      --rad: 24px;
-      --transition: .23s cubic-bezier(.18,1,.2,1);
+      --main-blue: #2e3d56;
+      --accent-blue: #5ba9e2;
+      --bright-blue: #b9daf7;
+      --soft-bg: #f6f9fc;
+      --highlight: #f7b733;
+      --muted: #70829a;
+      --white: #fff;
+      --rad: 23px;
+      --shadow: 0 7px 36px 0 rgba(46,61,86,.08);
+      --bar-height: 13px;
     }
     html,body {
       margin: 0; padding: 0;
       min-height: 100vh;
-      background: var(--soft);
+      background: var(--soft-bg);
       font-family: 'Inter', Arial, sans-serif;
-      color: var(--brand);
+      color: var(--main-blue);
       letter-spacing: -.01em;
     }
     .container {
-      max-width: 460px;
+      max-width: 470px;
       margin: 0 auto;
-      background: var(--bg-card);
+      background: var(--white);
       border-radius: var(--rad);
       box-shadow: var(--shadow);
-      margin-top: 40px;
-      margin-bottom: 38px;
+      margin-top: 44px;
+      margin-bottom: 40px;
       overflow: hidden;
-      border: 1.5px solid #ebf3e8;
+      border: 1.5px solid #e1eaf2;
       padding: 0 0 32px 0;
-      animation: fadeIn .8s var(--transition);
+      animation: fadeIn .8s cubic-bezier(.18,1,.2,1);
     }
     @keyframes fadeIn {
-      from {opacity:0; transform: translateY(24px);}
+      from {opacity:0; transform: translateY(32px);}
       to {opacity:1; transform: none;}
     }
     .nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #f4f8f0;
+      background: var(--bright-blue);
       padding: 0 16px;
-      border-bottom: 1.5px solid #e0efd4;
+      border-bottom: 1.5px solid #dbeaf6;
       min-height: 56px;
-      font-size: 1.06em;
+      font-size: 1.07em;
     }
     .nav-btn {
       background: none;
       border: none;
-      padding: 0 15px;
+      padding: 0 16px;
       height: 44px;
-      color: var(--muted);
+      color: var(--main-blue);
       font-weight: 600;
       font-size: 1em;
       cursor: pointer;
@@ -65,154 +67,162 @@
       font-family: inherit;
     }
     .nav-btn.active, .nav-btn:focus-visible {
-      background: var(--accent);
+      background: var(--accent-blue);
       color: #fff;
-      outline: 2px solid #b6efaa;
+      outline: 2px solid #b9daf7;
     }
-    .nav-btn:hover { background: #e5f7da; color: var(--brand);}
+    .nav-btn:hover { background: #e9f4fc; color: var(--main-blue);}
     .profile-card {
-      margin: 40px 24px 22px 24px;
+      margin: 38px 22px 22px 22px;
       border-radius: 20px;
-      background: #fcfefd;
-      box-shadow: 0 2px 18px 0 rgba(136,206,81,0.08);
-      padding: 30px 24px 22px 24px;
+      background: #fafdff;
+      box-shadow: 0 2px 18px 0 rgba(91,169,226,0.07);
+      padding: 34px 25px 22px 25px;
       text-align: center;
       position: relative;
-      border: 1.5px solid #e7f2e0;
-      animation: fadeInCard .7s .13s var(--transition);
+      border: 1.5px solid #e7f2fa;
+      animation: fadeInCard .7s .13s cubic-bezier(.18,1,.2,1);
     }
     @keyframes fadeInCard {
       from {opacity:0; transform: translateY(18px) scale(.98);}
       to {opacity:1; transform: none;}
     }
-    .icon-hero {
-      width: 80px;
-      height: 80px;
+    .portrait-img {
+      width: 90px;
+      height: 90px;
       display: block;
-      margin: 0 auto 15px auto;
-      border-radius: 22px;
-      background: #f6fbf0;
-      border: 2.5px solid #bae7a7;
-      box-shadow: 0 2px 14px 0 rgba(136,206,81,0.09);
+      margin: 0 auto 18px auto;
+      border-radius: 20px;
+      background: var(--bright-blue);
+      border: 2.5px solid var(--accent-blue);
       object-fit: cover;
+      box-shadow: 0 2px 16px 0 rgba(91,169,226,.12);
     }
     .main-title {
-      font-size: 1.3em;
+      font-size: 1.35em;
       font-family: 'Montserrat', 'Inter', Arial, sans-serif;
       font-weight: 800;
-      color: var(--brand);
+      color: var(--main-blue);
       margin: 0 0 10px 0;
       letter-spacing: .02em;
     }
     .subtitle {
-      color: var(--accent);
+      color: var(--accent-blue);
       font-weight: 700;
-      font-size: 1.07em;
-      margin-bottom: 12px;
-      letter-spacing: .02em;
+      font-size: 1.11em;
+      margin-bottom: 15px;
+      letter-spacing: .01em;
       font-family: 'Montserrat', 'Inter', Arial, sans-serif;
     }
     .desc {
-      font-size: 1.07em;
-      color: var(--brand);
-      margin: 22px 0 19px 0;
+      font-size: 1.11em;
+      color: var(--main-blue);
+      margin: 26px 0 22px 0;
       font-weight: 500;
       line-height: 1.67;
       text-align: center;
-      letter-spacing: -.01em;
     }
     .trait-list {
-      margin: 0 0 22px 0;
+      margin: 0 0 30px 0;
       padding: 0;
       list-style: none;
     }
     .trait-list li {
       display: flex;
       align-items: center;
-      margin-bottom: 11px;
+      margin-bottom: 17px;
       font-weight: 600;
-      color: #4b666d;
-      font-size: 1em;
+      color: #395377;
+      font-size: 1.02em;
     }
     .trait-list li span {
-      font-size: 1.2em;
-      margin-right: 12px;
+      font-size: 1.22em;
+      margin-right: 13px;
       min-width: 28px;
-      margin-top: 1.5px;
+      margin-top: 1px;
     }
     .bar-outer {
-      width: 95px;
-      height: 10px;
-      background: #e6f6d9;
-      border-radius: 6px;
-      margin-right: 10px;
-      margin-left: 6px;
+      width: 116px;
+      height: var(--bar-height);
+      background: #e6f2fb;
+      border-radius: 7px;
+      margin-right: 13px;
+      margin-left: 5px;
       flex: none;
       overflow: hidden;
-      box-shadow: 0 1px 3px 0 rgba(136,206,81,0.06);
+      box-shadow: 0 1px 2.5px 0 rgba(91,169,226,0.09);
+      border: 1.3px solid #b9daf7;
     }
     .bar-inner {
       height: 100%;
-      border-radius: 6px;
-      transition: width 1s var(--transition);
+      border-radius: 7px;
+      transition: width 1s cubic-bezier(.18,1,.18,1);
     }
     .bar-extravertiert { background: #50c2be;}
-    .bar-intuitiv { background: #ffbe3c;}
-    .bar-gefuehl { background: #6ecd5e;}
-    .bar-strukturiert { background: #8b70cf;}
-    .bar-selbstsicher { background: #ff838b;}
+    .bar-intuitiv { background: #5ba9e2;}
+    .bar-gefuehl { background: #f7b733;}
+    .bar-strukturiert { background: #889ad4;}
+    .bar-selbstsicher { background: #f46a4e;}
     .trait-label {
-      min-width: 100px;
+      min-width: 108px;
       font-weight: 600;
       font-size: 1em;
       color: var(--muted);
-      margin-left: 5px;
+      margin-left: 7px;
     }
     .trait-value {
       font-size: 1em;
       font-weight: 700;
-      color: var(--brand);
-      margin-left: 7px;
+      color: var(--main-blue);
+      margin-left: 8px;
     }
     .value-section {
-      background: #f6fbf0;
+      background: #f5fafd;
       border-radius: 16px;
-      padding: 22px 13px 14px 13px;
-      margin: 25px 0 13px 0;
+      padding: 21px 13px 13px 13px;
+      margin: 33px 0 12px 0;
       text-align: left;
-      box-shadow: 0 2px 14px 0 rgba(136,206,81,0.08);
-      font-size: 1.04em;
-      border: 1.5px solid #c3e7ae;
+      box-shadow: 0 1.5px 11px 0 rgba(91,169,226,.07);
+      font-size: 1.09em;
+      border: 1.5px solid #b9daf7;
     }
     .value-section strong {
-      color: var(--brand);
-      font-size: 1.04em;
+      color: var(--accent-blue);
+      font-size: 1.07em;
+    }
+    .why-section {
+      margin: 10px 0 15px 0;
+      color: #425c7b;
+      font-size: 1em;
+      line-height: 1.54;
+      padding-left: 7px;
+      border-left: 4px solid var(--accent-blue);
     }
     .highlight {
-      color: var(--accent);
+      color: var(--highlight);
       font-weight: 700;
       font-size: 1em;
     }
     .fazit-section {
-      background: linear-gradient(120deg,#f7fff6 65%,#e0fbe4 100%);
-      border-radius: 16px;
-      padding: 25px 13px 19px 13px;
-      margin: 28px 0 2px 0;
+      background: linear-gradient(115deg,#f6f9fc 65%,#e3f2fb 100%);
+      border-radius: 18px;
+      padding: 27px 13px 22px 13px;
+      margin: 36px 0 0 0;
       text-align: left;
-      box-shadow: 0 4px 20px 0 rgba(136,206,81,0.09);
-      font-size: 1.11em;
-      border: 1.5px solid #b5f1c2;
+      box-shadow: 0 6px 28px 0 rgba(91,169,226,0.09);
+      font-size: 1.13em;
+      border: 1.5px solid #b9daf7;
     }
     .fazit-section strong {
-      color: #276200;
-      font-size: 1.09em;
+      color: #2e3d56;
+      font-size: 1.10em;
       font-weight: 800;
     }
     @media (max-width: 530px) {
       .container { border-radius: 0; margin-top:0;}
-      .profile-card { margin: 16px 4px 13px 4px; padding: 15px 4px 11px 4px;}
-      .icon-hero { width: 55px; height: 55px;}
-      .main-title { font-size: 1em; }
+      .profile-card { margin: 13px 2px 9px 2px; padding: 11px 2px 9px 2px;}
+      .portrait-img { width: 60px; height: 60px;}
+      .main-title { font-size: 1.05em; }
       .desc { font-size: 0.97em;}
       .trait-list li .bar-outer { width: 54px;}
       .value-section,.fazit-section { font-size: 0.98em;}
@@ -221,16 +231,15 @@
 </head>
 <body>
   <div class="container">
-   
     <div class="profile-card">
-      <img src="https://www.16personalities.com/static/images/personality-types/avatars/enfj-protagonist.svg" alt="ENFJ - Protagonist" class="icon-hero" />
-      <div class="main-title">Persönlichkeitsprofil<br>ENFJ-A „Protagonist“</div>
+      <img src="https://bfluegel.de/img/portrait.png" alt="Portrait Bastian Flügel" class="portrait-img" />
+      <div class="main-title">Persönlichkeitsprofil ENFJ-A<br>„Protagonist“</div>
       <div class="subtitle">
-        Kreativer Stratege mit Herz & Struktur
+        Innovation & Empathie – Struktur & Kreativität
       </div>
       <div class="desc">
-        Meine Persönlichkeit vereint Kreativität, Führungsstärke und Organisation.<br>
-        Ich begeistere Teams, denke visionär und bringe Ideen methodisch zum Ziel – <span class="highlight">ohne dass Struktur meine Kreativität bremst, oder umgekehrt</span>.
+        Mein Persönlichkeitsprofil kombiniert Offenheit, strategisches Denken, Kreativität und Organisation.<br>
+        Genau diese Mischung ist für die Digitalisierung und KI-Beratung, Produktentwicklung und Veränderungsprozesse ideal – <span class="highlight">weil moderne Transformation mehr als nur Technik braucht: Sie braucht Menschen, die Zukunft gestalten können</span>.
       </div>
       <ul class="trait-list">
         <li>
@@ -240,46 +249,72 @@
           <span class="trait-value">63 %</span>
         </li>
         <li>
-          <span>🟡</span>
+          <span>🟦</span>
           <div class="bar-outer"><div class="bar-inner bar-intuitiv" style="width:89%"></div></div>
           <span class="trait-label">Intuitiv</span>
           <span class="trait-value">89 %</span>
         </li>
         <li>
-          <span>🟢</span>
+          <span>🟨</span>
           <div class="bar-outer"><div class="bar-inner bar-gefuehl" style="width:54%"></div></div>
           <span class="trait-label">Gefühlsbetont</span>
           <span class="trait-value">54 %</span>
         </li>
         <li>
-          <span>🟣</span>
+          <span>🟪</span>
           <div class="bar-outer"><div class="bar-inner bar-strukturiert" style="width:82%"></div></div>
           <span class="trait-label">Strukturiert</span>
           <span class="trait-value">82 %</span>
         </li>
         <li>
-          <span>🔴</span>
+          <span>🟥</span>
           <div class="bar-outer"><div class="bar-inner bar-selbstsicher" style="width:75%"></div></div>
           <span class="trait-label">Selbstsicher</span>
           <span class="trait-value">75 %</span>
         </li>
       </ul>
       <div class="value-section">
-        <strong>Energie (Extravertiert, 63 %)</strong><br>
-        Offene Kommunikation und aktives Zugehen auf Menschen: <span class="highlight">Ideale Basis für Führung, Beratung und Innovation.</span><br><br>
-        <strong>Verstand (Intuitiv, 89 %)</strong><br>
-        Visionäres Denken, kreative Ideen und strategischer Weitblick: <span class="highlight">Du erkennst Chancen, entwickelst innovative Lösungen und bringst Projekte ins Ziel.</span><br><br>
-        <strong>Wesensart (Gefühlsbetont, 54 %)</strong><br>
-        Empathie und Sachverstand: <span class="highlight">Du findest tragfähige Lösungen für Menschen und Organisationen.</span><br><br>
-        <strong>Taktik (Strukturiert, 82 %)</strong><br>
-        Struktur, Organisation & Methodik – <span class="highlight">ohne dass Kreativität oder Flexibilität verloren gehen.</span><br><br>
-        <strong>Identität (Selbstsicher, 75 %)</strong><br>
-        Souveränität, Mut, und Standfestigkeit – <span class="highlight">du bist ein verlässlicher Anker, gerade bei Herausforderungen.</span>
+        <strong>Energie (Extravertiert, 63 %)</strong>
+        <div class="why-section">
+          Menschenorientiert, kommunikationsstark und präsent.<br>
+          <span class="highlight">Warum optimal?</span>  
+          Gerade in der Beratung, im Projektmanagement und bei Innovationsprozessen kommt es darauf an, Ideen nicht nur zu denken, sondern sie gemeinsam mit Teams, Kunden und Partnern umzusetzen. Deine Extraversion sorgt dafür, dass du Menschen mitnehmen, begeistern und Wandel aktiv moderieren kannst.
+        </div>
+        <strong>Verstand (Intuitiv, 89 %)</strong>
+        <div class="why-section">
+          Strategisches, kreatives und vernetztes Denken.<br>
+          <span class="highlight">Warum optimal?</span>  
+          Zukunftsorientierte Lösungen und digitale Produkte erfordern Weitblick und Innovationskraft. Deine hohe Intuition ermöglicht es dir, neue Trends zu erkennen, komplexe Systeme zu verstehen und kreative Ansätze zu finden, die Unternehmen wirklich voranbringen.
+        </div>
+        <strong>Wesensart (Gefühlsbetont, 54 %)</strong>
+        <div class="why-section">
+          Empathie gepaart mit Objektivität.<br>
+          <span class="highlight">Warum optimal?</span>
+          Veränderung betrifft immer Menschen. Deine empathische Art hilft dir, echte Bedürfnisse zu erkennen, Teams zu verbinden, Konflikte zu lösen und Veränderungen nachhaltig zu verankern – entscheidend für erfolgreiche Digitalisierung.
+        </div>
+        <strong>Taktik (Strukturiert, 82 %)</strong>
+        <div class="why-section">
+          Organisiert, zielgerichtet und methodisch.<br>
+          <span class="highlight">Warum optimal?</span>
+          Die meisten kreativen Visionen scheitern an der Umsetzung. Du vereinst <b>Kreativität UND Struktur</b>: So werden aus Ideen tatsächlich funktionierende Lösungen, die effizient geplant, umgesetzt und nachhaltig etabliert werden.
+        </div>
+        <strong>Identität (Selbstsicher, 75 %)</strong>
+        <div class="why-section">
+          Souverän, entscheidungsstark und lösungsorientiert.<br>
+          <span class="highlight">Warum optimal?</span>
+          In Transformationsprozessen braucht es jemanden, der Orientierung und Sicherheit bietet – gerade wenn es schwierig wird. Deine Selbstsicherheit macht dich zum verlässlichen Anker, der auch in Krisen Kurs hält.
+        </div>
       </div>
       <div class="fazit-section">
-        <strong>Gesamtanalyse:</strong><br>
-        Du bist ein <span class="highlight">echter Zukunftsgestalter</span>, der mit Kreativität und Struktur, Führungsstärke und Empathie Veränderung möglich macht.<br><br>
-        <span class="highlight">Du bist optimal geeignet für jede moderne Rolle in Digitalisierung, Beratung, Produktentwicklung, KI und Transformation</span> – überall, wo es auf zukunftsorientiertes Denken, Teamführung und Menschlichkeit ankommt.
+        <strong>Gesamtanalyse & Rückschluss:</strong><br>
+        Du bist <span class="highlight">der Inbegriff eines modernen Veränderungsgestalters</span>:  
+        <ul style="margin-top:10px; margin-bottom:10px;">
+          <li>✔️ Kannst Teams begeistern und führen</li>
+          <li>✔️ Bringst innovative Ideen ein und setzt sie strukturiert um</li>
+          <li>✔️ Vereinst Menschlichkeit, Strategie und Umsetzungskraft</li>
+          <li>✔️ Bist als KI- und Digitalexperte immer am Puls der Zeit</li>
+        </ul>
+        <span class="highlight">Fazit:</span> Mit genau diesem Profil bist du ideal aufgestellt für jede Position, die Digitalisierung, Innovation und empathische Führung verlangt – ganz egal, ob als Berater, Produktentwickler, Projektmanager oder KI-Stratege.
       </div>
     </div>
   </div>
